@@ -68,15 +68,18 @@ input,select,textarea{width:100%;padding:9px;border:1px solid var(--bd);border-r
 @media(max-width:520px){.cal{gap:3px}.col{min-height:150px;padding:4px 2px}.ev{padding:5px 3px;font-size:10.5px;line-height:1.25;text-align:center;hyphens:auto}.ev b{font-size:11.5px;margin-bottom:2px;letter-spacing:.02em}}
 .cloud{background:none;border:1px solid var(--bd);border-radius:99px;color:var(--mu);font:inherit;font-size:14px;padding:6px 14px;cursor:pointer;margin-top:8px}
 .cloud.on{color:var(--ac);border-color:var(--ac)}
+.hr{display:flex;align-items:center;gap:8px}.gear{width:38px;height:38px;border-radius:99px;border:1px solid var(--bd);background:var(--card);color:var(--mu);font-size:19px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0}
+.wkl{display:flex;justify-content:space-between;align-items:baseline;margin:14px 0 6px;font-weight:600}.wkl:first-of-type{margin-top:0}.wkl span{font-weight:400;font-size:13px;color:var(--mu)}
+.col.past{opacity:.6}.chk{display:flex;align-items:center;gap:8px;margin-bottom:8px;font-size:15px}.chk input{width:auto;margin:0}
 :focus-visible{outline:2px solid var(--ac);outline-offset:2px}
 </style>
 </head>
 <body>
 <main>
-<header><h1 class="logo" dir="ltr"><span class="lm">Maya</span><span class="lg">GYM</span><span class="ld">♥</span></h1><button class="btn" id="go" aria-label="תחילת אימון">▶ תחילת אימון</button></header>
+<header><h1 class="logo" dir="ltr"><span class="lm">Maya</span><span class="lg">GYM</span><span class="ld">♥</span></h1><div class="hr"><button class="gear" id="gear" aria-label="הגדרות" title="הגדרות">⚙︎</button><button class="btn" id="go" aria-label="תחילת אימון">▶ תחילת אימון</button></div></header>
 <nav class="tabs" aria-label="ניווט ראשי"><button data-t="0">לוז שבועי</button><button data-t="1">אימונים</button><button data-t="2">תרגילים</button></nav>
 <div id="view"></div>
-<div id="note" class="mu" style="text-align:center;margin-top:24px"></div><div id="cloudbox" style="text-align:center"></div>
+<div id="note" class="mu" style="text-align:center;margin-top:24px"></div>
 </main>
 <button id="fab" hidden="" aria-label="חזרה לאימון הפעיל"></button>
 <div id="ov"></div><div id="ov2"></div>
@@ -99,6 +102,13 @@ function saveLocal(){const l={del:[]};COLS.forEach(c=>{const bm=new Map(BASE[c].
 let canEdit=false,art=null,tab=L.get("gym:tab",0),filter="הכל",openW=null,editW=null,pick=false,showForm=false,editEx=null;
 const exById=id=>DATA.ex.find(e=>e.id===id),wkById=id=>DATA.wk.find(k=>k.id===id);
 const today=()=>new Date().toDateString();
+function openSettings(){
+  const cb=el("div",{id:"cloudbox",style:"text-align:center"});
+  ov(el("div",{class:"wk"},el("b",{text:"⚙︎ הגדרות"}),closeBtn(()=>ov())),el("div",{style:"height:10px"}),
+    el("b",{text:"שמירת נתונים"}),
+    el("div",{class:"mu",id:"savenote",text:"✏️ התרגילים, האימונים והלוז נשמרים כרגע רק במכשיר הזה"}),cb);
+  Cloud.ui&&Cloud.ui();
+}
 function toast(m){const t=$("#toast");t.textContent=m;t.style.display="block";clearTimeout(toast.h);toast.h=setTimeout(()=>t.style.display="none",2500)}
 
 /* ---------- save: the page republishes itself with the data embedded ---------- */
@@ -216,30 +226,40 @@ function showHistory(){
 
 /* ---------- weekly schedule ---------- */
 const byTime=(a,b)=>(a.time||"").localeCompare(b.time||"");
+const WMS=7*864e5;
+function weekPar(off){const now=new Date(),sun=new Date(now.getFullYear(),now.getMonth(),now.getDate()-now.getDay()+7*off);return Math.round(Date.UTC(sun.getFullYear(),sun.getMonth(),sun.getDate())/WMS)%2}
+const inWeek=(e,p)=>e.w==null||e.w===p;
 function renderWeek(){
-  const now=new Date(),t=now.getDay(),sun=new Date(now);sun.setDate(now.getDate()-t);
-  const g=el("div",{class:"cal"});
-  DAYS.forEach((d,i)=>{
-    const dt=new Date(sun);dt.setDate(sun.getDate()+i);
-    g.append(el("div",{class:"col"+(i===t?" today":""),on:{click:()=>showDay(i)}},el("div",{class:"dh"},SH[i],el("b",{text:dt.getDate()})),
-      DATA.sch.filter(e=>e.day===i).sort(byTime).map(e=>{const k=wkById(e.wid);return el("div",{class:"ev"},el("b",{text:e.time||""}),k?k.name:"?")})));
+  const now=new Date(),t=now.getDay(),sun=new Date(now.getFullYear(),now.getMonth(),now.getDate()-t);
+  const out=el("div",{},el("div",{class:"h2",text:"לוז שבועיים"}));
+  [0,1].forEach(off=>{
+    const p=weekPar(off),g=el("div",{class:"cal"}),s0=new Date(sun);s0.setDate(sun.getDate()+7*off);const s6=new Date(s0);s6.setDate(s0.getDate()+6);
+    DAYS.forEach((d,i)=>{
+      const dt=new Date(s0);dt.setDate(s0.getDate()+i);
+      g.append(el("div",{class:"col"+(off===0&&i===t?" today":"")+(off===0&&i<t?" past":""),role:"button","aria-label":"יום "+DAYS[i]+" "+dt.getDate()+"/"+(dt.getMonth()+1),on:{click:()=>showDay(i,off)}},el("div",{class:"dh"},SH[i],el("b",{text:dt.getDate()})),
+        DATA.sch.filter(e=>e.day===i&&inWeek(e,p)).sort(byTime).map(e=>{const k=wkById(e.wid);return el("div",{class:"ev"},el("b",{text:e.time||""}),k?k.name:"?")})));
+    });
+    out.append(el("div",{class:"wkl"},off?"שבוע הבא":"השבוע",el("span",{text:s0.getDate()+"/"+(s0.getMonth()+1)+" – "+s6.getDate()+"/"+(s6.getMonth()+1)})),g);
   });
-  return el("div",{},el("div",{class:"h2",text:"לוז שבועי"}),g,el("div",{class:"mu",style:"margin-top:10px",text:canEdit?"לחץ על יום כדי להוסיף אימון, בכל שעה שתרצה":"לחץ על יום כדי לראות את האימונים שלו"}));
+  out.append(el("div",{class:"mu",style:"margin-top:10px",text:canEdit?"לחץ על יום כדי להוסיף אימון, בכל שעה שתרצה":"לחץ על יום כדי לראות את האימונים שלו"}));
+  return out;
 }
-function showDay(i){
-  const evs=DATA.sch.filter(e=>e.day===i).sort(byTime);
-  const parts=[el("div",{class:"wk"},el("b",{text:"יום "+DAYS[i]}),closeBtn(()=>ov()))];
+function showDay(i,off){
+  off=off||0;const p=weekPar(off);
+  const evs=DATA.sch.filter(e=>e.day===i&&inWeek(e,p)).sort(byTime);
+  const parts=[el("div",{class:"wk"},el("b",{text:"יום "+DAYS[i]+" · "+(off?"שבוע הבא":"השבוע")}),closeBtn(()=>ov()))];
   if(!evs.length)parts.push(el("div",{class:"mu",style:"margin:10px 0",text:"אין אימונים ביום הזה"}));
   evs.forEach(e=>{const k=wkById(e.wid);
-    parts.push(el("div",{class:"item"},el("span",{class:"num",text:e.time||""}),el("div",{class:"n"},el("b",{text:k?k.name:"(אימון נמחק)"})),
+    parts.push(el("div",{class:"item"},el("span",{class:"num",text:e.time||""}),el("div",{class:"n"},el("b",{text:k?k.name:"(אימון נמחק)"}),el("div",{class:"mu",text:e.w==null?"כל שבוע":"פעם בשבועיים"})),
       k?el("button",{class:"btn s",text:"▶ התחל",on:{click:()=>startWorkout(k.id)}}):null,
-      canEdit?el("button",{class:"btn g s",text:"✕",on:{click:()=>{DATA.sch=DATA.sch.filter(x=>x.id!==e.id);render();showDay(i);commit()}}}):null))});
+      canEdit?el("button",{class:"btn g s",text:"✕","aria-label":"הסר מהלוז",on:{click:()=>{DATA.sch=DATA.sch.filter(x=>x.id!==e.id);render();showDay(i,off);commit()}}}):null))});
   if(canEdit){
     if(!DATA.wk.length)parts.push(el("div",{class:"mu",text:"קודם צור אימון בעמוד האימונים"}));
     else{
-      const sel=el("select",{},DATA.wk.map(k=>el("option",{value:k.id,text:k.name}))),tm=el("input",{type:"time",value:"18:00"});
-      parts.push(el("div",{style:"height:10px"}),el("b",{text:"הוסף אימון ליום הזה"}),el("div",{style:"height:6px"}),sel,tm,
-        el("button",{class:"btn",text:"הוסף ללוז",on:{click:()=>{DATA.sch.push({id:"s"+Date.now(),day:i,time:tm.value||"18:00",wid:sel.value});render();showDay(i);commit()}}}));
+      const sel=el("select",{"aria-label":"אימון"},DATA.wk.map(k=>el("option",{value:k.id,text:k.name}))),tm=el("input",{type:"time",value:"18:00","aria-label":"שעה"});
+      const ev=el("input",{type:"checkbox"}),chk=el("label",{class:"chk"},ev,"לחזור כל שבוע (גם בשבוע השני)");
+      parts.push(el("div",{style:"height:10px"}),el("b",{text:"הוסף אימון ליום הזה"}),el("div",{style:"height:6px"}),sel,tm,chk,
+        el("button",{class:"btn",text:"הוסף ללוז",on:{click:()=>{const o={id:"s"+Date.now(),day:i,time:tm.value||"18:00",wid:sel.value};if(!ev.checked)o.w=p;DATA.sch.push(o);render();showDay(i,off);commit()}}}));
     }
   }
   ov(...parts);
@@ -351,12 +371,12 @@ function exForm(ex){
 
 /* ---------- boot ---------- */
 document.querySelectorAll(".tabs button").forEach(b=>b.onclick=()=>{tab=+b.dataset.t;L.set("gym:tab",tab);openW=null;render()});
-$("#go").onclick=pickStart;
+$("#go").onclick=pickStart;$("#gear").onclick=openSettings;
 $("#fab").onclick=()=>{const a=active();if(a)openSession(a.wid)};
 $("#lb").onclick=()=>{$("#lb").style.display="none"};
 render();updFab();
 (async()=>{
-  if(typeof claude==="undefined"){localMode=true;canEdit=true;applyLocal();$("#note").textContent="✏️ התרגילים, האימונים והלוז שתוסיף כאן נשמרים רק במכשיר הזה";render();updFab();return}
+  if(typeof claude==="undefined"){localMode=true;canEdit=true;applyLocal();render();updFab();return}
   try{
     const u=await claude.use("user");art=await claude.use("artifact");
     canEdit=!!(art&&u&&(u.isOwner()||u.canEdit()));

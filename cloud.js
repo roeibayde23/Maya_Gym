@@ -1,17 +1,18 @@
 /* Maya GYM – optional cloud sync (Supabase, email magic-link). Falls back to local mode when not configured/offline. */
 (function(){
   const C=window.GYM_CONFIG||{};
-  const box=document.getElementById("cloudbox");
-  const api={user:null,ready:false,push(){}};
+  
+  const api={user:null,ready:false,push(){},ui(){}};
   Cloud=api;window.Cloud=api;
   if(!C.url||!C.key||!localMode){return}
   let sb=null,timer=null,busy=false;
   const snap=()=>({d:DATA,h:L.get("gym:history",[])});
   function ui(){
+    const box=document.getElementById("cloudbox"),nt=document.getElementById("savenote");if(!box)return;
     box.replaceChildren();
     if(api.user){
       box.append(el("button",{class:"cloud on","aria-label":"מחוברת לשמירה בענן – לחיצה להתנתקות",text:"☁️ נשמר בענן · "+(api.user.email||""),on:{click:async()=>{if(confirm("להתנתק מהענן? הנתונים יישארו גם בטלפון הזה.")){await sb.auth.signOut();api.user=null;ui()}}}}));
-      $("#note").textContent="☁️ הכול נשמר בענן ומסתנכרן בין המכשירים";
+      if(nt)nt.textContent="☁️ הכול נשמר בענן ומסתנכרן בין המכשירים";
     }else{
       box.append(el("button",{class:"cloud","aria-label":"התחברות עם אימייל לשמירה בענן",text:"☁️ שמירה בענן (כניסה עם אימייל)",on:{click:login}}));
     }
@@ -43,7 +44,7 @@
     if(error){setStatus("השמירה בענן נכשלה – השינויים שמורים בטלפון הזה.",false);return}
     setStatus("");toast("נשמר בענן ☁️");
   }
-  api.push=()=>{if(!api.user)return;clearTimeout(timer);timer=setTimeout(doPush,600)};
+  api.ui=ui;api.push=()=>{if(!api.user)return;clearTimeout(timer);timer=setTimeout(doPush,600)};
   const s=document.createElement("script");
   s.src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js";
   s.onload=async()=>{
