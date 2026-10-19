@@ -71,14 +71,23 @@ input,select,textarea{width:100%;padding:9px;border:1px solid var(--bd);border-r
 .hr{display:flex;align-items:center;gap:8px}.gear{width:38px;height:38px;border-radius:99px;border:1px solid var(--bd);background:var(--card);color:var(--mu);font-size:19px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0}
 .wkl{display:flex;justify-content:space-between;align-items:baseline;margin:14px 0 6px;font-weight:600}.wkl:first-of-type{margin-top:0}.wkl span{font-weight:400;font-size:13px;color:var(--mu)}
 .col.past{opacity:.6}.chk{display:flex;align-items:center;gap:8px;margin-bottom:8px;font-size:15px}.chk input{width:auto;margin:0}
+.tabs{background:var(--ac2);padding:4px;border-radius:14px;gap:4px}.tabs button{border:none;background:none;border-radius:10px}.tabs button.on{background:var(--card);color:var(--ac);box-shadow:0 1px 4px #0002}
+.cal{gap:3px}.col,.col[class]{min-height:76px;padding:4px 2px}.dh{font-size:11px;margin-bottom:3px}.dh b{font-size:19px;line-height:1.1}
+@media(max-width:520px){.cal{gap:3px}.col{min-height:76px;padding:4px 2px}}
+.wnav{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}.wt2{text-align:center}.wt2 b{display:block;font-size:18px}.na{width:40px;height:40px;border-radius:99px;border:1px solid var(--bd);background:var(--card);color:var(--ac);font-size:26px;line-height:1;cursor:pointer}.tdy{border:none;background:var(--ac2);color:var(--ac);border-radius:99px;padding:2px 10px;font:inherit;font-size:13px;cursor:pointer}
+.gow{display:flex;justify-content:center;margin:26px 0 10px}
+#go{width:110px;height:110px;padding:0;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;font-size:15px;line-height:1.1;background:linear-gradient(135deg,#e8658c,#f4a261);animation:pl 1.8s infinite}
+@keyframes pl{0%{box-shadow:0 0 0 0 #e8658c88}70%{box-shadow:0 0 0 20px #e8658c00}100%{box-shadow:0 0 0 0 #e8658c00}}
+@media(prefers-reduced-motion:reduce){#go{animation:none}}
 :focus-visible{outline:2px solid var(--ac);outline-offset:2px}
 </style>
 </head>
 <body>
 <main>
-<header><h1 class="logo" dir="ltr"><span class="lm">Maya</span><span class="lg">GYM</span><span class="ld">♥</span></h1><div class="hr"><button class="gear" id="gear" aria-label="הגדרות" title="הגדרות">⚙︎</button><button class="btn" id="go" aria-label="תחילת אימון">▶ תחילת אימון</button></div></header>
+<header><h1 class="logo" dir="ltr"><span class="lm">Maya</span><span class="lg">GYM</span><span class="ld">♥</span></h1><div class="hr"><button class="gear" id="gear" aria-label="הגדרות" title="הגדרות">⚙︎</button></div></header>
 <nav class="tabs" aria-label="ניווט ראשי"><button data-t="0">לוז שבועי</button><button data-t="1">אימונים</button><button data-t="2">תרגילים</button></nav>
 <div id="view"></div>
+<div class="gow"><button class="btn" id="go" aria-label="התחל אימון"><svg width="44" height="28" viewBox="0 0 26 16" fill="currentColor" aria-hidden="true"><rect x="0" y="4" width="3" height="8" rx="1"/><rect x="3" y="1" width="4" height="14" rx="1.5"/><rect x="7" y="6.5" width="12" height="3"/><rect x="19" y="1" width="4" height="14" rx="1.5"/><rect x="23" y="4" width="3" height="8" rx="1"/></svg><span>התחל אימון</span></button></div>
 <div id="note" class="mu" style="text-align:center;margin-top:24px"></div>
 </main>
 <button id="fab" hidden="" aria-label="חזרה לאימון הפעיל"></button>
@@ -229,17 +238,18 @@ const byTime=(a,b)=>(a.time||"").localeCompare(b.time||"");
 const WMS=7*864e5;
 function weekPar(off){const now=new Date(),sun=new Date(now.getFullYear(),now.getMonth(),now.getDate()-now.getDay()+7*off);return Math.round(Date.UTC(sun.getFullYear(),sun.getMonth(),sun.getDate())/WMS)%2}
 const inWeek=(e,p)=>e.w==null||e.w===p;
+let WOFF=0;const wlab=o=>o===0?"השבוע":o===1?"שבוע הבא":o===-1?"שבוע שעבר":(o>0?"בעוד "+o+" שבועות":"לפני "+(-o)+" שבועות");
 function renderWeek(){
   const now=new Date(),t=now.getDay(),sun=new Date(now.getFullYear(),now.getMonth(),now.getDate()-t);
-  const out=el("div",{},el("div",{class:"h2",text:"לוז שבועיים"}));
-  [0,1].forEach(off=>{
+  const out=el("div",{},el("div",{class:"wnav"},el("button",{class:"na","aria-label":"שבועות קודמים",text:"›",on:{click:()=>{WOFF-=2;render()}}}),el("div",{class:"wt2"},el("b",{text:"לוז שבועיים"}),WOFF!==0?el("button",{class:"tdy",text:"↺ חזרה להיום",on:{click:()=>{WOFF=0;render()}}}):null),el("button",{class:"na","aria-label":"שבועות הבאים",text:"‹",on:{click:()=>{WOFF+=2;render()}}})));
+  [WOFF,WOFF+1].forEach(off=>{
     const p=weekPar(off),g=el("div",{class:"cal"}),s0=new Date(sun);s0.setDate(sun.getDate()+7*off);const s6=new Date(s0);s6.setDate(s0.getDate()+6);
     DAYS.forEach((d,i)=>{
       const dt=new Date(s0);dt.setDate(s0.getDate()+i);
-      g.append(el("div",{class:"col"+(off===0&&i===t?" today":"")+(off===0&&i<t?" past":""),role:"button","aria-label":"יום "+DAYS[i]+" "+dt.getDate()+"/"+(dt.getMonth()+1),on:{click:()=>showDay(i,off)}},el("div",{class:"dh"},SH[i],el("b",{text:dt.getDate()})),
+      g.append(el("div",{class:"col"+(off===0&&i===t?" today":"")+(off<0||(off===0&&i<t)?" past":""),role:"button","aria-label":"יום "+DAYS[i]+" "+dt.getDate()+"/"+(dt.getMonth()+1),on:{click:()=>showDay(i,off)}},el("div",{class:"dh"},SH[i],el("b",{text:dt.getDate()})),
         DATA.sch.filter(e=>e.day===i&&inWeek(e,p)).sort(byTime).map(e=>{const k=wkById(e.wid);return el("div",{class:"ev"},el("b",{text:e.time||""}),k?k.name:"?")})));
     });
-    out.append(el("div",{class:"wkl"},off?"שבוע הבא":"השבוע",el("span",{text:s0.getDate()+"/"+(s0.getMonth()+1)+" – "+s6.getDate()+"/"+(s6.getMonth()+1)})),g);
+    out.append(el("div",{class:"wkl"},wlab(off),el("span",{text:s0.getDate()+"/"+(s0.getMonth()+1)+" – "+s6.getDate()+"/"+(s6.getMonth()+1)})),g);
   });
   out.append(el("div",{class:"mu",style:"margin-top:10px",text:canEdit?"לחץ על יום כדי להוסיף אימון, בכל שעה שתרצה":"לחץ על יום כדי לראות את האימונים שלו"}));
   return out;
@@ -247,7 +257,7 @@ function renderWeek(){
 function showDay(i,off){
   off=off||0;const p=weekPar(off);
   const evs=DATA.sch.filter(e=>e.day===i&&inWeek(e,p)).sort(byTime);
-  const parts=[el("div",{class:"wk"},el("b",{text:"יום "+DAYS[i]+" · "+(off?"שבוע הבא":"השבוע")}),closeBtn(()=>ov()))];
+  const parts=[el("div",{class:"wk"},el("b",{text:"יום "+DAYS[i]+" · "+wlab(off)}),closeBtn(()=>ov()))];
   if(!evs.length)parts.push(el("div",{class:"mu",style:"margin:10px 0",text:"אין אימונים ביום הזה"}));
   evs.forEach(e=>{const k=wkById(e.wid);
     parts.push(el("div",{class:"item"},el("span",{class:"num",text:e.time||""}),el("div",{class:"n"},el("b",{text:k?k.name:"(אימון נמחק)"}),el("div",{class:"mu",text:e.w==null?"כל שבוע":"פעם בשבועיים"})),
