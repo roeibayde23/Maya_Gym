@@ -30,6 +30,9 @@ h1{font-size:23px;margin:0}.logo{display:flex;align-items:baseline;gap:8px;line-
 .card img{width:100%;aspect-ratio:4/3;object-fit:cover;display:block}
 .ph{aspect-ratio:4/3;display:flex;align-items:center;justify-content:center;font-size:34px;background:var(--ac2)}
 .body{padding:6px 8px}.body b{display:block}
+.card.lib img,.libbig{object-fit:contain;background:#fff}
+.seg{display:flex;gap:6px;margin-bottom:10px}.seg button{flex:1;padding:9px;border-radius:12px;border:1px solid var(--bd);background:var(--card);font:inherit;font-weight:600;color:inherit}.seg button.on{background:var(--ac);color:#fff;border-color:var(--ac)}
+.libh{margin:12px 0 6px;font-size:15px}.mach{font-size:11px;margin-top:2px}
 .tag{font-size:11px;color:var(--ac)}
 .mu{color:var(--mu);font-size:14px}
 .btn{padding:9px 14px;border-radius:12px;border:none;background:var(--ac);color:#fff;font-family:inherit;font-size:15px;font-weight:600;cursor:pointer}
@@ -101,7 +104,43 @@ input,select,textarea{width:100%;padding:9px;border:1px solid var(--bd);border-r
 <script type="application/json" id="data">{"ex":[{"id":"e1791367731501","name":"כתף אחורית","muscle":"כתפיים","desc":"יכעגגעגגג","img":"img/e1791367731501.jpg","t":1791367731501},{"id":"e1791367798677","name":"אחורי","muscle":"ידיים","desc":"תייר תרים תלחץ","img":"img/e1791367798677.jpg","t":1791367798677}],"wk":[{"id":"w1791367803185","name":"ידיים קצר מאוד","items":[{"ex":"e1791367798677","sets":3,"reps":"10","note":"60 קילו"},{"ex":"e1791367731501","sets":3,"reps":"12","note":"40 קילו"}],"t":1791367894102}],"sch":[{"id":"s1791367902663","day":3,"time":"18:00","wid":"w1791367803185"}]}</script>
 <script>
 var Cloud=window.Cloud||{user:null,push(){}};
-const MUSCLES=["הכל","רגליים","ישבן","גב","חזה","כתפיים","ידיים","בטן","קרדיו"];
+const MUSCLES=["הכל","חזה","גב","כתפיים","יד קדמית","יד אחורית","רגליים","ישבן","בטן","קרדיו"];
+const LIB=[
+["bench-press","לחיצת חזה במוט","חזה","ספסל ומוט","שכבו על הספסל, אחזו את המוט מעט רחב מהכתפיים. הורידו לאט עד אמצע החזה ודחפו חזרה למעלה עד יישור הידיים."],
+["chest-press","לחיצת חזה במכשיר","חזה","מכשיר לחיצת חזה","שבו עם הגב צמוד למשענת, הידיות בגובה החזה. דחפו קדימה עד יישור כמעט מלא וחזרו לאט."],
+["pec-deck","פרפר במכשיר","חזה","מכשיר פרפר (Pec Deck)","שבו זקוף, ידיים פתוחות לצדדים עם כיפוף קל במרפק. קרבו את הידיות מול החזה, החזיקו שנייה וחזרו לאט."],
+["incline-db","לחיצת חזה בשיפוע עם משקולות","חזה","ספסל בשיפוע ומשקולות יד","ספסל בשיפוע 30–45°. התחילו עם המשקולות בגובה החזה העליון ודחפו למעלה עד יישור הידיים."],
+["lat-pulldown","פולי עליון","גב","מכשיר פולי עליון","שבו עם הברכיים מתחת לכרית, אחיזה רחבה. משכו את המוט אל החזה העליון תוך הורדת מרפקים, וחזרו לאט למעלה."],
+["seated-row","חתירה בישיבה בכבל","גב","כבל נמוך – חתירה","שבו זקוף, כפות הרגליים על המשטח. משכו את הידית אל הבטן, קרבו שכמות, וחזרו לאט עם ידיים ישרות."],
+["machine-row","חתירה במכשיר","גב","מכשיר חתירה עם תמיכת חזה","חזה צמוד לכרית. משכו את הידיות לאחור עד שהמרפקים עוברים את הגוף, קרבו שכמות וחזרו לאט."],
+["back-ext","פשיטת גב","גב","ספסל פשיטת גב 45°","ירכיים על הכרית, עקבים נעולים. רדו קדימה מהמותן עם גב ישר, ועלו עד שהגוף בקו ישר – בלי לקשת יתר."],
+["cable-pullover","פולאובר בכבל","גב","כבל עליון עם מוט","עמדו מול הכבל בהטיה קלה קדימה, ידיים ישרות. משכו את המוט בקשת עד הירכיים וחזרו לאט למעלה."],
+["shoulder-press","לחיצת כתפיים במכשיר","כתפיים","מכשיר לחיצת כתפיים","שבו עם הגב צמוד, ידיות בגובה הכתפיים. דחפו מעל הראש עד יישור וחזרו לאט לגובה הכתפיים."],
+["lateral-raise","הרחקה לצדדים עם משקולות","כתפיים","משקולות יד","עמדו זקוף, משקולות לצד הגוף. הרימו לצדדים עד גובה הכתפיים עם כיפוף קל במרפק, ורדו לאט."],
+["rear-delt","פרפר אחורי במכשיר","כתפיים","מכשיר פרפר – הפוך","שבו עם החזה צמוד לכרית. פתחו את הידיים לאחור לצדדים בגובה הכתפיים, וחזרו לאט קדימה."],
+["front-raise","הרמה קדמית","כתפיים","משקולות יד","עמדו זקוף, משקולות מול הירכיים. הרימו קדימה עם ידיים כמעט ישרות עד גובה הכתפיים ורדו לאט."],
+["bb-curl","כפיפת מרפקים במוט","יד קדמית","מוט","עמדו זקוף, אחיזה תחתונה. כופפו מרפקים והרימו את המוט לכתפיים כשהמרפקים צמודים לגוף, ורדו לאט."],
+["hammer-curl","כפיפת פטישים","יד קדמית","משקולות יד","אחיזה ניטרלית (אגודל למעלה). כופפו מרפקים והרימו לכתפיים, מרפקים צמודים לגוף, ורדו לאט."],
+["cable-curl","כפיפה בכבל","יד קדמית","כבל נמוך עם מוט","עמדו מול כבל נמוך, אחיזה תחתונה. כופפו מרפקים עד הכתפיים וחזרו לאט, בלי להניע את הגוף."],
+["pushdown","פשיטת מרפקים בכבל","יד אחורית","כבל עליון עם חבל/מוט","מרפקים צמודים לגוף. דחפו את הידית למטה עד יישור מלא של הידיים וחזרו לאט לזווית 90°."],
+["overhead-ext","פשיטה מעל הראש","יד אחורית","משקולת יד וספסל","שבו זקוף, משקולת בשתי ידיים מעל הראש. הורידו מאחורי הראש בכיפוף מרפקים ופשטו חזרה למעלה."],
+["dip-machine","מקבילים במכשיר","יד אחורית","מכשיר מקבילים בישיבה","שבו זקוף ואחזו בידיות לצדי הגוף. דחפו למטה עד יישור הידיים וחזרו לאט למעלה."],
+["leg-press","לחיצת רגליים","רגליים","מכשיר לחיצת רגליים 45°","כפות רגליים ברוחב הכתפיים על המשטח. הורידו עד כיפוף ברכיים עמוק ודחפו חזרה – בלי לנעול ברכיים."],
+["leg-ext","פשיטת ברכיים","רגליים","מכשיר פשיטת ברכיים","שבו עם הגב צמוד, הכרית מעל הקרסוליים. פשטו את הרגליים עד יישור, החזיקו שנייה ורדו לאט."],
+["leg-curl","כפיפת ברכיים בשכיבה","רגליים","מכשיר כפיפת ברכיים בשכיבה","שכבו על הבטן, הכרית מאחורי הקרסוליים. כופפו ברכיים ומשכו את העקבים לכיוון הישבן, וחזרו לאט."],
+["smith-squat","סקוואט במכונת סמית'","רגליים","מכונת סמית'","המוט על הגב העליון, רגליים ברוחב הכתפיים. רדו עד שהירכיים מקבילות לרצפה ועלו חזרה עם גב ישר."],
+["calf-raise","הרמת עקבים","רגליים","מכשיר הרמת עקבים בעמידה","כריות על הכתפיים, כריות כף הרגל על המדרגה. הורידו עקבים למטה ועלו גבוה על קצות האצבעות."],
+["hip-thrust","היפ תראסט","ישבן","ספסל ומוט","גב עליון על הספסל, מוט על המותן. דחפו את האגן למעלה עד קו ישר, כווצו ישבן ורדו לאט."],
+["abduction","מכשיר הרחקת ירכיים","ישבן","מכשיר הרחקה (Abduction)","שבו עם הכריות בצד החיצוני של הברכיים. פתחו את הרגליים לצדדים, החזיקו שנייה וחזרו לאט."],
+["kickback","בעיטה לאחור בכבל","ישבן","כבל נמוך עם רצועת קרסול","רצועה על הקרסול, אחזו במכשיר. בעטו את הרגל לאחור ולמעלה עם כיווץ ישבן, וחזרו לאט."],
+["ab-crunch","כפיפות בטן במכשיר","בטן","מכשיר כפיפות בטן","שבו ואחזו בידיות ליד הכתפיים. כופפו את פלג הגוף העליון קדימה ולמטה בעזרת הבטן, וחזרו לאט."],
+["hanging-raise","הרמת רגליים בתלייה","בטן","מתקן מתח","היתלו על המוט עם ידיים ישרות. הרימו רגליים ישרות קדימה עד 90° ורדו לאט, בלי להתנדנד."],
+["plank","פלאנק","בטן","מזרן","שענו על האמות ועל קצות האצבעות, הגוף בקו ישר מהראש לעקבים. כווצו בטן והחזיקו 30–60 שניות."]
+].map(([id,name,muscle,machine,desc])=>({id,name,muscle,machine,desc,img:"ex/"+id+".gif"}));
+/* migrate old "ידיים" category → יד קדמית / יד אחורית (by name) */
+function armCat(e){return /אחור|טרייספס|טריצפס|פשיט|מקביל|tricep/i.test((e.name||"")+" "+(e.desc||""))?"יד אחורית":"יד קדמית"}
+function migrate(){let ch=false;(DATA.ex||[]).forEach(e=>{if(e.muscle==="ידיים"){e.muscle=armCat(e);ch=true}});return ch}
+
 const DAYS=["ראשון","שני","שלישי","רביעי","חמישי","שישי","שבת"],SH=["א׳","ב׳","ג׳","ד׳","ה׳","ו׳","ש׳"];
 const $=s=>document.querySelector(s);
 const el=(t,p={},...k)=>{const e=document.createElement(t);for(const a in p){if(a==="on")for(const ev in p.on)e.addEventListener(ev,p.on[ev]);else if(a==="text")e.textContent=p[a];else e.setAttribute(a,p[a])}k.flat(Infinity).forEach(c=>c!=null&&c!==false&&e.append(c));return e};
@@ -111,7 +150,7 @@ let DATA={ex:[],wk:[],sch:[]};try{DATA=Object.assign(DATA,JSON.parse($("#data").
 const BASE=JSON.parse(JSON.stringify(DATA)),COLS=["ex","wk","sch"];let localMode=false;
 function applyLocal(){const l=L.get("gym:local",null);if(!l)return;COLS.forEach(c=>{const del=new Set(l.del||[]),ov=new Map((l[c]||[]).map(x=>[x.id,x]));const out=BASE[c].filter(x=>!del.has(x.id)).map(x=>ov.get(x.id)||x);(l[c]||[]).forEach(x=>{if(!BASE[c].some(b=>b.id===x.id))out.push(x)});DATA[c]=out})}
 function saveLocal(){const l={del:[]};COLS.forEach(c=>{const bm=new Map(BASE[c].map(x=>[x.id,x]));l[c]=DATA[c].filter(x=>!bm.has(x.id)||JSON.stringify(bm.get(x.id))!==JSON.stringify(x));BASE[c].forEach(b=>{if(!DATA[c].some(x=>x.id===b.id))l.del.push(b.id)})});L.set("gym:local",l)}
-let canEdit=false,art=null,tab=L.get("gym:tab",0),filter="הכל",openW=null,editW=null,pick=false,showForm=false,editEx=null;
+let libMode=false,canEdit=false,art=null,tab=L.get("gym:tab",0),filter="הכל",openW=null,editW=null,pick=false,showForm=false,editEx=null;
 const exById=id=>DATA.ex.find(e=>e.id===id),wkById=id=>DATA.wk.find(k=>k.id===id);
 const today=()=>new Date().toDateString();
 function openSettings(){
@@ -163,6 +202,7 @@ function greet(){
   g.replaceChildren(el("span",{text:w+"! איך לקרוא לך?"}),el("div",{class:"row",style:"margin-top:6px"},i,b));
 }
 function render(){
+  if(migrate()&&localMode)setTimeout(commit,0);
   document.querySelectorAll(".tabs button").forEach(b=>{b.className=+b.dataset.t===tab?"on":"";b.setAttribute("aria-current",+b.dataset.t===tab?"page":"false")});
   $("#view").replaceChildren([renderWeek,renderWk,renderEx][tab]());greet();const gw=document.querySelector(".gow");if(gw)gw.style.display=tab===1?"":"none";
 }
@@ -381,18 +421,49 @@ function wkForm(){
 /* ---------- exercises ---------- */
 function renderEx(){
   const w=el("div");
+  w.append(el("div",{class:"seg"},
+    el("button",{class:libMode?"":"on",text:"💪 התרגילים שלי",on:{click:()=>{libMode=false;render()}}}),
+    el("button",{class:libMode?"on":"",text:"📚 מאגר תרגילים",on:{click:()=>{libMode=true;render()}}})));
+  if(libMode)return renderLib(w);
   if(canEdit)w.append(el("button",{class:"btn",style:"margin-bottom:10px",text:"+ תרגיל חדש",on:{click:()=>{editEx=null;showForm=true;render()}}}));
   w.append(el("div",{class:"chips"},MUSCLES.map(m=>el("button",{class:"chip"+(m===filter?" on":""),text:m,on:{click:()=>{filter=m;render()}}}))));
   const list=DATA.ex.filter(e=>filter==="הכל"||e.muscle===filter);
-  if(!list.length)w.append(el("div",{class:"empty",text:canEdit?"עוד אין תרגילים – לחץ על \"תרגיל חדש\" ✨":"עוד אין תרגילים כאן"}));
+  if(!list.length)w.append(el("div",{class:"empty",text:canEdit?"עוד אין תרגילים – לחץ על \"תרגיל חדש\" או הוסף מהמאגר ✨":"עוד אין תרגילים כאן"}));
   else w.append(el("div",{class:"grid"},list.map(e=>{
-    const c=el("div",{class:"card"},thumb(e),el("div",{class:"body"},el("span",{class:"tag",text:e.muscle||""}),el("b",{text:e.name}),
+    const c=el("div",{class:"card"+(e.lib?" lib":"")},thumb(e),el("div",{class:"body"},el("span",{class:"tag",text:e.muscle||""}),el("b",{text:e.name}),
       null));
     c.addEventListener("click",ev=>{if(canEdit)exMenu(e);else showExercise(e)});
     return c;
   })));
   if(showForm)w.append(exForm(editEx));
   return w;
+}
+function renderLib(w){
+  const cats=MUSCLES.filter(m=>m==="הכל"||LIB.some(x=>x.muscle===m));
+  if(!cats.includes(filter))filter="הכל";
+  w.append(el("div",{class:"chips"},cats.map(m=>el("button",{class:"chip"+(m===filter?" on":""),text:m,on:{click:()=>{filter=m;render()}}}))));
+  cats.filter(m=>m!=="הכל"&&(filter==="הכל"||filter===m)).forEach(m=>{
+    w.append(el("h3",{class:"libh",text:m}));
+    w.append(el("div",{class:"grid"},LIB.filter(x=>x.muscle===m).map(x=>{
+      const has=DATA.ex.some(e=>e.lib===x.id);
+      return el("div",{class:"card lib",on:{click:()=>showLib(x)}},el("img",{src:x.img,alt:x.name,loading:"lazy"}),
+        el("div",{class:"body"},el("b",{text:x.name}),el("div",{class:"mu mach",text:x.machine}),has?el("span",{class:"tag",text:"✓ ברשימה שלי"}):null));
+    })));
+  });
+  return w;
+}
+function addLib(x){
+  if(DATA.ex.some(e=>e.lib===x.id))return;
+  DATA.ex.push({id:"e"+Date.now(),lib:x.id,name:x.name,muscle:x.muscle,desc:x.desc,img:x.img,t:Date.now()});
+  render();commit();toast("נוסף לתרגילים שלך ✓");
+}
+function showLib(x){
+  const has=DATA.ex.some(e=>e.lib===x.id);
+  ov2(el("div",{class:"wk"},el("b",{text:x.name}),closeBtn(()=>ov2())),
+    el("img",{class:"big libbig",src:x.img,alt:x.name}),
+    el("span",{class:"tag",text:x.muscle+" · "+x.machine}),
+    el("p",{text:x.desc}),
+    canEdit?el("button",Object.assign({class:"btn",text:has?"✓ כבר ברשימה שלך":"➕ הוסף לתרגילים שלי",on:{click:()=>{addLib(x);ov2()}}},has?{disabled:""}:{})):null);
 }
 function exMenu(e){
   ov2(el("div",{class:"wk"},el("b",{text:e.name}),closeBtn(()=>ov2())),el("div",{style:"height:10px"}),
