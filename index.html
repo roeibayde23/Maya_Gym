@@ -33,7 +33,7 @@ h1{font-size:23px;margin:0}.logo{display:flex;align-items:baseline;gap:8px;line-
 .card.lib img,.libbig{object-fit:contain;background:#fff}
 .seg{display:flex;gap:6px;margin-bottom:10px}.seg button{flex:1;padding:9px;border-radius:12px;border:1px solid var(--bd);background:var(--card);font:inherit;font-weight:600;color:inherit}.seg button.on{background:var(--ac);color:#fff;border-color:var(--ac)}
 .libh{margin:12px 0 6px;font-size:15px}.mach{font-size:11px;margin-top:2px}
-.panel{background:var(--card);border:1px solid var(--bd);border-radius:16px;padding:12px 14px;margin-bottom:12px}.panel.act{border-color:var(--ac);background:linear-gradient(135deg,#fff,#fde6ec)}.rings{display:flex;justify-content:space-around;margin:8px 0}.rw{display:flex;flex-direction:column;align-items:center;gap:2px}.ring{width:96px;height:96px}.rw.add{width:96px;height:96px;border-radius:50%;border:2px dashed var(--bd);background:none;color:var(--mu);font:inherit;justify-content:center}.aft{display:block;width:100%;max-height:260px;object-fit:cover;border-radius:12px;margin:8px 0}.phb{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}.phb .aft{flex-basis:100%}
+.panel{background:var(--card);border:1px solid var(--bd);border-radius:16px;padding:12px 14px;margin-bottom:12px}.panel.act{border-color:var(--ac);background:linear-gradient(135deg,#fff,#fde6ec)}.rings{display:flex;gap:10px;margin:6px 0 4px}.rw{display:flex;align-items:center;gap:8px;flex:1}.rw .mu{font-size:12px;line-height:1.3}.ring{width:52px;height:52px;flex:none}.rw.add{height:52px;padding:0 14px;border-radius:99px;border:2px dashed var(--bd);background:none;color:var(--mu);font:inherit;justify-content:center}.aft{display:block;width:100%;max-height:260px;object-fit:cover;border-radius:12px;margin:8px 0}.phb{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}.phb .aft{flex-basis:100%}
 body.hasfab #view{padding-bottom:84px}
 .settings{margin-top:8px}.sgrp{margin:14px 0}.sgrp h4{margin:0 4px 6px;font-size:13px;font-weight:600;opacity:.6}
 .slist{background:var(--card);border:1px solid var(--bd);border-radius:14px;overflow:hidden}
@@ -52,6 +52,10 @@ body.hasfab #view{padding-bottom:84px}
 .xrow img,.xph{width:52px;height:52px;flex:none;border-radius:10px;object-fit:contain;background:#fff;border:1px solid var(--bd);display:grid;place-items:center}
 .xt{flex:1;min-width:0}.xt b{display:block;font-size:15px;font-weight:600}.xt small{display:block;opacity:.6;font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .xadd{width:32px;height:32px;border-radius:99px;border:1px solid var(--ac);background:none;color:var(--ac);font-size:18px;cursor:pointer}.xok{width:32px;text-align:center;color:var(--ac);font-weight:700}
+.panel.hero{background:linear-gradient(135deg,#3d2b33,#5c3a48);border:none;color:#fff6ec;box-shadow:0 6px 18px #3d2b3340;padding:16px}
+.hero>b{font-size:16px}.hero .mu{color:#e9cfd6}.hero .item{border-color:#ffffff22}.hero .item b{font-size:17px;color:#fff}
+.hero .num{background:#e8658c;color:#fff}.hero .tag{background:#ffffff1f;color:#ffd6e1}
+.xtop{display:flex;justify-content:space-between;align-items:center;margin:2px 4px 8px}.xtop span{opacity:.6;font-size:13px}
 .tag{font-size:11px;color:var(--ac)}
 .mu{color:var(--mu);font-size:14px}
 .btn{padding:9px 14px;border-radius:12px;border:none;background:var(--ac);color:#fff;font-family:inherit;font-size:15px;font-weight:600;cursor:pointer}
@@ -465,7 +469,7 @@ function renderHome(){
   // today
   const d=new Date().getDay(),p=weekPar(0),evs=DATA.sch.filter(e=>e.day===d&&inWeek(e,p)).sort(byTime);
   const doneToday=h.filter(r=>new Date(r.t).toDateString()===today());
-  out.append(el("div",{class:"panel"},el("b",{text:"📅 האימון של היום · יום "+DAYS[d]}),
+  out.append(el("div",{class:"panel hero"},el("b",{text:"📅 האימון של היום · יום "+DAYS[d]}),
     evs.length?evs.map(e=>{const k=wkById(e.wid),dn=k&&doneToday.some(r=>r.wid===k.id||r.name===k.name);
       return el("div",{class:"item"},el("span",{class:"num",text:e.time||""}),el("div",{class:"n"},el("b",{text:k?k.name:"(אימון נמחק)"}),k?el("div",{class:"mu",text:(k.items||[]).length+" תרגילים"}):null),
         dn?el("span",{class:"tag",text:"✓ בוצע"}):a&&k&&a.wid===k.id?el("span",{class:"tag",text:"🔥 בתהליך"}):null)})
@@ -549,14 +553,12 @@ function renderEx(){
     el("button",{class:libMode?"":"on",text:"שלי · "+DATA.ex.length,on:{click:()=>{libMode=false;filter="הכל";render()}}}),
     el("button",{class:libMode?"on":"",text:"מאגר · "+LIB.length,on:{click:()=>{libMode=true;filter="הכל";render()}}})));
   const list=el("div");
-  const q=el("input",{type:"search",class:"xs",placeholder:libMode?"חיפוש במאגר…":"חיפוש בתרגילים שלי…",value:exQ,on:{input:()=>{exQ=q.value;fill()}}});
-  w.append(el("div",{class:"xbar"},q,!libMode&&canEdit?el("button",{class:"btn s",text:"＋ תרגיל חדש",on:{click:()=>{editEx=null;showForm=true;render()}}}):null));
   const cats=MUSCLES.filter(m=>m==="הכל"||src.some(x=>x.muscle===m));if(!cats.includes(filter))filter="הכל";
   w.append(el("div",{class:"chips one"},cats.map(m=>el("button",{class:"chip"+(m===filter?" on":""),text:m,on:{click:()=>{filter=m;render()}}}))));
   function fill(){
-    const t=exQ.trim(),items=src.filter(x=>(filter==="הכל"||x.muscle===filter)&&(!t||(x.name+" "+(x.machine||"")).includes(t)));
-    list.replaceChildren();
-    if(!items.length){list.append(el("div",{class:"empty",text:t?"לא נמצאו תרגילים ל„"+t+"”":libMode?"אין תרגילים בקטגוריה":canEdit?"עוד אין תרגילים – אפשר להוסיף מהמאגר ✨":"עוד אין תרגילים כאן"}));return}
+    const t="",items=src.filter(x=>filter==="הכל"||x.muscle===filter);
+    list.replaceChildren(el("div",{class:"xtop"},el("span",{text:items.length+" תרגילים"+(filter==="הכל"?"":" · "+filter)}),!libMode&&canEdit?el("button",{class:"btn s",text:"＋ תרגיל חדש",on:{click:()=>{editEx=null;showForm=true;render()}}}):null));
+    if(!items.length){list.append(el("div",{class:"empty",text:libMode?"אין תרגילים בקטגוריה":canEdit?"עוד אין תרגילים – אפשר להוסיף מהמאגר ✨":"עוד אין תרגילים כאן"}));return}
     MUSCLES.slice(1).concat([""]).forEach(m=>{const g=items.filter(x=>(x.muscle||"")===m);if(!g.length)return;
       list.append(el("h3",{class:"xh"},el("span",{text:m||"ללא קטגוריה"}),el("small",{text:g.length})));
       list.append(el("div",{class:"xlist"},g.map(x=>{
