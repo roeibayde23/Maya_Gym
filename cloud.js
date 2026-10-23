@@ -6,7 +6,11 @@
   Cloud=api;window.Cloud=api;
   if(!C.url||!C.key||!localMode){return}
   let sb=null,timer=null,busy=false;
-  const snap=()=>({d:DATA,h:L.get("gym:history",[]),n:L.get("gym:name","")});
+  const snap=()=>({d:DATA,h:L.get("gym:history",[]),n:L.get("gym:name",""),g:L.get("gym:goals",null)});
+  const mergeGoals=g=>{if(!g)return;const l=L.get("gym:goals",null);if(!l||(g.u||0)>(l.u||0))L.set("gym:goals",g)};
+  /* after-photos: Supabase Storage bucket "gym-photos", path <user_id>/<t>.jpg (mockup – bucket not created yet) */
+  api.photo=async(t,dataUrl)=>{try{if(!sb||!api.user)return;const b=await (await fetch(dataUrl)).blob();
+    const{error}=await sb.storage.from("gym-photos").upload(api.user.id+"/"+t+".jpg",b,{upsert:true,contentType:"image/jpeg"});if(error)throw error}catch(_){}};
   function ui(){
     const box=document.getElementById("cloudbox"),nt=document.getElementById("savenote");if(!box)return;
     box.replaceChildren();
@@ -41,13 +45,13 @@
     if(error)throw error;
     if(L.get("gym:dirty",false)){
       if(data&&data.data&&data.data.d){const c=data.data.d;["ex","wk","sch"].forEach(k=>{const ids=new Set((DATA[k]||[]).map(x=>x.id));(c[k]||[]).forEach(x=>{if(!ids.has(x.id))DATA[k].push(x)})});
-        const lh=L.get("gym:history",[]),ts=new Set(lh.map(r=>r.t));(data.data.h||[]).forEach(r=>{if(!ts.has(r.t))lh.push(r)});lh.sort((a,b)=>b.t-a.t);L.set("gym:history",lh.slice(0,200));
+        const lh=L.get("gym:history",[]),ts=new Set(lh.map(r=>r.t));(data.data.h||[]).forEach(r=>{if(!ts.has(r.t))lh.push(r)});lh.sort((a,b)=>b.t-a.t);L.set("gym:history",lh.slice(0,200));mergeGoals(data.data.g);
         saveLocal();render();updFab();}
       await doPush();return}
     if(data&&data.data&&data.data.d){
       DATA=Object.assign({ex:[],wk:[],sch:[]},data.data.d);
       if(Array.isArray(data.data.h))L.set("gym:history",data.data.h);
-      if(data.data.n)L.set("gym:name",data.data.n);
+      if(data.data.n)L.set("gym:name",data.data.n);mergeGoals(data.data.g);
       saveLocal();render();updFab();
     }else await doPush();
   }
