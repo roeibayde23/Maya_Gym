@@ -80,6 +80,7 @@ input,select,textarea{width:100%;padding:9px;border:1px solid var(--bd);border-r
 @keyframes pl{0%{box-shadow:0 0 0 0 #e8658c88}70%{box-shadow:0 0 0 20px #e8658c00}100%{box-shadow:0 0 0 0 #e8658c00}}
 @media(prefers-reduced-motion:reduce){#go{animation:none}}
 :focus-visible{outline:2px solid var(--ac);outline-offset:2px}
+.hcal{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin:10px 0;text-align:center}.hcd{font-size:12px;color:var(--mu)}.hc{font-size:14px;padding:6px 0;border-radius:99px}.hc.on{background:var(--ac);color:#fff;font-weight:700}.hc.td{outline:2px solid var(--ac)}.hch{width:100%;height:auto;margin:6px 0}
 </style>
 </head>
 <body>
@@ -136,7 +137,7 @@ function setStatus(msg,retry){
   t.append(msg);if(retry)t.append(el("button",{text:"נסה שוב לשמור",on:{click:commit}}));t.style.display="block";
 }
 async function commit(){
-  if(localMode){saveLocal();if(Cloud.user){Cloud.push()}else toast("נשמר בטלפון הזה ✓");return}
+  if(localMode){saveLocal();Cloud.push();if(!Cloud.user)toast("נשמר בטלפון הזה ✓");return}
   L.set("gym:backup",DATA);
   if(!art){setStatus("השינויים נשמרו רק בטלפון הזה – אין הרשאת שמירה לאתר. האם אתה מחובר ל-Claude כבעלים של האתר?");return}
   toast("שומר…");
@@ -217,19 +218,62 @@ function addHistory(k,st){
   if(!done)return;
   const h=L.get("gym:history",[]);h.unshift({t:Date.now(),name:k.name,done,total,ex});L.set("gym:history",h.slice(0,200));Cloud.push();
 }
-function showHistory(){
+let histM=null,histEx=null;
+function histData(){
   const h=L.get("gym:history",[]);
+  const asc=h.map((r,i)=>({...r,idx:i})).sort((a,b)=>a.t-b.t);
+  const best={},prs={},series={};
+  asc.forEach(r=>(r.ex||[]).forEach(x=>{const w=parseFloat(String(x.w).replace(",","."));if(!(w>0)||!x.d)return;
+    (series[x.n]=series[x.n]||[]).push({t:r.t,w});
+    if(best[x.n]!=null&&w>best[x.n])(prs[r.t]=prs[r.t]||[]).push(x.n);
+    if(best[x.n]==null||w>best[x.n])best[x.n]=w;}));
+  return{h,best,prs,series};
+}
+function histCal(h){
+  const now=new Date();if(!histM)histM=new Date(now.getFullYear(),now.getMonth(),1);
+  const y=histM.getFullYear(),m=histM.getMonth(),days=new Date(y,m+1,0).getDate(),first=new Date(y,m,1).getDay();
+  const on={};h.forEach(r=>{const d=new Date(r.t);if(d.getFullYear()==y&&d.getMonth()==m)on[d.getDate()]=(on[d.getDate()]||0)+1});
+  const cnt=Object.keys(on).length;
+  const g=el("div",{class:"hcal"});["א","ב","ג","ד","ה","ו","ש"].forEach(n=>g.appendChild(el("div",{class:"hcd",text:n})));
+  for(let i=0;i<first;i++)g.appendChild(el("div"));
+  for(let d=1;d<=days;d++){const t=now.getFullYear()==y&&now.getMonth()==m&&now.getDate()==d;
+    g.appendChild(el("div",{class:"hc"+(on[d]?" on":"")+(t?" td":""),text:String(d)}));}
+  const nav=k=>{histM=new Date(y,m+k,1);showHistory()};
+  return el("div",{class:"panel"},
+    el("div",{class:"row",style:"justify-content:space-between"},el("button",{class:"btn g s",text:"›",on:{click:()=>nav(-1)}}),
+      el("b",{text:histM.toLocaleDateString("he-IL",{month:"long",year:"numeric"})}),el("button",{class:"btn g s",text:"‹",on:{click:()=>nav(1)}})),
+    g,el("div",{class:"mu",style:"text-align:center",text:cnt?("התאמנת "+cnt+" ימים החודש 💪"):"עוד אין אימונים בחודש הזה"}));
+}
+function histChart(series,best){
+  const names=Object.keys(series);if(!names.length)return el("div",{class:"panel"},el("b",{text:"📈 התקדמות במשקל"}),el("div",{class:"mu",text:"כשתרשמי משקל בתרגילים, הגרף יופיע כאן."}));
+  if(!histEx||!series[histEx])histEx=names.sort((a,b)=>series[b].length-series[a].length)[0];
+  const pts=series[histEx],W=320,H=140,p=24;
+  const ws=pts.map(q=>q.w),mn=Math.min(...ws),mx=Math.max(...ws),rg=mx-mn||1;
+  const X=i=>pts.length<2?W/2:p+i*(W-2*p)/(pts.length-1),Y=w=>H-p-(w-mn)/rg*(H-2*p);
+  const ns="http://www.w3.org/2000/svg",svg=document.createElementNS(ns,"svg");svg.setAttribute("viewBox","0 0 "+W+" "+H);svg.setAttribute("class","hch");
+  const pl=document.createElementNS(ns,"polyline");pl.setAttribute("points",pts.map((q,i)=>X(i)+","+Y(q.w)).join(" "));pl.setAttribute("fill","none");pl.setAttribute("stroke","#e8658c");pl.setAttribute("stroke-width","3");pl.setAttribute("stroke-linejoin","round");svg.appendChild(pl);
+  pts.forEach((q,i)=>{const c=document.createElementNS(ns,"circle");c.setAttribute("cx",X(i));c.setAttribute("cy",Y(q.w));c.setAttribute("r",q.w==mx?6:4);c.setAttribute("fill",q.w==mx?"#f4a261":"#e8658c");svg.appendChild(c);
+    if(i==0||i==pts.length-1||q.w==mx){const tx=document.createElementNS(ns,"text");tx.setAttribute("x",X(i));tx.setAttribute("y",Y(q.w)-10);tx.setAttribute("text-anchor","middle");tx.setAttribute("font-size","12");tx.setAttribute("fill","#3d2b33");tx.textContent=q.w;svg.appendChild(tx);}});
+  const first=pts[0].w,last=pts[pts.length-1].w,diff=Math.round((last-first)*10)/10;
+  return el("div",{class:"panel"},el("b",{text:"📈 התקדמות במשקל"}),
+    el("div",{class:"chips",style:"margin-top:6px"},names.map(n=>el("button",{class:"chip"+(n==histEx?" on":""),text:n,on:{click:()=>{histEx=n;showHistory()}}}))),
+    svg,el("div",{class:"row",style:"justify-content:space-between"},el("span",{class:"num",text:"🏆 שיא: "+best[histEx]+" ק״ג"}),
+      el("span",{class:"mu",text:pts.length<2?"אימון אחד עד עכשיו":(diff>0?"+"+diff+" ק״ג מההתחלה 🔥":diff<0?diff+" ק״ג מההתחלה":"אותו משקל כמו בהתחלה")})));
+}
+function showHistory(){
+  const {h,best,prs,series}=histData();
   const parts=[el("div",{class:"wk"},el("b",{text:"📜 היסטוריית אימונים"}),closeBtn(()=>ov())),el("div",{class:"mu",text:Cloud.user?"נשמרת בענן ☁️":"נשמרת בטלפון הזה בלבד"})];
-  if(!h.length)parts.push(el("div",{class:"empty",text:"עוד אין אימונים שהסתיימו. אחרי \"סיים אימון\" הם יופיעו כאן."}));
+  if(!h.length){parts.push(el("div",{class:"empty",text:"עוד אין אימונים שהסתיימו. אחרי \"סיים אימון\" הם יופיעו כאן."}));ov(...parts);return}
+  parts.push(histCal(h),histChart(series,best),el("b",{class:"h2",style:"display:block",text:"🗓️ כל האימונים"}));
   h.forEach((r,idx)=>{
-    const d=new Date(r.t);
+    const d=new Date(r.t),pr=prs[r.t]||[];
     parts.push(el("div",{class:"item",style:"align-items:flex-start"},el("div",{class:"n"},
-      el("b",{text:r.name}),
+      el("b",{text:r.name+(pr.length?" 🏆":"")}),
       el("div",{class:"mu",text:d.toLocaleDateString("he-IL",{weekday:"long",day:"numeric",month:"numeric"})+" · "+d.toLocaleTimeString("he-IL",{hour:"2-digit",minute:"2-digit"})+" · "+r.done+"/"+r.total+" סטים"}),
-      (r.ex||[]).map(x=>el("div",{class:"mu",text:"• "+x.n+" – "+x.d+"/"+x.t+" סטים"+(x.w?" · "+x.w+" ק״ג":"")}))),
+      (r.ex||[]).map(x=>el("div",{class:"mu",text:"• "+x.n+" – "+x.d+"/"+x.t+" סטים"+(x.w?" · "+x.w+" ק״ג":"")+(pr.includes(x.n)?"  🏆 שיא חדש!":"")}))),
       el("button",{class:"btn g s",text:"🗑️ מחק",on:{click:()=>{if(confirm("למחוק מההיסטוריה?")){const a=L.get("gym:history",[]);a.splice(idx,1);L.set("gym:history",a);Cloud.push();showHistory()}}}})));
   });
-  if(h.length)parts.push(el("button",{class:"btn g",style:"margin-top:14px;width:100%",text:"🗑️ מחק את כל ההיסטוריה",on:{click:()=>{if(confirm("למחוק את כל ההיסטוריה?")){L.set("gym:history",[]);Cloud.push();showHistory()}}}}));
+  parts.push(el("button",{class:"btn g",style:"margin-top:14px;width:100%",text:"🗑️ מחק את כל ההיסטוריה",on:{click:()=>{if(confirm("למחוק את כל ההיסטוריה?")){L.set("gym:history",[]);Cloud.push();showHistory()}}}}));
   ov(...parts);
 }
 
