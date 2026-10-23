@@ -81,11 +81,13 @@ input,select,textarea{width:100%;padding:9px;border:1px solid var(--bd);border-r
 @media(prefers-reduced-motion:reduce){#go{animation:none}}
 :focus-visible{outline:2px solid var(--ac);outline-offset:2px}
 .hcal{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin:10px 0;text-align:center}.hcd{font-size:12px;color:var(--mu)}.hc{font-size:14px;padding:6px 0;border-radius:99px}.hc.on{background:var(--ac);color:#fff;font-weight:700}.hc.td{outline:2px solid var(--ac)}.hch{width:100%;height:auto;margin:6px 0}
+.greet{font-size:18px;font-weight:600;margin:-4px 2px 12px;color:var(--tx)}.greet .mu{font-weight:400;font-size:14px}.greet input{width:auto;margin:0 6px;padding:4px 10px;font-size:15px}
 </style>
 </head>
 <body>
 <main>
 <header><h1 class="logo" dir="ltr"><span class="lm">Maya</span><span class="lg">GYM</span><span class="ld">♥</span></h1><div class="hr"><button class="gear" id="gear" aria-label="הגדרות" title="הגדרות">⚙︎</button></div></header>
+<div id="greet" class="greet"></div>
 <nav class="tabs" aria-label="ניווט ראשי"><button data-t="0">לוז שבועי</button><button data-t="1">אימונים</button><button data-t="2">תרגילים</button></nav>
 <div id="view"></div>
 <div class="gow"><button class="btn" id="go" aria-label="התחל אימון"><svg width="44" height="28" viewBox="0 0 26 16" fill="currentColor" aria-hidden="true"><rect x="0" y="4" width="3" height="8" rx="1"/><rect x="3" y="1" width="4" height="14" rx="1.5"/><rect x="7" y="6.5" width="12" height="3"/><rect x="19" y="1" width="4" height="14" rx="1.5"/><rect x="23" y="4" width="3" height="8" rx="1"/></svg><span>התחל אימון</span></button></div>
@@ -153,9 +155,16 @@ function ov2(...n){const o=$("#ov2");if(!n.length){o.replaceChildren();return}co
 const closeBtn=f=>el("button",{class:"btn g s",text:"✕","aria-label":"סגור",on:{click:f}});
 function itemsList(k){return el("div",{},(k.items||[]).map((it,i)=>{const ex=exById(it.ex);
   return el("div",{class:"item"},thumb(ex,"th"),el("div",{class:"n"},el("b",{text:(i+1)+". "+(ex?ex.name:"(תרגיל נמחק)")}),it.note?el("div",{class:"mu",text:it.note}):null),el("span",{class:"num",text:(it.sets||"-")+" × "+(it.reps||"-")}))}))}
+function greet(){
+  const g=$("#greet");if(!g)return;const n=L.get("gym:name","");const h=new Date().getHours();
+  const w=h>=5&&h<12?"בוקר טוב":h<17?"צהריים טובים":h<21?"ערב טוב":"לילה טוב";
+  if(n){g.replaceChildren(el("span",{text:w+", "+n+" 💪"}),el("div",{class:"mu",text:"מוכנים לאימון של היום?"}));g.onclick=null;return}
+  const i=el("input",{placeholder:"השם שלך",maxlength:"20"}),b=el("button",{class:"btn s",text:"שמור",on:{click:()=>{const v=i.value.trim();if(!v)return;L.set("gym:name",v);Cloud.push();greet()}}});
+  g.replaceChildren(el("span",{text:w+"! איך לקרוא לך?"}),el("div",{class:"row",style:"margin-top:6px"},i,b));
+}
 function render(){
   document.querySelectorAll(".tabs button").forEach(b=>{b.className=+b.dataset.t===tab?"on":"";b.setAttribute("aria-current",+b.dataset.t===tab?"page":"false")});
-  $("#view").replaceChildren([renderWeek,renderWk,renderEx][tab]());
+  $("#view").replaceChildren([renderWeek,renderWk,renderEx][tab]());greet();const gw=document.querySelector(".gow");if(gw)gw.style.display=tab===1?"":"none";
 }
 
 /* ---------- active workout ---------- */

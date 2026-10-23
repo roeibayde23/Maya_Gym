@@ -6,7 +6,7 @@
   Cloud=api;window.Cloud=api;
   if(!C.url||!C.key||!localMode){return}
   let sb=null,timer=null,busy=false;
-  const snap=()=>({d:DATA,h:L.get("gym:history",[])});
+  const snap=()=>({d:DATA,h:L.get("gym:history",[]),n:L.get("gym:name","")});
   function ui(){
     const box=document.getElementById("cloudbox"),nt=document.getElementById("savenote");if(!box)return;
     box.replaceChildren();
@@ -47,6 +47,7 @@
     if(data&&data.data&&data.data.d){
       DATA=Object.assign({ex:[],wk:[],sch:[]},data.data.d);
       if(Array.isArray(data.data.h))L.set("gym:history",data.data.h);
+      if(data.data.n)L.set("gym:name",data.data.n);
       saveLocal();render();updFab();
     }else await doPush();
   }
