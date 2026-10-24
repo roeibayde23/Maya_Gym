@@ -64,7 +64,7 @@ body.hasfab #view{padding-bottom:84px}
 .pop .must{font-weight:700;color:var(--ac);font-size:17px;margin:16px 0 10px}.pop .btn.big{width:100%;padding:14px;font-size:18px;border-radius:14px}
 .pop .lnk{background:none;border:none;font:inherit;color:var(--mu);text-decoration:underline;margin-top:10px;padding:6px;cursor:pointer}.pop .aft{max-height:220px;margin:12px 0 8px}
 @keyframes pu{from{transform:scale(.85);opacity:0}}@keyframes fi{from{opacity:0}}
-.dh{margin:14px 0 4px;font-size:15px;font-weight:700;text-align:start;display:block;width:100%}.dp{margin:0 0 6px;white-space:pre-wrap}.mynote{width:100%;font:inherit}
+.xdh{margin:14px 0 4px;font-size:15px;font-weight:700;text-align:start;display:block;width:100%}.dp{margin:0 0 6px;white-space:pre-wrap}.mynote{width:100%;font:inherit}
 .myn{margin-top:3px;font-size:13px;background:#fff4d6;color:#7a5200;border-radius:8px;padding:3px 8px;display:inline-block}.myn[hidden]{display:none}
 .tag{background:#ffffff1f;color:#ffd6e1}
 .xtop{display:flex;justify-content:space-between;align-items:center;margin:2px 4px 8px}.xtop span{opacity:.6;font-size:13px}
@@ -282,7 +282,7 @@ function showExercise(ex,it){
     ex.img?el("img",{class:"big",src:ex.img,alt:ex.name}):null,
     el("span",{class:"tag",text:ex.muscle||""}),
     it?el("div",{class:"mu",text:"יעד: "+(it.sets||"-")+" סטים × "+(it.reps||"-")+" חזרות"}):null,
-    el("h4",{class:"dh",text:"📖 הסבר"}),
+    el("div",{class:"xdh",text:"📖 הסבר"}),
     el("p",{class:"dp",text:exDesc(ex,it)||"אין הסבר לתרגיל הזה עדיין."}),
     it&&it.note&&it.note.trim()!==exDesc(ex,it)?el("div",{class:"mu",text:"הערה באימון הזה: "+it.note}):null,
     noteBox(ex));
@@ -296,7 +296,7 @@ function noteBox(ex){
   ta.addEventListener("input",()=>{st.textContent="שומר…";clearTimeout(t);t=setTimeout(()=>{const v=ta.value.trim();
     const e=exById(ex.id);if(!e)return;if(v)e.my=v;else delete e.my;ex.my=e.my;commit();st.textContent="נשמר ✓";
     document.querySelectorAll('[data-my="'+ex.id+'"]').forEach(d=>{d.textContent=v?"📝 "+v:"";d.hidden=!v})},600)});
-  return el("div",{class:"mnw"},el("h4",{class:"dh",text:"📝 ההערות שלי"}),el("div",{class:"mu",style:"margin-bottom:4px",text:"אפשר לערוך מתי שרוצים, גם באמצע אימון. נשמר אוטומטית."}),ta,st)}
+  return el("div",{class:"mnw"},el("div",{class:"xdh",text:"📝 ההערות שלי"}),el("div",{class:"mu",style:"margin-bottom:4px",text:"אפשר לערוך מתי שרוצים, גם באמצע אימון. נשמר אוטומטית."}),ta,st)}
 function openSession(id){
   const k=wkById(id);if(!k)return;
   const key=keyFor(id);let st=L.get(key,{d:{},w:{}});st.d=st.d||{};st.w=st.w||{};
