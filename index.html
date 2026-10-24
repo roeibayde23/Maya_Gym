@@ -64,6 +64,8 @@ body.hasfab #view{padding-bottom:84px}
 .pop .must{font-weight:700;color:var(--ac);font-size:17px;margin:16px 0 10px}.pop .btn.big{width:100%;padding:14px;font-size:18px;border-radius:14px}
 .pop .lnk{background:none;border:none;font:inherit;color:var(--mu);text-decoration:underline;margin-top:10px;padding:6px;cursor:pointer}.pop .aft{max-height:220px;margin:12px 0 8px}
 @keyframes pu{from{transform:scale(.85);opacity:0}}@keyframes fi{from{opacity:0}}
+.dh{margin:14px 0 4px;font-size:15px;font-weight:700;text-align:start;display:block;width:100%}.dp{margin:0 0 6px;white-space:pre-wrap}.mynote{width:100%;font:inherit}
+.myn{margin-top:3px;font-size:13px;background:#fff4d6;color:#7a5200;border-radius:8px;padding:3px 8px;display:inline-block}.myn[hidden]{display:none}
 .tag{background:#ffffff1f;color:#ffd6e1}
 .xtop{display:flex;justify-content:space-between;align-items:center;margin:2px 4px 8px}.xtop span{opacity:.6;font-size:13px}
 .tag{font-size:11px;color:var(--ac)}
@@ -257,7 +259,7 @@ function greet(){
   const i=el("input",{placeholder:"השם שלך",maxlength:"20"}),b=el("button",{class:"btn s",text:"שמור",on:{click:()=>{const v=i.value.trim();if(!v)return;L.set("gym:name",v);Cloud.push();greet()}}});
   g.replaceChildren(el("span",{text:w+"! איך לקרוא לך?"}),el("div",{class:"row",style:"margin-top:6px"},i,b));
 }
-function render(){
+function render(){normEx();
   if(migrate()&&localMode)setTimeout(commit,0);
   document.querySelectorAll(".tabs button").forEach(b=>{b.className=+b.dataset.t===tab?"on":"";b.setAttribute("aria-current",+b.dataset.t===tab?"page":"false")});
   $("#view").replaceChildren([renderHome,renderWeek,renderWk,renderEx][tab]());greet();updFab();const gw=document.querySelector(".gow");if(gw)gw.style.display=tab===2?"":"none";
@@ -280,9 +282,21 @@ function showExercise(ex,it){
     ex.img?el("img",{class:"big",src:ex.img,alt:ex.name}):null,
     el("span",{class:"tag",text:ex.muscle||""}),
     it?el("div",{class:"mu",text:"יעד: "+(it.sets||"-")+" סטים × "+(it.reps||"-")+" חזרות"}):null,
-    el("p",{text:ex.desc||"אין הסבר לתרגיל הזה עדיין."}),
-    it&&it.note?el("div",{class:"mu",text:"הערה: "+it.note}):null);
+    el("h4",{class:"dh",text:"📖 הסבר"}),
+    el("p",{class:"dp",text:exDesc(ex,it)||"אין הסבר לתרגיל הזה עדיין."}),
+    it&&it.note&&it.note.trim()!==exDesc(ex,it)?el("div",{class:"mu",text:"הערה באימון הזה: "+it.note}):null,
+    noteBox(ex));
 }
+/* explanation: the exercise's own desc; older data may only have it in ex.note or in a workout item note */
+function exDesc(ex,it){return ((ex&&(ex.desc||ex.note))||(it&&it.note)||"").trim()}
+function normEx(){DATA.ex.forEach(e=>{if(!(e.desc||"").trim()){const n=(e.note||"").trim()||((DATA.wk.flatMap(k=>k.items||[]).find(it=>it.ex===e.id&&(it.note||"").trim())||{}).note||"").trim();if(n)e.desc=n}})}
+function noteBox(ex){
+  const ta=el("textarea",{class:"mynote",rows:2,placeholder:"למשל: בפעם הקודמת הצלחתי 25 – לא לרדת ל־20!"});ta.value=ex.my||"";
+  const st=el("small",{class:"mu"});let t;
+  ta.addEventListener("input",()=>{st.textContent="שומר…";clearTimeout(t);t=setTimeout(()=>{const v=ta.value.trim();
+    const e=exById(ex.id);if(!e)return;if(v)e.my=v;else delete e.my;ex.my=e.my;commit();st.textContent="נשמר ✓";
+    document.querySelectorAll('[data-my="'+ex.id+'"]').forEach(d=>{d.textContent=v?"📝 "+v:"";d.hidden=!v})},600)});
+  return el("div",{class:"mnw"},el("h4",{class:"dh",text:"📝 ההערות שלי"}),el("div",{class:"mu",style:"margin-bottom:4px",text:"אפשר לערוך מתי שרוצים, גם באמצע אימון. נשמר אוטומטית."}),ta,st)}
 function openSession(id){
   const k=wkById(id);if(!k)return;
   const key=keyFor(id);let st=L.get(key,{d:{},w:{}});st.d=st.d||{};st.w=st.w||{};
@@ -297,7 +311,7 @@ function openSession(id){
     const lw=L.get("gym:lw:"+it.ex,"");
     const wi=el("input",{inputmode:"decimal",placeholder:lw?"קודם: "+lw:"ק״ג",value:st.w[i]||""});
     wi.addEventListener("input",()=>{st.w[i]=wi.value;if(wi.value)L.set("gym:lw:"+it.ex,wi.value);save()});
-    const card=el("div",{class:"item",style:"flex-wrap:wrap"},th,el("div",{class:"n"},nm,it.note?el("div",{class:"mu",text:it.note}):null),
+    const card=el("div",{class:"item",style:"flex-wrap:wrap"},th,el("div",{class:"n"},nm,it.note?el("div",{class:"mu",text:it.note}):null,el("div",Object.assign({class:"myn","data-my":it.ex,text:ex&&ex.my?"📝 "+ex.my:""},ex&&ex.my?{}:{hidden:""}))),
       el("div",{class:"wt"},"משקל (ק״ג):",wi),row);
     const mark=()=>card.classList.toggle("fin",Array.from({length:n},(_,j)=>st.d[i+"_"+j]).every(Boolean));
     for(let j=0;j<n;j++){
@@ -647,7 +661,7 @@ function exForm(ex){
     btn.disabled=true;msg.textContent="שומר…";
     try{
       const img=photo?await compress(photo):(ex&&!removed?ex.img:null);
-      const o={id:ex?ex.id:"e"+Date.now(),name:name.value.trim(),muscle:mu.value,desc:desc.value.trim(),img,t:ex?ex.t:Date.now()};
+      const o={id:ex?ex.id:"e"+Date.now(),name:name.value.trim(),muscle:mu.value,desc:desc.value.trim(),img,t:ex?ex.t:Date.now()};if(ex&&ex.my)o.my=ex.my;if(ex&&ex.lib)o.lib=ex.lib;
       if(ex)DATA.ex=DATA.ex.map(x=>x.id===ex.id?o:x);else DATA.ex.push(o);
       showForm=false;editEx=null;render();commit();
     }catch(err){msg.textContent="שגיאה בשמירה";btn.disabled=false}
