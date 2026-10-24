@@ -54,7 +54,11 @@ body.hasfab #view{padding-bottom:84px}
 .xadd{width:32px;height:32px;border-radius:99px;border:1px solid var(--ac);background:none;color:var(--ac);font-size:18px;cursor:pointer}.xok{width:32px;text-align:center;color:var(--ac);font-weight:700}
 .panel.hero{background:linear-gradient(135deg,#3d2b33,#5c3a48);border:none;color:#fff6ec;box-shadow:0 6px 18px #3d2b3340;padding:16px}
 .hero>b{font-size:16px}.hero .mu{color:#e9cfd6}.hero .item{border-color:#ffffff22}.hero .item b{font-size:17px;color:#fff}
-.hero .num{background:#e8658c;color:#fff}.hero .tag{background:#ffffff1f;color:#ffd6e1}
+.hero .num{background:#e8658c;color:#fff}.hero .hero .item.tap{cursor:pointer}.hero .chev{color:#fff;opacity:.6;margin-inline-start:4px}
+.bubs{display:flex;justify-content:center;gap:22px;margin:6px 0 14px}.bub{background:none;border:none;font:inherit;color:inherit;display:flex;flex-direction:column;align-items:center;gap:6px;cursor:pointer;width:72px}
+.bc{position:relative;width:60px;height:60px;border-radius:50%;background:var(--card);border:1px solid var(--bd);box-shadow:0 2px 8px #3d2b3314;display:grid;place-items:center;font-size:24px;color:var(--ac)}
+.bring{position:absolute;inset:-1px;width:62px;height:62px}.bub small{font-size:12px;color:var(--mu);white-space:nowrap}
+.tag{background:#ffffff1f;color:#ffd6e1}
 .xtop{display:flex;justify-content:space-between;align-items:center;margin:2px 4px 8px}.xtop span{opacity:.6;font-size:13px}
 .tag{font-size:11px;color:var(--ac)}
 .mu{color:var(--mu);font-size:14px}
@@ -471,28 +475,42 @@ function renderHome(){
   const doneToday=h.filter(r=>new Date(r.t).toDateString()===today());
   out.append(el("div",{class:"panel hero"},el("b",{text:"📅 האימון של היום · יום "+DAYS[d]}),
     evs.length?evs.map(e=>{const k=wkById(e.wid),dn=k&&doneToday.some(r=>r.wid===k.id||r.name===k.name);
-      return el("div",{class:"item"},el("span",{class:"num",text:e.time||""}),el("div",{class:"n"},el("b",{text:k?k.name:"(אימון נמחק)"}),k?el("div",{class:"mu",text:(k.items||[]).length+" תרגילים"}):null),
-        dn?el("span",{class:"tag",text:"✓ בוצע"}):a&&k&&a.wid===k.id?el("span",{class:"tag",text:"🔥 בתהליך"}):null)})
-    :el("div",{class:"mu",style:"margin-top:6px",text:"אין אימון בלוז להיום – יום מנוחה 😌"})));
-  // goals
-  const ws=weekStart(),wc=h.filter(r=>r.t>=ws).length;
-  let dayEl=null;
-  if(g.dayOn){let v=0;const tr=doneToday;
-    if(g.dayType==="min")v=tr.reduce((s,r)=>s+(r.dur||0),0)+(a&&a.st?Math.round((Date.now()-a.st)/60000):0);
-    else if(g.dayType==="sets")v=tr.reduce((s,r)=>s+r.done,0)+(a?+prog(a.wid).split("/")[0]:0);
-    else v=tr.reduce((s,r)=>s+(r.ex||[]).filter(x=>x.d).length,0);
-    dayEl=ring(Math.min(v,999),g.day,"יעד יומי · "+({min:"דקות",sets:"סטים",ex:"תרגילים"})[g.dayType])}
-  out.append(el("div",{class:"panel"},el("div",{class:"wk"},el("b",{text:"🎯 יעדים"}),el("button",{class:"btn g s",text:"✏️ ערוך",on:{click:editGoals}})),
-    el("div",{class:"rings"},ring(wc,g.week,"אימונים השבוע"),dayEl||el("button",{class:"rw add",text:"+ יעד יומי",on:{click:editGoals}})),
-    el("div",{class:"mu",style:"text-align:center",text:wc>=g.week?"עמדת ביעד השבועי! 🏆":"עוד "+(g.week-wc)+" אימונים ליעד השבועי"})));
-  // last
-  const r=h[0];
-  out.append(el("div",{class:"panel"},el("div",{class:"wk"},el("b",{text:"🕘 האימון האחרון"}),r?el("button",{class:"btn g s",text:"היסטוריה",on:{click:showHistory}}):null),
-    r?[el("b",{text:r.name}),el("div",{class:"mu",text:fmtDate(r.t)}),el("div",{class:"num",style:"margin:4px 0",text:sumLine(r)}),
-       el("div",{class:"mu",text:(r.ex||[]).map(x=>x.n).join(" · ")}),photoOf(r)?el("img",{class:"aft",src:photoOf(r),alt:"תמונת אחרי"}):null]
-     :el("div",{class:"mu",text:"עוד לא סיימת אימון – בהצלחה באימון הראשון! 💪"})));
+      return el("div",{class:"item"+(k?" tap":""),on:k?{click:()=>showToday(k)}:{}},el("span",{class:"num",text:e.time||""}),el("div",{class:"n"},el("b",{text:k?k.name:"(אימון נמחק)"}),k?el("div",{class:"mu",text:(k.items||[]).length+" תרגילים"}):null),
+        dn?el("span",{class:"tag",text:"✓ בוצע"}):a&&k&&a.wid===k.id?el("span",{class:"tag",text:"🔥 בתהליך"}):k?el("span",{class:"chev",text:"‹"}):null)})
+    :el("div",{class:"mu",style:"margin-top:6px",text:"אין אימון בלוז להיום – יום מנוחה, תהני 😌"})));
+  // bubbles
+  const ws=weekStart(),wc=h.filter(r=>r.t>=ws).length,r=h[0];
+  out.append(el("div",{class:"bubs"},
+    bub("🎯","יעדים",g.week?Math.min(1,wc/g.week):0,showGoals),
+    bub("🕙","אימון אחרון",null,showLast),
+    canEdit?bub("＋","תרגיל חדש",null,()=>{editEx=null;showForm=true;render()}):null));
+  if(showForm)out.append(exForm(editEx));
   return out;
 }
+function bub(ic,lbl,pct,fn){const b=el("button",{class:"bub",type:"button","aria-label":lbl,on:{click:fn}});
+  const c=el("span",{class:"bc",text:ic});
+  if(pct!=null){const ns="http://www.w3.org/2000/svg",sv=document.createElementNS(ns,"svg");sv.setAttribute("viewBox","0 0 60 60");sv.setAttribute("class","bring");
+    const C=2*Math.PI*27;sv.innerHTML='<circle cx="30" cy="30" r="27" fill="none" stroke="#fde6ec" stroke-width="4"/><circle cx="30" cy="30" r="27" fill="none" stroke="'+(pct>=1?"#f4a261":"#e8658c")+'" stroke-width="4" stroke-linecap="round" stroke-dasharray="'+C*pct+' '+C+'" transform="rotate(-90 30 30)"/>';c.append(sv)}
+  b.append(c,el("small",{text:lbl}));return b}
+function goalVals(){const g=goals(),h=L.get("gym:history",[]),a=active(),tr=h.filter(r=>new Date(r.t).toDateString()===today());let v=0;
+  if(g.dayType==="min")v=tr.reduce((s,r)=>s+(r.dur||0),0)+(a&&a.st?Math.round((Date.now()-a.st)/60000):0);
+  else if(g.dayType==="sets")v=tr.reduce((s,r)=>s+r.done,0)+(a?+prog(a.wid).split("/")[0]:0);
+  else v=tr.reduce((s,r)=>s+(r.ex||[]).filter(x=>x.d).length,0);
+  return{g,wc:h.filter(r=>r.t>=weekStart()).length,dv:Math.min(v,999)}}
+function showGoals(){const{g,wc,dv}=goalVals();
+  ov(el("div",{class:"wk"},el("b",{text:"🎯 היעדים שלי"}),closeBtn(()=>ov())),
+    el("div",{class:"rings"},ring(wc,g.week,"אימונים השבוע"),g.dayOn?ring(dv,g.day,"יעד יומי · "+({min:"דקות",sets:"סטים",ex:"תרגילים"})[g.dayType]):el("button",{class:"rw add",text:"+ יעד יומי",on:{click:editGoals}})),
+    el("div",{class:"mu",style:"text-align:center;margin:6px 0 12px",text:wc>=g.week?"עמדת ביעד השבועי! 🏆":"עוד "+(g.week-wc)+" אימונים ליעד השבועי"}),
+    el("button",{class:"btn",style:"width:100%",text:"✏️ עריכת יעדים",on:{click:editGoals}}))}
+function showLast(){const r=L.get("gym:history",[])[0];
+  ov(el("div",{class:"wk"},el("b",{text:"🕙 האימון האחרון"}),closeBtn(()=>ov())),
+    r?el("div",{style:"margin-top:8px"},el("b",{style:"font-size:17px",text:r.name}),el("div",{class:"mu",text:fmtDate(r.t)}),el("div",{class:"num",style:"margin:6px 0",text:sumLine(r)}),
+      el("div",{class:"mu",text:(r.ex||[]).map(x=>x.n).join(" · ")}),photoBlock(r,()=>showLast()),
+      el("button",{class:"btn g",style:"width:100%;margin-top:10px",text:"📜 כל ההיסטוריה",on:{click:showHistory}}))
+     :el("div",{class:"mu",style:"margin-top:10px",text:"עוד לא סיימת אימון – בהצלחה באימון הראשון! 💪"}))}
+function showToday(k){
+  ov(el("div",{class:"wk"},el("b",{text:k.name}),closeBtn(()=>ov())),el("div",{class:"mu",text:(k.items||[]).length+" תרגילים"}),
+    itemsList(k),el("button",{class:"btn",style:"width:100%;margin-top:12px",text:active()&&active().wid===k.id?"▶ המשך אימון":"▶ תחילת אימון",on:{click:()=>{ov();active()&&active().wid===k.id?openSession(k.id):startWorkout(k.id)}}}))}
 /* ---------- workouts ---------- */
 function renderWk(){
   const w=el("div");
