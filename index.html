@@ -52,12 +52,18 @@ body.hasfab #view{padding-bottom:84px}
 .xrow img,.xph{width:52px;height:52px;flex:none;border-radius:10px;object-fit:contain;background:#fff;border:1px solid var(--bd);display:grid;place-items:center}
 .xt{flex:1;min-width:0}.xt b{display:block;font-size:15px;font-weight:600}.xt small{display:block;opacity:.6;font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .xadd{width:32px;height:32px;border-radius:99px;border:1px solid var(--ac);background:none;color:var(--ac);font-size:18px;cursor:pointer}.xok{width:32px;text-align:center;color:var(--ac);font-weight:700}
-.panel.hero{background:linear-gradient(135deg,#3d2b33,#5c3a48);border:none;color:#fff6ec;box-shadow:0 6px 18px #3d2b3340;padding:16px}
+.panel.hero{background:linear-gradient(135deg,#3d2b33,#5c3a48);border:none;color:#fff6ec;box-shadow:0 6px 18px #3d2b3340;padding:20px 16px;margin-top:8px}
 .hero>b{font-size:16px}.hero .mu{color:#e9cfd6}.hero .item{border-color:#ffffff22}.hero .item b{font-size:17px;color:#fff}
 .hero .num{background:#e8658c;color:#fff}.hero .hero .item.tap{cursor:pointer}.hero .chev{color:#fff;opacity:.6;margin-inline-start:4px}
-.bubs{display:flex;justify-content:center;gap:22px;margin:6px 0 14px}.bub{background:none;border:none;font:inherit;color:inherit;display:flex;flex-direction:column;align-items:center;gap:6px;cursor:pointer;width:72px}
-.bc{position:relative;width:60px;height:60px;border-radius:50%;background:var(--card);border:1px solid var(--bd);box-shadow:0 2px 8px #3d2b3314;display:grid;place-items:center;font-size:24px;color:var(--ac)}
-.bring{position:absolute;inset:-1px;width:62px;height:62px}.bub small{font-size:12px;color:var(--mu);white-space:nowrap}
+.bubs{display:flex;justify-content:center;gap:26px;margin:clamp(40px,14vh,130px) 0 24px}.bub{background:none;border:none;font:inherit;color:inherit;display:flex;flex-direction:column;align-items:center;gap:6px;cursor:pointer;width:72px}
+.bc{position:relative;width:66px;height:66px;border-radius:50%;background:var(--card);border:1px solid var(--bd);box-shadow:0 2px 8px #3d2b3314;display:grid;place-items:center;font-size:24px;color:var(--ac)}
+.bring{position:absolute;inset:-1px;width:68px;height:68px}.bub small{font-size:12px;color:var(--mu);white-space:nowrap}
+.popbg{position:fixed;inset:0;background:#3d2b3399;display:flex;align-items:center;justify-content:center;z-index:9;padding:24px;animation:fi .2s}
+.pop{background:var(--card);border-radius:22px;padding:22px 20px 14px;width:100%;max-width:320px;text-align:center;box-shadow:0 12px 40px #0004;animation:pu .25s ease-out}
+.pop h3{margin:6px 0 4px;font-size:21px}.pop .pic{font-size:44px;line-height:1}.pop .pic.ok{width:56px;height:56px;margin:0 auto;border-radius:50%;background:var(--ac);color:#fff;font-size:30px;display:grid;place-items:center}
+.pop .must{font-weight:700;color:var(--ac);font-size:17px;margin:16px 0 10px}.pop .btn.big{width:100%;padding:14px;font-size:18px;border-radius:14px}
+.pop .lnk{background:none;border:none;font:inherit;color:var(--mu);text-decoration:underline;margin-top:10px;padding:6px;cursor:pointer}.pop .aft{max-height:220px;margin:12px 0 8px}
+@keyframes pu{from{transform:scale(.85);opacity:0}}@keyframes fi{from{opacity:0}}
 .tag{background:#ffffff1f;color:#ffd6e1}
 .xtop{display:flex;justify-content:space-between;align-items:center;margin:2px 4px 8px}.xtop span{opacity:.6;font-size:13px}
 .tag{font-size:11px;color:var(--ac)}
@@ -443,14 +449,26 @@ function photoBlock(r,after){
     el("button",{class:"btn g s",text:src?"🔄 החלף תמונה":"📷 הוסף תמונת אחרי",on:{click:()=>inp.click()}}),
     src?el("button",{class:"btn g s",text:"🗑️ הסר",on:{click:()=>{L.del?L.del("gym:ph:"+r.t):localStorage.removeItem("gym:ph:"+r.t);const h=L.get("gym:history",[]),x=h.find(y=>y.t===r.t);if(x){delete x.ph;L.set("gym:history",h)}delete r.ph;Cloud.push();after&&after()}}}):null)}
 function sumLine(r){return [r.done+"/"+r.total+" סטים",(r.ex||[]).length+" תרגילים",r.dur!=null?"⏱️ "+r.dur+" דק׳":null,r.vol?"🏋️ "+r.vol.toLocaleString("he-IL")+" ק״ג נפח":null].filter(Boolean).join(" · ")}
+async function savePhoto(r,f){const d=await compress(f,800);L.set("gym:ph:"+r.t,d);
+  const h=L.get("gym:history",[]),x=h.find(y=>y.t===r.t);if(x){x.ph=1;L.set("gym:history",h)}r.ph=1;
+  if(Cloud.photo)Cloud.photo(r.t,d);Cloud.push();return d}
 function showFinish(r){
-  const re=()=>{const h=L.get("gym:history",[]).find(y=>y.t===r.t)||r;showFinish(h)};
-  ov(el("div",{class:"wk"},el("b",{text:"🎉 סיימת אימון!"}),closeBtn(()=>{ov();render()})),
-    el("div",{class:"panel fin"},el("b",{text:r.name}),el("div",{class:"mu",text:fmtDate(r.t)}),el("div",{class:"num",style:"margin-top:4px",text:sumLine(r)})),
-    el("b",{class:"h2",style:"display:block;margin-top:12px",text:"📸 תמונת אחרי"}),
-    el("div",{class:"mu",text:"צלמי עכשיו או בחרי מהגלריה – אפשר גם להוסיף אחר כך מההיסטוריה"}),
-    photoBlock(r,re),
-    el("button",{class:"btn",style:"width:100%;margin-top:14px",text:"סיום",on:{click:()=>{ov();render()}}}));
+  const o=$("#ov"),close=()=>{o.replaceChildren();render()};
+  const inp=el("input",{type:"file",accept:"image/*",capture:"environment",style:"display:none"});
+  const card=el("div",{class:"pop"});
+  const ask=()=>card.replaceChildren(
+    el("div",{class:"pic",text:"🎉"}),el("h3",{text:"כל הכבוד על האימון!"}),
+    el("div",{class:"mu",text:r.name+" · "+sumLine(r)}),
+    el("p",{class:"must",text:"חובה תמונה של אחרי 📸"}),
+    el("button",{class:"btn big",text:"📷 מצלמה",on:{click:()=>inp.click()}}),inp,
+    el("button",{class:"lnk",text:"אחר כך",on:{click:close}}));
+  inp.onchange=async()=>{const f=inp.files[0];if(!f)return;card.replaceChildren(el("div",{class:"pic",text:"⏳"}),el("div",{class:"mu",text:"שומר את התמונה…"}));
+    try{const d=await savePhoto(r,f);card.replaceChildren(el("div",{class:"pic ok",text:"✓"}),el("h3",{text:"התמונה נשמרה!"}),
+      el("img",{class:"aft",src:d,alt:"תמונת אחרי"}),el("div",{class:"mu",text:"אפשר לראות אותה ב„אימון אחרון” ובהיסטוריה"}),
+      el("button",{class:"btn big",text:"סיום",on:{click:close}}));setTimeout(()=>{if(card.isConnected&&card.querySelector(".ok"))close()},4000)}
+    catch(_){ask();toast("לא הצלחתי לשמור את התמונה")}};
+  ask();
+  const bg=el("div",{class:"popbg",on:{click:e=>{if(e.target===bg)close()}}},card);o.replaceChildren(bg);
 }
 function editGoals(){
   const g=goals(),wk=el("input",{type:"number",min:"1",max:"14",value:g.week,inputmode:"numeric"});
