@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="he" dir="rtl" data-theme="light" style="color-scheme: light;"><head>
 <meta charset="utf-8">
-<script>(function(){try{var v=localStorage.getItem("gym:alfa");if(v&&JSON.parse(v)){var h=document.documentElement;h.classList.add("alfa");h.setAttribute("data-theme","dark");h.style.colorScheme="dark"}}catch(e){}})()</script>
+<script>(function(){try{var v=localStorage.getItem("gym:alfa");if(v&&JSON.parse(v)){var h=document.documentElement;h.classList.add("alfa");h.setAttribute("data-theme","light");h.style.colorScheme="light"}}catch(e){}})()</script>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>MAYA GYM</title>
 <meta name="description" content="Maya GYM – לוז אימונים שבועי, אימונים ותרגילים עם מעקב סטים ומשקלים">
@@ -129,31 +129,51 @@ input,select,textarea{width:100%;padding:9px;border:1px solid var(--bd);border-r
 .hcal{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin:10px 0;text-align:center}.hcd{font-size:12px;color:var(--mu)}.hc{font-size:14px;padding:6px 0;border-radius:99px}.hc.on{background:var(--ac);color:#fff;font-weight:700}.hc.td{outline:2px solid var(--ac)}.hch{width:100%;height:auto;margin:6px 0}
 .greet{font-size:18px;font-weight:600;margin:-4px 2px 12px;color:var(--tx)}.greet .mu{font-weight:400;font-size:14px}.greet input{width:auto;margin:0 6px;padding:4px 10px;font-size:15px}
 
-/* ===== ALFA mode (option A: deep navy + bright blue) ===== */
-html.alfa{color-scheme:dark}
-html.alfa{--bg:#0a1628;--card:#12243d;--tx:#e8eef8;--mu:#8fa3bf;--ac:#3b82f6;--ac2:#1e3a5f;--bd:#1a3050}
-html.alfa .lm{background:linear-gradient(135deg,#3b82f6,#60a5fa);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent}
-html.alfa .panel.hero{background:linear-gradient(135deg,#0c1a2e,#1e3a5f);color:#e8eef8;box-shadow:0 6px 18px #0a162880}
-html.alfa .hero .mu{color:#a8c0e0}
-html.alfa .hero .num{background:#3b82f6;color:#fff}
+/* ===== ALFA mode (navy + cream) ===== */
+html.alfa{color-scheme:light}
+html.alfa{--bg:#f5efe3;--card:#fffdf6;--tx:#0f1f3d;--mu:#6b7a94;--ac:#0f1f3d;--ac2:#e4ebf5;--bd:#d5dce8}
+html.alfa .lm{background:linear-gradient(135deg,#0f1f3d,#1a2b4c 55%,#2563eb);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent}
+html.alfa .lg{color:#0f1f3d}
+html.alfa .ld{color:#1a2b4c}
+html.alfa .panel.hero{background:linear-gradient(135deg,#0f1f3d,#1a2b4c);color:#f5efe3;box-shadow:0 6px 18px #0f1f3d33}
+html.alfa .hero .mu{color:#c9d4e8}
+html.alfa .hero .num{background:#2563eb;color:#fff}
 html.alfa .hero .item{border-color:#ffffff22}
-html.alfa #go{background:linear-gradient(135deg,#3b82f6,#2563eb)}
-html.alfa{--alfa-pulse:#3b82f688;--alfa-pulse0:#3b82f600}
-html.alfa #go{animation-name:pl-alfa}
-@keyframes pl-alfa{0%{box-shadow:0 0 0 0 #3b82f688}70%{box-shadow:0 0 0 20px #3b82f600}100%{box-shadow:0 0 0 0 #3b82f600}}
-html.alfa .btn.g{background:var(--ac2);color:#93c5fd}
-html.alfa .panel{box-shadow:0 2px 10px #3b82f614}
-html.alfa .panel.act{border-color:var(--ac);background:linear-gradient(135deg,#12243d,#1e3a5f)}
-html.alfa .wpill{background:#1a3050}
-html.alfa .wpill b,html.alfa .wfield span,html.alfa .wsm{color:#93c5fd}
-html.alfa .wfield{background:#1a3050}
-html.alfa .tag{color:#93c5fd}
-html.alfa .popbg{background:#0a162899}
-html.alfa .myn{background:#1e3a5f;color:#93c5fd}
-html.alfa .mynote{background:#12243d;border-color:#3b82f6!important}
-html.alfa .bc{box-shadow:0 2px 8px #0a162880}
+html.alfa .hero .item b{color:#fff}
+html.alfa .hero .chev{color:#f5efe3}
+html.alfa #go{background:linear-gradient(135deg,#0f1f3d,#1a2b4c);animation-name:pl-alfa}
+@keyframes pl-alfa{0%{box-shadow:0 0 0 0 #0f1f3d66}70%{box-shadow:0 0 0 20px #0f1f3d00}100%{box-shadow:0 0 0 0 #0f1f3d00}}
+html.alfa .btn{background:#0f1f3d;color:#f5efe3}
+html.alfa .btn.g{background:var(--ac2);color:#0f1f3d}
+html.alfa .panel{box-shadow:0 2px 10px #0f1f3d14}
+html.alfa .panel.act{border-color:var(--ac);background:linear-gradient(135deg,#fffdf6,#e4ebf5)}
+html.alfa .wpill{background:#e4ebf5}
+html.alfa .wpill b,html.alfa .wfield span,html.alfa .wsm{color:#0f1f3d}
+html.alfa .wfield{background:#e4ebf5}
+html.alfa .tag{color:#1a2b4c}
+html.alfa .popbg{background:#0f1f3d99}
+html.alfa .myn{background:#fff4d6;color:#0f1f3d}
+html.alfa .mynote{background:#fff8e1;border-color:#1a2b4c!important}
+html.alfa .bc{box-shadow:0 2px 8px #0f1f3d14;color:var(--ac)}
+html.alfa .tabs{background:var(--ac2)}
+html.alfa .tabs button.on{color:#0f1f3d;background:var(--card)}
+html.alfa .chip.on{background:var(--ac2);border-color:#0f1f3d;color:#0f1f3d}
+html.alfa .setb.on,html.alfa .seg button.on{background:#0f1f3d;color:#f5efe3}
+html.alfa .col.today{border-color:#0f1f3d;background:var(--ac2)}
+html.alfa .ev{background:#0f1f3d}
+html.alfa .pbar{background:var(--ac2)}
+html.alfa .pbar i{background:#0f1f3d}
+html.alfa .tdy{background:var(--ac2);color:#0f1f3d}
+html.alfa .na{color:#0f1f3d}
+html.alfa .cloud.on{color:#0f1f3d;border-color:#0f1f3d}
+html.alfa .photob{border-color:#0f1f3d;background:var(--ac2);color:#0f1f3d}
+html.alfa .xadd{border-color:#0f1f3d;color:#0f1f3d}
+html.alfa .xok{color:#0f1f3d}
+html.alfa .dp{border-inline-start-color:#0f1f3d}
 html.alfa body,html.alfa{background:var(--bg)}
-html.alfa meta[name="theme-color"]{content:#0a1628}
+html.alfa .hist{color:#0f1f3d;opacity:.75}
+html.alfa .mu{color:#6b7a94}
+html.alfa #toast{background:#0f1f3d;color:#f5efe3}
 
 </style>
 </head>
@@ -223,19 +243,19 @@ const t=(fem,masc)=>isAlfa()?masc:fem;
 const brand=()=>isAlfa()?"Roei":"Maya";
 const brandGym=()=>brand()+" GYM";
 function alfaPal(){return isAlfa()
-  ?{track:"#1e3a5f",ac:"#3b82f6",done:"#60a5fa",tx:"#e8eef8",chart:"#3b82f6",chartMax:"#60a5fa",pop:"#0a162899"}
+  ?{track:"#d5dce8",ac:"#0f1f3d",done:"#2563eb",tx:"#0f1f3d",chart:"#0f1f3d",chartMax:"#2563eb",pop:"#0f1f3d99"}
   :{track:"#fde6ec",ac:"#e8658c",done:"#f4a261",tx:"#3d2b33",chart:"#e8658c",chartMax:"#f4a261",pop:"#3d2b3399"}}
 function applyAlfaDom(){
   const on=isAlfa(),h=document.documentElement;
   h.classList.toggle("alfa",on);
-  h.setAttribute("data-theme",on?"dark":"light");
-  h.style.colorScheme=on?"dark":"light";
+  h.setAttribute("data-theme","light");
+  h.style.colorScheme="light";
   const lm=document.querySelector(".lm");if(lm)lm.textContent=brand();
   document.title=on?"ROEI GYM":"MAYA GYM";
-  const tc=document.querySelector('meta[name="theme-color"]');if(tc)tc.setAttribute("content",on?"#0a1628":"#fff6ec");
+  const tc=document.querySelector('meta[name="theme-color"]');if(tc)tc.setAttribute("content",on?"#f5efe3":"#fff6ec");
   const at=document.querySelector('meta[name="apple-mobile-web-app-title"]');if(at)at.setAttribute("content",brandGym());
   const md=document.querySelector('meta[name="description"]');if(md)md.setAttribute("content",brandGym()+" – לוז אימונים שבועי, אימונים ותרגילים עם מעקב סטים ומשקלים");
-  const sb=document.querySelector('meta[name="apple-mobile-web-app-status-bar-style"]');if(sb)sb.setAttribute("content",on?"black-translucent":"default");
+  const sb=document.querySelector('meta[name="apple-mobile-web-app-status-bar-style"]');if(sb)sb.setAttribute("content","default");
 }
 function setAlfa(on){L.set(ALFA_KEY,!!on);applyAlfaDom();render();updFab()}
 
@@ -263,7 +283,7 @@ function openSettings(){
     Object.keys(localStorage).filter(k=>k.startsWith("gym:")).forEach(k=>localStorage.removeItem(k));location.reload()};
   ov(el("div",{class:"wk"},el("b",{text:"הגדרות"}),closeBtn(()=>ov())),
     el("div",{class:"settings"},
-      sgroup("ALFA",srow("💙","ALFA",isAlfa()?"מצב גברי · כחול כהה · Roei":"כבוי – מצב רגיל (Maya)",isAlfa()?"פעיל":"כבוי",()=>{setAlfa(!isAlfa());openSettings()})),
+      sgroup("ALFA",srow("💙","ALFA",isAlfa()?"מצב גברי · נייבי וקרם · Roei":"כבוי – מצב רגיל (Maya)",isAlfa()?"פעיל":"כבוי",()=>{setAlfa(!isAlfa());openSettings()})),
       sgroup("פרופיל",srow("👤","שם",n?"מופיע בברכה בראש המסך":"עוד לא הוגדר שם",n||"הוספה",editName)),
       sgroup("מטרות",
         srow("🎯","יעד שבועי","כמה אימונים בשבוע",g.week+" אימונים",editGoals),
