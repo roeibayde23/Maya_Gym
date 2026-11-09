@@ -182,16 +182,20 @@ html.alfa .mu{color:#6b7a94}
 html.alfa #toast{background:#0f1f3d;color:#f5efe3}
 /* section titles a bit more navy weight */
 html.alfa .sgrp h4,html.alfa .xh,html.alfa .wkl,html.alfa .libh,html.alfa .h2{color:#0f1f3d;font-weight:700}
-/* settings / modal sheet: navy title bar matching header */
-html.alfa .sh{padding-top:0;overflow:hidden}
-html.alfa .sh>.wk:first-child{background:#0f1f3d;color:#f5efe3;margin:0 -16px 14px;padding:14px 16px;border-radius:0;align-items:center}
-html.alfa .sh>.wk:first-child b{color:#f5efe3}
-html.alfa .sh>.wk:first-child .btn.g{background:#1a2b4c;color:#f5efe3;border:1px solid #f5efe355}
+/* settings / modal sheet: navy top chrome + grab handle */
+.sh-top{display:flex;flex-direction:column;align-items:stretch;margin:0 0 6px}
+.sh-handle{width:40px;height:4px;border-radius:99px;background:var(--bd);margin:2px auto 10px;flex:none;pointer-events:none}
+.sh.sheet-dragging{overflow:hidden!important;touch-action:none}
+html.alfa .sh{padding-top:0;overflow:auto}
+html.alfa .sh-top{background:#0f1f3d;color:#f5efe3;margin:0 -16px 14px;padding:10px 16px 14px;border-radius:0}
+html.alfa .sh-handle{background:#f5efe355}
+html.alfa .sh-top .wk b{color:#f5efe3}
+html.alfa .sh-top .btn.g{background:#1a2b4c;color:#f5efe3;border:1px solid #f5efe355}
 html.alfa .pop{overflow:hidden}
 html.alfa .pop h3{color:#0f1f3d}
 html.alfa #fab{background:#0f1f3d}
 
-/* ALFA gender pill toggle (settings top-left; close stays with title on the right) */
+/* ALFA gender pill toggle (settings top-left; no close X) */
 .set-end{display:inline-flex;align-items:center;gap:10px;flex:none}
 .alfa-sex{position:relative;width:64px;height:32px;padding:2px;margin:0;border:1.5px solid #d5dce8;border-radius:99px;display:inline-flex;align-items:center;cursor:pointer;flex:none;-webkit-tap-highlight-color:transparent;appearance:none;font:inherit;background:#fff;box-shadow:inset 0 1px 2px #0001;color:inherit}
 .alfa-sex:focus-visible{outline:2px solid #0f1f3d;outline-offset:2px}
@@ -201,10 +205,10 @@ html.alfa #fab{background:#0f1f3d}
 .alfa-sex .side svg{width:13px;height:13px;display:block;color:#6b7a94}
 .alfa-sex.is-alfa{border-color:#f4c7d4;background:#fff8fb}
 .alfa-sex.is-alfa .knob{transform:translateX(32px);background:#e8658c;color:#fff}
-html.alfa .sh>.wk:first-child .alfa-sex{background:#1a2b4c;border-color:#f5efe344}
-html.alfa .sh>.wk:first-child .alfa-sex .side svg{color:#c9d4e8}
-html.alfa .sh>.wk:first-child .alfa-sex.is-alfa{background:#1a2b4c;border-color:#f5efe344}
-html.alfa .sh>.wk:first-child .alfa-sex.is-alfa .knob{background:#e8658c;color:#fff}
+html.alfa .sh-top .alfa-sex{background:#1a2b4c;border-color:#f5efe344}
+html.alfa .sh-top .alfa-sex .side svg{color:#c9d4e8}
+html.alfa .sh-top .alfa-sex.is-alfa{background:#1a2b4c;border-color:#f5efe344}
+html.alfa .sh-top .alfa-sex.is-alfa .knob{background:#e8658c;color:#fff}
 
 </style>
 </head>
@@ -326,7 +330,7 @@ function openSettings(){
     Object.keys(localStorage).filter(k=>k.startsWith("gym:ph:")).forEach(k=>localStorage.removeItem(k));L.set("gym:history",[]);Cloud.push();render();openSettings();toast("ההיסטוריה נמחקה")};
   const resetDev=()=>{if(!confirm("לאפס את האפליקציה במכשיר הזה? כל מה שלא נשמר בענן יימחק."))return;
     Object.keys(localStorage).filter(k=>k.startsWith("gym:")).forEach(k=>localStorage.removeItem(k));location.reload()};
-  ov(el("div",{class:"wk"},el("div",{class:"set-end"},el("b",{text:"הגדרות"}),closeBtn(()=>ov())),alfaSexBtn()),
+  ov(el("div",{class:"sh-top"},el("div",{class:"sh-handle","aria-hidden":"true"}),el("div",{class:"wk"},el("b",{text:"הגדרות"}),alfaSexBtn())),
     el("div",{class:"settings"},
       sgroup("פרופיל",srow("👤","שם",n?"מופיע בברכה בראש המסך":"עוד לא הוגדר שם",n||"הוספה",editName)),
       sgroup("מטרות",
@@ -371,8 +375,52 @@ function compress(f,MX){MX=MX||900;return new Promise((res,rej)=>{const im=new I
 
 /* ---------- shared ---------- */
 function thumb(ex,cls){return ex&&ex.img?el("img",{src:ex.img,alt:ex.name||""}):el("div",{class:cls||"ph",text:"🏋️"})}
-function ov(...n){const o=$("#ov");if(!n.length){o.replaceChildren();return}const sh=el("div",{class:"sheet",on:{click:e=>{if(e.target===sh)ov()}}},el("div",{class:"sh"},n));o.replaceChildren(sh)}
-function ov2(...n){const o=$("#ov2");if(!n.length){o.replaceChildren();return}const sh=el("div",{class:"sheet",on:{click:e=>{if(e.target===sh)ov2()}}},el("div",{class:"sh"},n));o.replaceChildren(sh)}
+function wireSheetDrag(panel,closeFn){
+  let startY=0,startT=0,dragging=false,armed=false,dy=0;
+  const reset=()=>{dragging=false;armed=false;dy=0;panel.classList.remove("sheet-dragging");panel.style.transition="";panel.style.transform="";};
+  const begin=(y)=>{if(panel.scrollTop>1)return;armed=true;startY=y;startT=Date.now();dragging=false;dy=0};
+  const move=(y,e)=>{
+    if(!armed)return;
+    const d=y-startY;
+    if(!dragging){
+      if(d<8)return;
+      if(panel.scrollTop>1){armed=false;return}
+      dragging=true;panel.classList.add("sheet-dragging");panel.style.transition="none";
+    }
+    dy=Math.max(0,d);
+    panel.style.transform="translateY("+dy+"px)";
+    if(e&&e.cancelable)e.preventDefault();
+  };
+  const end=()=>{
+    if(!armed){reset();return}
+    if(!dragging){reset();return}
+    const h=panel.getBoundingClientRect().height||1;
+    const vel=dy/Math.max(1,Date.now()-startT);
+    const shouldClose=dy>h*0.25||(dy>48&&vel>0.55);
+    panel.classList.remove("sheet-dragging");
+    if(shouldClose){
+      panel.style.transition="transform .22s ease-out";panel.style.transform="translateY(110%)";
+      setTimeout(()=>{closeFn();reset()},230);
+    }else{
+      panel.style.transition="transform .22s ease-out";panel.style.transform="translateY(0)";
+      setTimeout(()=>reset(),230);
+    }
+  };
+  panel.addEventListener("touchstart",e=>{if(e.touches.length===1)begin(e.touches[0].clientY)},{passive:true});
+  panel.addEventListener("touchmove",e=>{if(e.touches.length===1)move(e.touches[0].clientY,e)},{passive:false});
+  panel.addEventListener("touchend",end);panel.addEventListener("touchcancel",end);
+  panel.addEventListener("mousedown",e=>{if(e.button!==0)return;begin(e.clientY);
+    const mm=ev=>move(ev.clientY,ev);const mu=()=>{end();window.removeEventListener("mousemove",mm);window.removeEventListener("mouseup",mu)};
+    window.addEventListener("mousemove",mm);window.addEventListener("mouseup",mu);
+  });
+}
+function ov(...n){const o=$("#ov");if(!n.length){o.replaceChildren();return}const panel=el("div",{class:"sh"},n);const sh=el("div",{class:"sheet",on:{click:e=>{if(e.target===sh)ov()}}},panel);o.replaceChildren(sh);wireSheetDrag(panel,ov)}
+function ov2(...n){const o=$("#ov2");if(!n.length){o.replaceChildren();return}const panel=el("div",{class:"sh"},n);const sh=el("div",{class:"sheet",on:{click:e=>{if(e.target===sh)ov2()}}},panel);o.replaceChildren(sh);wireSheetDrag(panel,ov2)}
+document.addEventListener("keydown",e=>{
+  if(e.key!=="Escape")return;
+  if($("#ov2")&&$("#ov2").children.length)ov2();
+  else if($("#ov")&&$("#ov").children.length)ov();
+});
 const closeBtn=f=>el("button",{class:"btn g s",text:"✕","aria-label":"סגור",on:{click:f}});
 function itemsList(k){return el("div",{},(k.items||[]).map((it,i)=>{const ex=exById(it.ex);
   return el("div",{class:"item"},thumb(ex,"th"),el("div",{class:"n"},el("b",{text:(i+1)+". "+(ex?ex.name:"(תרגיל נמחק)")}),ex&&ex.my?el("div",{class:"myn",text:"📝 "+ex.my}):null),el("div",{class:"ic"},el("span",{class:"num",text:(it.sets||"-")+" × "+(it.reps||"-")}),it.w?el("span",{class:"wsm",text:"🏋️ "+it.w+" ק״ג"}):null))}))}
