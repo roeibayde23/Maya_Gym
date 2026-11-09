@@ -136,7 +136,7 @@ html.alfa{--bg:#f5efe3;--card:#fffdf6;--tx:#0f1f3d;--mu:#6b7a94;--ac:#0f1f3d;--a
 html.alfa header{background:#0f1f3d;margin:-8px -16px 14px;padding:14px 16px;align-items:center;border-radius:0 0 18px 18px;box-shadow:0 4px 16px #0f1f3d22}
 html.alfa .lm{background:none;-webkit-background-clip:unset;background-clip:unset;color:#f5efe3;-webkit-text-fill-color:#f5efe3}
 html.alfa .lg{color:#f5efe3;opacity:.92}
-html.alfa .ld{color:#93c5fd}
+html.alfa .ld{color:#f5efe3;display:inline-flex;align-items:center;justify-content:center;margin-top:6px;line-height:1}html.alfa .ld svg{width:15px;height:11px;display:block}
 html.alfa .gear{background:transparent;border-color:#f5efe355;color:#f5efe3}
 /* navy tab bar, cream active pill */
 html.alfa .tabs{background:#0f1f3d;padding:5px;border-radius:14px;gap:4px}
@@ -267,6 +267,11 @@ function applyAlfaDom(){
   h.setAttribute("data-theme","light");
   h.style.colorScheme="light";
   const lm=document.querySelector(".lm");if(lm)lm.textContent=brand();
+  const ld=document.querySelector(".ld");
+  if(ld){
+    if(on){ld.innerHTML='<svg viewBox="0 0 26 16" fill="currentColor" aria-hidden="true"><rect x="0" y="4" width="3" height="8" rx="1"/><rect x="3" y="1" width="4" height="14" rx="1.5"/><rect x="7" y="6.5" width="12" height="3"/><rect x="19" y="1" width="4" height="14" rx="1.5"/><rect x="23" y="4" width="3" height="8" rx="1"/></svg>';ld.setAttribute("aria-label","משקולת")}
+    else{ld.textContent="♥";ld.removeAttribute("aria-label")}
+  }
   document.title=on?"ROEI GYM":"MAYA GYM";
   const tc=document.querySelector('meta[name="theme-color"]');if(tc)tc.setAttribute("content",on?"#0f1f3d":"#fff6ec");
   const at=document.querySelector('meta[name="apple-mobile-web-app-title"]');if(at)at.setAttribute("content",brandGym());
@@ -308,7 +313,7 @@ function openSettings(){
       sgroup("נתונים",
         srow("📊","היסטוריית אימונים",h.length+" אימונים שמורים",null,()=>{ov();showHistory()}),
         srow("💾","הורדת גיבוי","קובץ עם כל התרגילים, האימונים וההיסטוריה",null,exportData)),
-      sgroup("אודות",srow(isAlfa()?"💪":"💗",brandGym(),"גרסה 8 · האפליקציה עובדת גם בלי חיבור לאינטרנט",null)),
+      sgroup("אודות",srow(isAlfa()?"🏋️":"💗",brandGym(),"גרסה 8 · האפליקציה עובדת גם בלי חיבור לאינטרנט",null)),
       el("section",{class:"sgrp danger"},el("h4",{text:"פעולות שאי אפשר לבטל"}),el("div",{class:"slist"},
         srow("🗑️","מחיקת היסטוריית האימונים","כולל תמונות האחרי",null,clearHist,"red"),
         srow("↺","איפוס האפליקציה במכשיר","מוחק את הנתונים מהטלפון הזה בלבד",null,resetDev,"red")))));
