@@ -191,14 +191,20 @@ html.alfa .pop{overflow:hidden}
 html.alfa .pop h3{color:#0f1f3d}
 html.alfa #fab{background:#0f1f3d}
 
-/* ALFA gender icon toggle (settings top-left; not a .btn) */
-.setacts{display:inline-flex;align-items:center;gap:2px;flex:none}
-.alfa-sex{width:36px;height:36px;padding:0;margin:0;border:none;background:transparent;border-radius:99px;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;color:#0f1f3d;flex:none;-webkit-tap-highlight-color:transparent;appearance:none;font:inherit;box-shadow:none}
-.alfa-sex:focus-visible{outline:2px solid currentColor;outline-offset:2px}
-.alfa-sex svg{width:20px;height:20px;display:block}
-.alfa-sex.is-alfa{color:#e8658c}
-html.alfa .sh>.wk:first-child .alfa-sex{color:#e8658c}
-html.alfa .sh>.wk:first-child .alfa-sex.is-alfa{color:#e8658c}
+/* ALFA gender pill toggle (settings top-left; close stays with title on the right) */
+.set-end{display:inline-flex;align-items:center;gap:10px;flex:none}
+.alfa-sex{position:relative;width:64px;height:32px;padding:2px;margin:0;border:1.5px solid #d5dce8;border-radius:99px;display:inline-flex;align-items:center;cursor:pointer;flex:none;-webkit-tap-highlight-color:transparent;appearance:none;font:inherit;background:#fff;box-shadow:inset 0 1px 2px #0001;color:inherit}
+.alfa-sex:focus-visible{outline:2px solid #0f1f3d;outline-offset:2px}
+.alfa-sex .knob{position:absolute;top:2px;left:2px;width:26px;height:26px;border-radius:99px;background:#0f1f3d;box-shadow:0 1px 4px #0003;transition:transform .2s ease,background .2s ease;display:flex;align-items:center;justify-content:center;color:#f5efe3;z-index:1}
+.alfa-sex .knob svg{width:14px;height:14px;display:block}
+.alfa-sex .side{flex:1;height:100%;display:flex;align-items:center;justify-content:center;opacity:.35;z-index:0;pointer-events:none}
+.alfa-sex .side svg{width:13px;height:13px;display:block;color:#6b7a94}
+.alfa-sex.is-alfa{border-color:#f4c7d4;background:#fff8fb}
+.alfa-sex.is-alfa .knob{transform:translateX(32px);background:#e8658c;color:#fff}
+html.alfa .sh>.wk:first-child .alfa-sex{background:#1a2b4c;border-color:#f5efe344}
+html.alfa .sh>.wk:first-child .alfa-sex .side svg{color:#c9d4e8}
+html.alfa .sh>.wk:first-child .alfa-sex.is-alfa{background:#1a2b4c;border-color:#f5efe344}
+html.alfa .sh>.wk:first-child .alfa-sex.is-alfa .knob{background:#e8658c;color:#fff}
 
 </style>
 </head>
@@ -291,9 +297,10 @@ function setAlfa(on){L.set(ALFA_KEY,!!on);applyAlfaDom();render();updFab()}
 function alfaSexBtn(){
   const on=isAlfa();
   const b=el("button",{type:"button",class:"alfa-sex"+(on?" is-alfa":""),"aria-label":on?"חזרה למצב רגיל (Maya)":"הפעלת מצב ALFA (Roei)",title:on?"מצב רגיל · נקבה":"ALFA · זכר",on:{click:()=>{setAlfa(!isAlfa());openSettings()}}});
-  b.innerHTML=on
-    ?'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="9" r="5.25"/><path d="M12 14.25V21M9 18h6"/></svg>'
-    :'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10" cy="14" r="5.25"/><path d="M14.2 9.8L20 4M15.5 4H20v4.5"/></svg>';
+  const knob=el("span",{class:"knob"});knob.innerHTML=on?'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="9" r="5.25"/><path d="M12 14.25V21M9 18h6"/></svg>':'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10" cy="14" r="5.25"/><path d="M14.2 9.8L20 4M15.5 4H20v4.5"/></svg>';
+  const male=el("span",{class:"side"});male.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10" cy="14" r="5.25"/><path d="M14.2 9.8L20 4M15.5 4H20v4.5"/></svg>';
+  const fem=el("span",{class:"side"});fem.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="9" r="5.25"/><path d="M12 14.25V21M9 18h6"/></svg>';
+  b.append(male,fem,knob);
   return b;
 }
 
@@ -319,7 +326,7 @@ function openSettings(){
     Object.keys(localStorage).filter(k=>k.startsWith("gym:ph:")).forEach(k=>localStorage.removeItem(k));L.set("gym:history",[]);Cloud.push();render();openSettings();toast("ההיסטוריה נמחקה")};
   const resetDev=()=>{if(!confirm("לאפס את האפליקציה במכשיר הזה? כל מה שלא נשמר בענן יימחק."))return;
     Object.keys(localStorage).filter(k=>k.startsWith("gym:")).forEach(k=>localStorage.removeItem(k));location.reload()};
-  ov(el("div",{class:"wk"},el("b",{text:"הגדרות"}),el("div",{class:"setacts",dir:"ltr"},alfaSexBtn(),closeBtn(()=>ov()))),
+  ov(el("div",{class:"wk"},el("div",{class:"set-end"},el("b",{text:"הגדרות"}),closeBtn(()=>ov())),alfaSexBtn()),
     el("div",{class:"settings"},
       sgroup("פרופיל",srow("👤","שם",n?"מופיע בברכה בראש המסך":"עוד לא הוגדר שם",n||"הוספה",editName)),
       sgroup("מטרות",
