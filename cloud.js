@@ -1,4 +1,4 @@
-/* Maya GYM – optional cloud sync (Supabase, email magic-link). Falls back to local mode when not configured/offline. */
+/* Maya GYM – optional cloud sync (ALFA-aware via global t()) (Supabase, email magic-link). Falls back to local mode when not configured/offline. */
 (function(){
   const C=window.GYM_CONFIG||{};
   
@@ -15,7 +15,7 @@
     const box=document.getElementById("cloudbox"),nt=document.getElementById("savenote");if(!box)return;
     box.replaceChildren();
     if(api.user){
-      box.append(el("button",{class:"cloud on","aria-label":"מחוברת לשמירה בענן – לחיצה להתנתקות",text:"☁️ נשמר בענן · "+(api.user.email||""),on:{click:async()=>{if(confirm("להתנתק מהענן? הנתונים יישארו גם בטלפון הזה.")){await sb.auth.signOut();api.user=null;ui()}}}}));
+      box.append(el("button",{class:"cloud on","aria-label":t("מחוברת לשמירה בענן – לחיצה להתנתקות","מחובר לשמירה בענן – לחיצה להתנתקות"),text:"☁️ נשמר בענן · "+(api.user.email||""),on:{click:async()=>{if(confirm("להתנתק מהענן? הנתונים יישארו גם בטלפון הזה.")){await sb.auth.signOut();api.user=null;ui()}}}}));
       if(nt)nt.textContent="☁️ הכול נשמר בענן ומסתנכרן בין המכשירים";
     }else{
       box.append(el("button",{class:"cloud","aria-label":"התחברות עם אימייל לשמירה בענן",text:"☁️ שמירה בענן (כניסה עם אימייל)",on:{click:login}}));
@@ -23,19 +23,19 @@
   }
   function login(){
     const em=el("input",{type:"email",placeholder:"האימייל שלך",autocomplete:"email",dir:"ltr"}),msg=el("div",{class:"mu"});
-    const go=el("button",{class:"btn",text:"שלחי לי קוד כניסה",on:{click:async()=>{
+    const go=el("button",{class:"btn",text:t("שלחי לי קוד כניסה","שלח לי קוד כניסה"),on:{click:async()=>{
       if(!/\S+@\S+\.\S+/.test(em.value)){msg.textContent="צריך אימייל תקין";return}
       go.disabled=true;msg.textContent="שולח…";
       const{error}=await sb.auth.signInWithOtp({email:em.value.trim(),options:{emailRedirectTo:location.origin+location.pathname}});
       if(error){msg.textContent="לא הצלחתי לשלוח ("+error.message+")";go.disabled=false;return}
-      msg.textContent="נשלח! הקלידי כאן את הקוד מהמייל (או לחצי על הקישור שבו).";code.style.display="";vb.style.display="";code.focus();
+      msg.textContent=t("נשלח! הקלידי כאן את הקוד מהמייל (או לחצי על הקישור שבו).","נשלח! הקלד כאן את הקוד מהמייל (או לחץ על הקישור שבו).");code.style.display="";vb.style.display="";code.focus();
     }}});
     const code=el("input",{inputmode:"numeric",autocomplete:"one-time-code",placeholder:"קוד מהמייל",dir:"ltr",style:"display:none;text-align:center;letter-spacing:.3em;font-size:22px"});
     const vb=el("button",{class:"btn",style:"display:none;width:100%",text:"כניסה",on:{click:async()=>{
       const t=code.value.replace(/\D/g,"");if(t.length<6){msg.textContent="צריך את הקוד מהמייל";return}
       vb.disabled=true;msg.textContent="בודק…";
       const{error}=await sb.auth.verifyOtp({email:em.value.trim(),token:t,type:"email"});
-      if(error){msg.textContent="הקוד לא נכון או שפג תוקפו – נסי שוב";vb.disabled=false}else{msg.textContent="מחוברת ✓";setTimeout(()=>ov(),700)}
+      if(error){msg.textContent=t("הקוד לא נכון או שפג תוקפו – נסי שוב","הקוד לא נכון או שפג תוקפו – נסה שוב");vb.disabled=false}else{msg.textContent=t("מחוברת ✓","מחובר ✓");setTimeout(()=>ov(),700)}
     }}});
     ov(el("div",{class:"wk"},el("b",{text:"☁️ שמירה בענן"}),closeBtn(()=>ov())),
       el("p",{class:"mu",text:"כניסה עם אימייל שומרת את התרגילים, האימונים, הלוז וההיסטוריה בענן – כך שהם לא נמחקים ועובדים מכל מכשיר."}),em,go,code,vb,msg);

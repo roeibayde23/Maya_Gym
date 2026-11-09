@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="he" dir="rtl" data-theme="light" style="color-scheme: light;"><head>
 <meta charset="utf-8">
+<script>(function(){try{var v=localStorage.getItem("gym:alfa");if(v&&JSON.parse(v)){var h=document.documentElement;h.classList.add("alfa");h.setAttribute("data-theme","dark");h.style.colorScheme="dark"}}catch(e){}})()</script>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>MAYA GYM</title>
 <meta name="description" content="Maya GYM – לוז אימונים שבועי, אימונים ותרגילים עם מעקב סטים ומשקלים">
@@ -127,6 +128,33 @@ input,select,textarea{width:100%;padding:9px;border:1px solid var(--bd);border-r
 :focus-visible{outline:2px solid var(--ac);outline-offset:2px}
 .hcal{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin:10px 0;text-align:center}.hcd{font-size:12px;color:var(--mu)}.hc{font-size:14px;padding:6px 0;border-radius:99px}.hc.on{background:var(--ac);color:#fff;font-weight:700}.hc.td{outline:2px solid var(--ac)}.hch{width:100%;height:auto;margin:6px 0}
 .greet{font-size:18px;font-weight:600;margin:-4px 2px 12px;color:var(--tx)}.greet .mu{font-weight:400;font-size:14px}.greet input{width:auto;margin:0 6px;padding:4px 10px;font-size:15px}
+
+/* ===== ALFA mode (option A: deep navy + bright blue) ===== */
+html.alfa{color-scheme:dark}
+html.alfa{--bg:#0a1628;--card:#12243d;--tx:#e8eef8;--mu:#8fa3bf;--ac:#3b82f6;--ac2:#1e3a5f;--bd:#1a3050}
+html.alfa .lm{background:linear-gradient(135deg,#3b82f6,#60a5fa);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent}
+html.alfa .panel.hero{background:linear-gradient(135deg,#0c1a2e,#1e3a5f);color:#e8eef8;box-shadow:0 6px 18px #0a162880}
+html.alfa .hero .mu{color:#a8c0e0}
+html.alfa .hero .num{background:#3b82f6;color:#fff}
+html.alfa .hero .item{border-color:#ffffff22}
+html.alfa #go{background:linear-gradient(135deg,#3b82f6,#2563eb)}
+html.alfa{--alfa-pulse:#3b82f688;--alfa-pulse0:#3b82f600}
+html.alfa #go{animation-name:pl-alfa}
+@keyframes pl-alfa{0%{box-shadow:0 0 0 0 #3b82f688}70%{box-shadow:0 0 0 20px #3b82f600}100%{box-shadow:0 0 0 0 #3b82f600}}
+html.alfa .btn.g{background:var(--ac2);color:#93c5fd}
+html.alfa .panel{box-shadow:0 2px 10px #3b82f614}
+html.alfa .panel.act{border-color:var(--ac);background:linear-gradient(135deg,#12243d,#1e3a5f)}
+html.alfa .wpill{background:#1a3050}
+html.alfa .wpill b,html.alfa .wfield span,html.alfa .wsm{color:#93c5fd}
+html.alfa .wfield{background:#1a3050}
+html.alfa .tag{color:#93c5fd}
+html.alfa .popbg{background:#0a162899}
+html.alfa .myn{background:#1e3a5f;color:#93c5fd}
+html.alfa .mynote{background:#12243d;border-color:#3b82f6!important}
+html.alfa .bc{box-shadow:0 2px 8px #0a162880}
+html.alfa body,html.alfa{background:var(--bg)}
+html.alfa meta[name="theme-color"]{content:#0a1628}
+
 </style>
 </head>
 <body>
@@ -187,6 +215,30 @@ const DAYS=["ראשון","שני","שלישי","רביעי","חמישי","שיש
 const $=s=>document.querySelector(s);
 const el=(t,p={},...k)=>{const e=document.createElement(t);for(const a in p){if(a==="on")for(const ev in p.on)e.addEventListener(ev,p.on[ev]);else if(a==="text")e.textContent=p[a];else e.setAttribute(a,p[a])}k.flat(Infinity).forEach(c=>c!=null&&c!==false&&e.append(c));return e};
 const L={get(k,d){try{const v=localStorage.getItem(k);return v==null?d:JSON.parse(v)}catch(_){return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(_){}}};
+
+/* ---------- ALFA mode ---------- */
+const ALFA_KEY="gym:alfa";
+const isAlfa=()=>!!L.get(ALFA_KEY,false);
+const t=(fem,masc)=>isAlfa()?masc:fem;
+const brand=()=>isAlfa()?"Roei":"Maya";
+const brandGym=()=>brand()+" GYM";
+function alfaPal(){return isAlfa()
+  ?{track:"#1e3a5f",ac:"#3b82f6",done:"#60a5fa",tx:"#e8eef8",chart:"#3b82f6",chartMax:"#60a5fa",pop:"#0a162899"}
+  :{track:"#fde6ec",ac:"#e8658c",done:"#f4a261",tx:"#3d2b33",chart:"#e8658c",chartMax:"#f4a261",pop:"#3d2b3399"}}
+function applyAlfaDom(){
+  const on=isAlfa(),h=document.documentElement;
+  h.classList.toggle("alfa",on);
+  h.setAttribute("data-theme",on?"dark":"light");
+  h.style.colorScheme=on?"dark":"light";
+  const lm=document.querySelector(".lm");if(lm)lm.textContent=brand();
+  document.title=on?"ROEI GYM":"MAYA GYM";
+  const tc=document.querySelector('meta[name="theme-color"]');if(tc)tc.setAttribute("content",on?"#0a1628":"#fff6ec");
+  const at=document.querySelector('meta[name="apple-mobile-web-app-title"]');if(at)at.setAttribute("content",brandGym());
+  const md=document.querySelector('meta[name="description"]');if(md)md.setAttribute("content",brandGym()+" – לוז אימונים שבועי, אימונים ותרגילים עם מעקב סטים ומשקלים");
+  const sb=document.querySelector('meta[name="apple-mobile-web-app-status-bar-style"]');if(sb)sb.setAttribute("content",on?"black-translucent":"default");
+}
+function setAlfa(on){L.set(ALFA_KEY,!!on);applyAlfaDom();render();updFab()}
+
 let DATA={ex:[],wk:[],sch:[]};try{DATA=Object.assign(DATA,JSON.parse($("#data").textContent))}catch(_){}
 /* local mode (outside Claude): changes are kept only in this browser, layered over the published data */
 const BASE=JSON.parse(JSON.stringify(DATA)),COLS=["ex","wk","sch"];let localMode=false;
@@ -204,13 +256,14 @@ function openSettings(){
   const T={min:"דקות",sets:"סטים",ex:"תרגילים"};
   const editName=()=>{const v=prompt("איך לקרוא לך?",n);if(v!=null&&v.trim()){L.set("gym:name",v.trim().slice(0,20));Cloud.push();greet();openSettings()}};
   const exportData=()=>{const o={v:1,at:new Date().toISOString(),data:DATA,history:L.get("gym:history",[]),goals:L.get("gym:goals",null),name:L.get("gym:name","")};
-    const a=el("a",{href:URL.createObjectURL(new Blob([JSON.stringify(o)],{type:"application/json"})),download:"maya-gym-"+new Date().toISOString().slice(0,10)+".json"});a.click();toast("הגיבוי ירד למכשיר ✓")};
+    const a=el("a",{href:URL.createObjectURL(new Blob([JSON.stringify(o)],{type:"application/json"})),download:(isAlfa()?"roei":"maya")+"-gym-"+new Date().toISOString().slice(0,10)+".json"});a.click();toast("הגיבוי ירד למכשיר ✓")};
   const clearHist=()=>{if(!confirm("למחוק את כל היסטוריית האימונים והתמונות? אי אפשר לבטל."))return;
     Object.keys(localStorage).filter(k=>k.startsWith("gym:ph:")).forEach(k=>localStorage.removeItem(k));L.set("gym:history",[]);Cloud.push();render();openSettings();toast("ההיסטוריה נמחקה")};
   const resetDev=()=>{if(!confirm("לאפס את האפליקציה במכשיר הזה? כל מה שלא נשמר בענן יימחק."))return;
     Object.keys(localStorage).filter(k=>k.startsWith("gym:")).forEach(k=>localStorage.removeItem(k));location.reload()};
   ov(el("div",{class:"wk"},el("b",{text:"הגדרות"}),closeBtn(()=>ov())),
     el("div",{class:"settings"},
+      sgroup("ALFA",srow("💙","ALFA",isAlfa()?"מצב גברי · כחול כהה · Roei":"כבוי – מצב רגיל (Maya)",isAlfa()?"פעיל":"כבוי",()=>{setAlfa(!isAlfa());openSettings()})),
       sgroup("פרופיל",srow("👤","שם",n?"מופיע בברכה בראש המסך":"עוד לא הוגדר שם",n||"הוספה",editName)),
       sgroup("מטרות",
         srow("🎯","יעד שבועי","כמה אימונים בשבוע",g.week+" אימונים",editGoals),
@@ -219,7 +272,7 @@ function openSettings(){
       sgroup("נתונים",
         srow("📊","היסטוריית אימונים",h.length+" אימונים שמורים",null,()=>{ov();showHistory()}),
         srow("💾","הורדת גיבוי","קובץ עם כל התרגילים, האימונים וההיסטוריה",null,exportData)),
-      sgroup("אודות",srow("💗","Maya GYM","גרסה 8 · האפליקציה עובדת גם בלי חיבור לאינטרנט",null)),
+      sgroup("אודות",srow(isAlfa()?"💪":"💗",brandGym(),"גרסה 8 · האפליקציה עובדת גם בלי חיבור לאינטרנט",null)),
       el("section",{class:"sgrp danger"},el("h4",{text:"פעולות שאי אפשר לבטל"}),el("div",{class:"slist"},
         srow("🗑️","מחיקת היסטוריית האימונים","כולל תמונות האחרי",null,clearHist,"red"),
         srow("↺","איפוס האפליקציה במכשיר","מוחק את הנתונים מהטלפון הזה בלבד",null,resetDev,"red")))));
@@ -342,7 +395,7 @@ function openSession(id){
   ov(el("div",{class:"wk"},el("b",{text:"🔥 "+k.name}),el("button",{class:"btn g s",text:"הקטן ↓",on:{click:()=>{ov();updFab()}}})),cnt,bar,
     items.length?body:el("div",{class:"mu",text:"האימון ריק"}),
     el("div",{class:"row",style:"margin-top:12px"},
-      el("button",{class:"btn",text:"סיים אימון",on:{click:()=>{const r=addHistory(k,st);L.set(key,{d:{},w:{}});L.set("gym:active",null);ov();updFab();render();if(r)showFinish(r);else toast("סיימת אימון! 💪")}}}),
+      el("button",{class:"btn",text:"סיים אימון",on:{click:()=>{const r=addHistory(k,st);L.set(key,{d:{},w:{}});L.set("gym:active",null);ov();updFab();render();if(r)showFinish(r);else toast(t("סיימת אימון! 💪","האימון הסתיים! 💪"))}}}),
       el("button",{class:"btn g",text:"אפס סימונים",on:{click:()=>{L.set(key,{d:{},w:{}});openSession(id)}}})));
 }
 
@@ -383,15 +436,15 @@ function histCal(h){
     g,el("div",{class:"mu",style:"text-align:center",text:cnt?("התאמנת "+cnt+" ימים החודש 💪"):"עוד אין אימונים בחודש הזה"}));
 }
 function histChart(series,best){
-  const names=Object.keys(series);if(!names.length)return el("div",{class:"panel"},el("b",{text:"📈 התקדמות במשקל"}),el("div",{class:"mu",text:"כשתרשמי משקל בתרגילים, הגרף יופיע כאן."}));
+  const names=Object.keys(series);if(!names.length)return el("div",{class:"panel"},el("b",{text:"📈 התקדמות במשקל"}),el("div",{class:"mu",text:t("כשתרשמי משקל בתרגילים, הגרף יופיע כאן.","כשתרשום משקל בתרגילים, הגרף יופיע כאן.")}));
   if(!histEx||!series[histEx])histEx=names.sort((a,b)=>series[b].length-series[a].length)[0];
   const pts=series[histEx],W=320,H=140,p=24;
   const ws=pts.map(q=>q.w),mn=Math.min(...ws),mx=Math.max(...ws),rg=mx-mn||1;
   const X=i=>pts.length<2?W/2:p+i*(W-2*p)/(pts.length-1),Y=w=>H-p-(w-mn)/rg*(H-2*p);
   const ns="http://www.w3.org/2000/svg",svg=document.createElementNS(ns,"svg");svg.setAttribute("viewBox","0 0 "+W+" "+H);svg.setAttribute("class","hch");
-  const pl=document.createElementNS(ns,"polyline");pl.setAttribute("points",pts.map((q,i)=>X(i)+","+Y(q.w)).join(" "));pl.setAttribute("fill","none");pl.setAttribute("stroke","#e8658c");pl.setAttribute("stroke-width","3");pl.setAttribute("stroke-linejoin","round");svg.appendChild(pl);
-  pts.forEach((q,i)=>{const c=document.createElementNS(ns,"circle");c.setAttribute("cx",X(i));c.setAttribute("cy",Y(q.w));c.setAttribute("r",q.w==mx?6:4);c.setAttribute("fill",q.w==mx?"#f4a261":"#e8658c");svg.appendChild(c);
-    if(i==0||i==pts.length-1||q.w==mx){const tx=document.createElementNS(ns,"text");tx.setAttribute("x",X(i));tx.setAttribute("y",Y(q.w)-10);tx.setAttribute("text-anchor","middle");tx.setAttribute("font-size","12");tx.setAttribute("fill","#3d2b33");tx.textContent=q.w;svg.appendChild(tx);}});
+  const pl=document.createElementNS(ns,"polyline");pl.setAttribute("points",pts.map((q,i)=>X(i)+","+Y(q.w)).join(" "));pl.setAttribute("fill","none");const CP=alfaPal();pl.setAttribute("stroke",CP.chart);pl.setAttribute("stroke-width","3");pl.setAttribute("stroke-linejoin","round");svg.appendChild(pl);
+  pts.forEach((q,i)=>{const c=document.createElementNS(ns,"circle");c.setAttribute("cx",X(i));c.setAttribute("cy",Y(q.w));c.setAttribute("r",q.w==mx?6:4);c.setAttribute("fill",q.w==mx?CP.chartMax:CP.chart);svg.appendChild(c);
+    if(i==0||i==pts.length-1||q.w==mx){const tx=document.createElementNS(ns,"text");tx.setAttribute("x",X(i));tx.setAttribute("y",Y(q.w)-10);tx.setAttribute("text-anchor","middle");tx.setAttribute("font-size","12");tx.setAttribute("fill",CP.tx);tx.textContent=q.w;svg.appendChild(tx);}});
   const first=pts[0].w,last=pts[pts.length-1].w,diff=Math.round((last-first)*10)/10;
   return el("div",{class:"panel"},el("b",{text:"📈 התקדמות במשקל"}),
     el("div",{class:"chips",style:"margin-top:6px"},names.map(n=>el("button",{class:"chip"+(n==histEx?" on":""),text:n,on:{click:()=>{histEx=n;showHistory()}}}))),
@@ -467,7 +520,7 @@ function weekStart(){const n=new Date();return new Date(n.getFullYear(),n.getMon
 const fmtDate=t=>new Date(t).toLocaleDateString("he-IL",{weekday:"long",day:"numeric",month:"numeric"});
 function ring(v,n,lbl){const pct=n?Math.min(1,v/n):0,R=34,C=2*Math.PI*R,ns="http://www.w3.org/2000/svg",svg=document.createElementNS(ns,"svg");
   svg.setAttribute("viewBox","0 0 84 84");svg.setAttribute("class","ring");
-  svg.innerHTML='<circle cx="42" cy="42" r="'+R+'" fill="none" stroke="#fde6ec" stroke-width="9"/><circle cx="42" cy="42" r="'+R+'" fill="none" stroke="'+(pct>=1?"#f4a261":"#e8658c")+'" stroke-width="9" stroke-linecap="round" stroke-dasharray="'+(C*pct)+' '+C+'" transform="rotate(-90 42 42)"/><text x="42" y="47" text-anchor="middle" font-size="18" font-weight="700" fill="#3d2b33">'+v+'/'+n+'</text>';
+  const P=alfaPal();svg.innerHTML='<circle cx="42" cy="42" r="'+R+'" fill="none" stroke="'+P.track+'" stroke-width="9"/><circle cx="42" cy="42" r="'+R+'" fill="none" stroke="'+(pct>=1?P.done:P.ac)+'" stroke-width="9" stroke-linecap="round" stroke-dasharray="'+(C*pct)+' '+C+'" transform="rotate(-90 42 42)"/><text x="42" y="47" text-anchor="middle" font-size="18" font-weight="700" fill="'+P.tx+'">'+v+'/'+n+'</text>';
   return el("div",{class:"rw"},svg,lbl?el("div",{class:"mu",text:lbl}):null)}
 function photoOf(r){return r&&r.ph?L.get("gym:ph:"+r.t,null)||r.phUrl||null:null}
 function photoBlock(r,after){
@@ -515,7 +568,7 @@ function renderHome(){
   // active
   if(a){const k=wkById(a.wid),m=a.st?Math.round((Date.now()-a.st)/60000):null;
     out.append(el("div",{class:"panel act"},el("div",{class:"wk"},el("b",{text:"🔥 אימון בתהליך"}),el("span",{class:"num",text:prog(a.wid)+" סטים"})),
-      el("div",{text:k.name+(m!=null?" · התחלת לפני "+m+" דק׳":"")}),
+      el("div",{text:k.name+(m!=null?t(" · התחלת לפני "," · התחיל לפני ")+m+" דק׳":"")}),
       el("div",{class:"pbar"},el("i",{style:"width:"+(()=>{const[x,y]=prog(a.wid).split("/").map(Number);return y?x/y*100:0})()+"%"})),
       el("button",{class:"btn",style:"width:100%",text:"▶ המשך אימון",on:{click:()=>openSession(a.wid)}})))}
   // today
@@ -525,7 +578,7 @@ function renderHome(){
     evs.length?evs.map(e=>{const k=wkById(e.wid),dn=k&&doneToday.some(r=>r.wid===k.id||r.name===k.name);
       return el("div",{class:"item"+(k?" tap":""),on:k?{click:()=>showToday(k)}:{}},el("span",{class:"num",text:e.time||""}),el("div",{class:"n"},el("b",{text:k?k.name:"(אימון נמחק)"}),k?el("div",{class:"mu",text:(k.items||[]).length+" תרגילים"}):null),
         dn?el("span",{class:"tag",text:"✓ בוצע"}):a&&k&&a.wid===k.id?el("span",{class:"tag",text:"🔥 בתהליך"}):k?el("span",{class:"chev",text:"‹"}):null)})
-    :el("div",{class:"mu",style:"margin-top:6px",text:"אין אימון בלוז להיום – יום מנוחה, תהני 😌"})));
+    :el("div",{class:"mu",style:"margin-top:6px",text:t("אין אימון בלוז להיום – יום מנוחה, תהני 😌","אין אימון בלוז להיום – יום מנוחה, תהנה 😌")})));
   // bubbles
   const ws=weekStart(),wc=h.filter(r=>r.t>=ws).length,r=h[0];
   out.append(el("div",{class:"bubs"},
@@ -538,7 +591,7 @@ function renderHome(){
 function bub(ic,lbl,pct,fn){const b=el("button",{class:"bub",type:"button","aria-label":lbl,on:{click:fn}});
   const c=el("span",{class:"bc",text:ic});
   if(pct!=null){const ns="http://www.w3.org/2000/svg",sv=document.createElementNS(ns,"svg");sv.setAttribute("viewBox","0 0 60 60");sv.setAttribute("class","bring");
-    const C=2*Math.PI*27;sv.innerHTML='<circle cx="30" cy="30" r="27" fill="none" stroke="#fde6ec" stroke-width="4"/><circle cx="30" cy="30" r="27" fill="none" stroke="'+(pct>=1?"#f4a261":"#e8658c")+'" stroke-width="4" stroke-linecap="round" stroke-dasharray="'+C*pct+' '+C+'" transform="rotate(-90 30 30)"/>';c.append(sv)}
+    const C=2*Math.PI*27,P=alfaPal();sv.innerHTML='<circle cx="30" cy="30" r="27" fill="none" stroke="'+P.track+'" stroke-width="4"/><circle cx="30" cy="30" r="27" fill="none" stroke="'+(pct>=1?P.done:P.ac)+'" stroke-width="4" stroke-linecap="round" stroke-dasharray="'+C*pct+' '+C+'" transform="rotate(-90 30 30)"/>';c.append(sv)}
   b.append(c,el("small",{text:lbl}));return b}
 function goalVals(){const g=goals(),h=L.get("gym:history",[]),a=active(),tr=h.filter(r=>new Date(r.t).toDateString()===today());let v=0;
   if(g.dayType==="min")v=tr.reduce((s,r)=>s+(r.dur||0),0)+(a&&a.st?Math.round((Date.now()-a.st)/60000):0);
@@ -548,14 +601,14 @@ function goalVals(){const g=goals(),h=L.get("gym:history",[]),a=active(),tr=h.fi
 function showGoals(){const{g,wc,dv}=goalVals();
   ov(el("div",{class:"wk"},el("b",{text:"🎯 היעדים שלי"}),closeBtn(()=>ov())),
     el("div",{class:"rings"},ring(wc,g.week,"אימונים השבוע"),g.dayOn?ring(dv,g.day,"יעד יומי · "+({min:"דקות",sets:"סטים",ex:"תרגילים"})[g.dayType]):el("button",{class:"rw add",text:"+ יעד יומי",on:{click:editGoals}})),
-    el("div",{class:"mu",style:"text-align:center;margin:6px 0 12px",text:wc>=g.week?"עמדת ביעד השבועי! 🏆":"עוד "+(g.week-wc)+" אימונים ליעד השבועי"}),
+    el("div",{class:"mu",style:"text-align:center;margin:6px 0 12px",text:wc>=g.week?t("עמדת ביעד השבועי! 🏆","הגעת ליעד השבועי! 🏆"):"עוד "+(g.week-wc)+" אימונים ליעד השבועי"}),
     el("button",{class:"btn",style:"width:100%",text:"✏️ עריכת יעדים",on:{click:editGoals}}))}
 function showLast(){const r=L.get("gym:history",[])[0];
   ov(el("div",{class:"wk"},el("b",{text:"🕙 האימון האחרון"}),closeBtn(()=>ov())),
     r?el("div",{style:"margin-top:8px"},el("b",{style:"font-size:17px",text:r.name}),el("div",{class:"mu",text:fmtDate(r.t)}),el("div",{class:"num",style:"margin:6px 0",text:sumLine(r)}),
       el("div",{class:"mu",text:(r.ex||[]).map(x=>x.n).join(" · ")}),photoBlock(r,()=>showLast()),
       el("button",{class:"btn g",style:"width:100%;margin-top:10px",text:"📜 כל ההיסטוריה",on:{click:showHistory}}))
-     :el("div",{class:"mu",style:"margin-top:10px",text:"עוד לא סיימת אימון – בהצלחה באימון הראשון! 💪"}))}
+     :el("div",{class:"mu",style:"margin-top:10px",text:t("עוד לא סיימת אימון – בהצלחה באימון הראשון! 💪","עדיין אין אימון שהסתיים – בהצלחה באימון הראשון! 💪")}))}
 function showToday(k){
   ov(el("div",{class:"wk"},el("b",{text:k.name}),closeBtn(()=>ov())),el("div",{class:"mu",text:(k.items||[]).length+" תרגילים"}),
     itemsList(k),el("button",{class:"btn",style:"width:100%;margin-top:12px",text:active()&&active().wid===k.id?"▶ המשך אימון":"▶ תחילת אימון",on:{click:()=>{ov();active()&&active().wid===k.id?openSession(k.id):startWorkout(k.id)}}}))}
@@ -695,6 +748,7 @@ document.querySelectorAll(".tabs button").forEach(b=>b.onclick=()=>{tab=+b.datas
 $("#go").onclick=pickStart;$("#gear").onclick=openSettings;
 $("#fab").onclick=()=>{const a=active();if(a)openSession(a.wid)};
 $("#lb").onclick=()=>{$("#lb").style.display="none"};
+applyAlfaDom();
 render();updFab();
 (async()=>{
   if(typeof claude==="undefined"){localMode=true;canEdit=true;applyLocal();render();updFab();return}
