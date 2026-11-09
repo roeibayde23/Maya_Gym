@@ -191,6 +191,15 @@ html.alfa .pop{overflow:hidden}
 html.alfa .pop h3{color:#0f1f3d}
 html.alfa #fab{background:#0f1f3d}
 
+/* ALFA gender icon toggle (settings top-left; not a .btn) */
+.setacts{display:inline-flex;align-items:center;gap:2px;flex:none}
+.alfa-sex{width:36px;height:36px;padding:0;margin:0;border:none;background:transparent;border-radius:99px;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;color:#0f1f3d;flex:none;-webkit-tap-highlight-color:transparent;appearance:none;font:inherit;box-shadow:none}
+.alfa-sex:focus-visible{outline:2px solid currentColor;outline-offset:2px}
+.alfa-sex svg{width:20px;height:20px;display:block}
+.alfa-sex.is-alfa{color:#e8658c}
+html.alfa .sh>.wk:first-child .alfa-sex{color:#e8658c}
+html.alfa .sh>.wk:first-child .alfa-sex.is-alfa{color:#e8658c}
+
 </style>
 </head>
 <body>
@@ -279,6 +288,14 @@ function applyAlfaDom(){
   const sb=document.querySelector('meta[name="apple-mobile-web-app-status-bar-style"]');if(sb)sb.setAttribute("content",on?"black-translucent":"default");
 }
 function setAlfa(on){L.set(ALFA_KEY,!!on);applyAlfaDom();render();updFab()}
+function alfaSexBtn(){
+  const on=isAlfa();
+  const b=el("button",{type:"button",class:"alfa-sex"+(on?" is-alfa":""),"aria-label":on?"חזרה למצב רגיל (Maya)":"הפעלת מצב ALFA (Roei)",title:on?"מצב רגיל · נקבה":"ALFA · זכר",on:{click:()=>{setAlfa(!isAlfa());openSettings()}}});
+  b.innerHTML=on
+    ?'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="9" r="5.25"/><path d="M12 14.25V21M9 18h6"/></svg>'
+    :'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10" cy="14" r="5.25"/><path d="M14.2 9.8L20 4M15.5 4H20v4.5"/></svg>';
+  return b;
+}
 
 let DATA={ex:[],wk:[],sch:[]};try{DATA=Object.assign(DATA,JSON.parse($("#data").textContent))}catch(_){}
 /* local mode (outside Claude): changes are kept only in this browser, layered over the published data */
@@ -302,9 +319,8 @@ function openSettings(){
     Object.keys(localStorage).filter(k=>k.startsWith("gym:ph:")).forEach(k=>localStorage.removeItem(k));L.set("gym:history",[]);Cloud.push();render();openSettings();toast("ההיסטוריה נמחקה")};
   const resetDev=()=>{if(!confirm("לאפס את האפליקציה במכשיר הזה? כל מה שלא נשמר בענן יימחק."))return;
     Object.keys(localStorage).filter(k=>k.startsWith("gym:")).forEach(k=>localStorage.removeItem(k));location.reload()};
-  ov(el("div",{class:"wk"},el("b",{text:"הגדרות"}),closeBtn(()=>ov())),
+  ov(el("div",{class:"wk"},el("b",{text:"הגדרות"}),el("div",{class:"setacts",dir:"ltr"},alfaSexBtn(),closeBtn(()=>ov()))),
     el("div",{class:"settings"},
-      sgroup("ALFA",srow("💙","ALFA",isAlfa()?"מצב גברי · נייבי וקרם · Roei":"כבוי – מצב רגיל (Maya)",isAlfa()?"פעיל":"כבוי",()=>{setAlfa(!isAlfa());openSettings()})),
       sgroup("פרופיל",srow("👤","שם",n?"מופיע בברכה בראש המסך":"עוד לא הוגדר שם",n||"הוספה",editName)),
       sgroup("מטרות",
         srow("🎯","יעד שבועי","כמה אימונים בשבוע",g.week+" אימונים",editGoals),
