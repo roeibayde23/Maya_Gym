@@ -6,7 +6,7 @@
   Cloud=api;window.Cloud=api;
   if(!C.url||!C.key||!localMode){return}
   let sb=null,timer=null,busy=false;
-  const snap=()=>({d:DATA,h:L.get("gym:history",[]),n:L.get("gym:name",""),g:L.get("gym:goals",null)});
+  const snap=()=>({d:DATA,h:H.all(),x:H.dels(),n:L.get("gym:name",""),g:L.get("gym:goals",null)});
   const mergeGoals=g=>{if(!g)return;const l=L.get("gym:goals",null);if(!l||(g.u||0)>(l.u||0))L.set("gym:goals",g)};
   /* after-photos: Supabase Storage bucket "gym-photos", path <user_id>/<t>.jpg (mockup – bucket not created yet) */
   api.photo=async(t,dataUrl)=>{try{if(!sb||!api.user)return;const b=await (await fetch(dataUrl)).blob();
@@ -45,25 +45,28 @@
     if(error)throw error;
     if(L.get("gym:dirty",false)){
       if(data&&data.data&&data.data.d){const c=data.data.d;["ex","wk","sch"].forEach(k=>{const ids=new Set((DATA[k]||[]).map(x=>x.id));(c[k]||[]).forEach(x=>{if(!ids.has(x.id))DATA[k].push(x)})});
-        const lh=L.get("gym:history",[]),ts=new Set(lh.map(r=>r.t));(data.data.h||[]).forEach(r=>{if(!ts.has(r.t))lh.push(r)});lh.sort((a,b)=>b.t-a.t);L.set("gym:history",lh.slice(0,200));mergeGoals(data.data.g);
+        H.merge(data.data.h,data.data.x);await H.save();mergeGoals(data.data.g);
         saveLocal();render();updFab();}
       await doPush();return}
     if(data&&data.data&&data.data.d){
       DATA=Object.assign({ex:[],wk:[],sch:[]},data.data.d);
-      if(Array.isArray(data.data.h))L.set("gym:history",data.data.h);
+      /* history is never replaced wholesale any more – it is merged, so a workout that only exists on this phone can't be wiped */
+      const srv=new Set((data.data.h||[]).map(r=>r.t));H.merge(data.data.h,data.data.x);await H.save();
       if(data.data.n)L.set("gym:name",data.data.n);mergeGoals(data.data.g);
       saveLocal();render();updFab();
+      if(H.all().some(r=>!srv.has(r.t)))await doPush();
     }else await doPush();
   }
   async function doPush(){
-    if(!api.user)return;busy=true;
+    if(!api.user)return;busy=true;const at=Date.now();
     const{error}=await sb.from("gym_state").upsert({user_id:api.user.id,data:snap(),updated_at:new Date().toISOString()});
     busy=false;
-    if(!error)L.set("gym:dirty",false);
+    /* only clear "dirty" if nothing changed while the upload was in flight */
+    if(!error){const d=L.get("gym:dirty",false);if(d===true||!(d>at))L.set("gym:dirty",false)}
     if(error){setStatus("השמירה בענן נכשלה – השינויים שמורים בטלפון הזה.",false);return}
     setStatus("");toast("נשמר בענן ☁️");
   }
-  api.ui=ui;api.push=()=>{L.set("gym:dirty",true);if(!api.user)return;clearTimeout(timer);timer=setTimeout(doPush,250)};
+  api.ui=ui;api.push=()=>{L.set("gym:dirty",Date.now());if(!api.user)return;clearTimeout(timer);timer=setTimeout(doPush,250)};
   const flush=()=>{if(api.user&&L.get("gym:dirty",false)){clearTimeout(timer);doPush()}};
   document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="hidden")flush()});
   window.addEventListener("pagehide",flush);

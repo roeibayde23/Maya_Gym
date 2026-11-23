@@ -211,6 +211,56 @@ html.alfa .sh-top .alfa-sex .side svg{color:#c9d4e8}
 html.alfa .sh-top .alfa-sex.is-alfa{background:#1a2b4c;border-color:#f5efe344}
 html.alfa .sh-top .alfa-sex.is-alfa .knob{background:#e8658c;color:#fff}
 
+/* ---- v9: per-set rows ---- */
+.sesshint{font-size:13px;margin:6px 0 2px}
+.sets2{display:flex;flex-direction:column;gap:6px;width:100%;margin-top:4px}
+.srw{display:flex;align-items:center;gap:8px;padding:5px 8px;border-radius:12px;background:var(--bg);border:1px solid var(--bd);transition:background .15s}
+.srw.on{background:var(--ac2);border-color:var(--ac)}
+.sck{width:32px;height:32px;flex:none;border-radius:50%;border:2px solid var(--bd);background:var(--card);color:#fff;font-weight:700;font-size:17px;line-height:1;display:grid;place-items:center;cursor:pointer;padding:0;font-family:inherit}
+.srw.on .sck{background:var(--ac);border-color:var(--ac)}
+.srw .sl{font-size:14px;font-weight:600;min-width:36px;flex:1}
+.srw .wfield{padding:0 8px 0 2px;gap:2px}.srw .wfield input{width:48px;padding:5px 2px!important;font-size:15px}
+.srw .x{opacity:.45;font-size:14px}
+.rfield{display:inline-flex;align-items:center;background:#f2eaf5;border-radius:99px;padding:0 8px 0 2px;gap:2px}.rfield input{width:36px;border:none!important;background:none!important;margin:0!important;padding:5px 2px!important;text-align:center;font-weight:700;font-size:15px}.rfield span{font-size:12px;color:#5c3a48}
+.srw input::placeholder{color:#b9a3ab;font-weight:600}
+html.alfa .rfield{background:#e4ebf5}html.alfa .rfield span{color:#0f1f3d}
+/* ---- v9: finish confirm ---- */
+.pop.conf .miss{list-style:none;padding:0;margin:10px 0 14px;font-size:14px;color:var(--mu)}.pop.conf .miss li{padding:2px 0}
+.pop .saved{display:inline-block;margin-top:8px;font-size:13px;font-weight:600;color:#2e7d4f;background:#e6f4ea;border-radius:99px;padding:2px 10px}
+/* ---- v9: history ---- */
+.hsum{display:flex;gap:8px;margin:10px 0}.hsum div{flex:1;background:var(--bg);border:1px solid var(--bd);border-radius:12px;padding:6px;text-align:center}.hsum b{display:block;font-size:20px;line-height:1.3}.hsum small{font-size:12px;color:var(--mu)}
+.htog{width:100%;display:flex;justify-content:space-between;align-items:center;background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:9px 12px;font:inherit;font-size:14px;font-weight:600;color:inherit;cursor:pointer;margin-bottom:10px}
+.hlist{background:var(--card);border:1px solid var(--bd);border-radius:16px;overflow:hidden}
+.hmon{padding:8px 14px 4px;font-size:12px;font-weight:700;color:var(--mu);background:var(--bg);border-top:1px solid var(--bd)}.hlist>.hmon:first-child{border-top:none}
+.hrow{display:flex;align-items:center;gap:12px;width:100%;padding:10px 12px;border:none;border-top:1px solid var(--bd);background:none;font:inherit;color:inherit;text-align:start;cursor:pointer}
+.hmon+.hrow{border-top:none}
+.hth{width:56px;height:56px;flex:none;border-radius:12px;background:var(--ac2);display:grid;place-items:center;font-size:24px;overflow:hidden}
+.hth img{width:100%;height:100%;object-fit:cover;display:block}
+.ht{flex:1;min-width:0}.ht b{display:block;font-size:16px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.ht small{display:block;color:var(--mu);font-size:13px}
+.aft.hdimg{max-height:320px;border-radius:14px;cursor:zoom-in}
+.tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:10px 0}.tile{background:var(--bg);border:1px solid var(--bd);border-radius:12px;padding:8px 4px;text-align:center}.tile b{display:block;font-size:18px;line-height:1.3}.tile small{color:var(--mu);font-size:12px}
+.hex{border-top:1px solid var(--bd);padding:9px 0}.hex .hh{display:flex;justify-content:space-between;align-items:baseline;gap:8px}.hex .hh b{font-size:15px}
+.hset{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}.hset span{font-size:13px;padding:3px 10px;border-radius:99px;background:var(--bg);border:1px solid var(--bd)}.hset span.on{background:var(--ac2);border-color:var(--ac)}.hset span.no{opacity:.5}
+.prb{font-size:12px;color:var(--ac);font-weight:700;margin-top:4px}
+/* ---- v9: floating rest timer ---- */
+#tmr{position:fixed;left:14px;bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:8}
+body.hasfab #tmr{bottom:calc(76px + env(safe-area-inset-bottom,0px))}
+body:has(#ov .sh.sess) #tmr{bottom:calc(16px + env(safe-area-inset-bottom,0px))}
+body.hastmr .sh.sess{padding-bottom:calc(88px + env(safe-area-inset-bottom,0px))}
+#tbtn{width:60px;height:60px;border-radius:50%;border:none;background:var(--tx);color:#fff;box-shadow:0 6px 18px #0004;display:grid;place-items:center;position:relative;cursor:pointer;padding:0;font-family:inherit}
+#tbtn svg{position:absolute;inset:0;width:100%;height:100%}
+#tbtn .tl{position:relative;font-weight:700;font-size:15px;font-variant-numeric:tabular-nums;direction:ltr}#tbtn .tl.ti{font-size:24px}
+#tbtn.run{background:var(--ac)}#tbtn.paused{background:#9a8189}
+#tbtn.done{background:#f4a261;animation:tflash .55s ease-in-out infinite alternate}
+@keyframes tflash{from{transform:scale(1)}to{transform:scale(1.13)}}
+#tpanel{position:absolute;left:0;bottom:72px;width:min(290px,calc(100vw - 28px));background:var(--card);border:1px solid var(--bd);border-radius:18px;box-shadow:0 14px 38px #0003;padding:12px 14px 14px;animation:pu .18s ease-out}
+#tpanel .seg2{margin:8px 0 4px}
+.tbig{font-size:46px;font-weight:700;text-align:center;font-variant-numeric:tabular-nums;line-height:1.15;margin:6px 0;flex:1}
+.tadj{display:flex;align-items:center;gap:6px}.tpm{width:46px;height:40px;border-radius:12px;border:1px solid var(--bd);background:var(--bg);color:var(--tx);font:inherit;font-weight:700;font-size:14px;cursor:pointer;direction:ltr}
+.tpre{display:flex;gap:6px;justify-content:center;margin-top:4px}.tpre .chip{flex:1;padding:6px 4px;text-align:center}
+.tctl{display:flex;gap:8px;margin-top:12px}.tctl .btn{flex:1;padding:11px}
+html.alfa #tbtn.run{background:#2563eb}html.alfa #tbtn{background:#0f1f3d}
+
 </style>
 </head>
 <body>
@@ -270,7 +320,47 @@ function migrate(){let ch=false;(DATA.ex||[]).forEach(e=>{if(e.muscle==="ידי�
 const DAYS=["ראשון","שני","שלישי","רביעי","חמישי","שישי","שבת"],SH=["א׳","ב׳","ג׳","ד׳","ה׳","ו׳","ש׳"];
 const $=s=>document.querySelector(s);
 const el=(t,p={},...k)=>{const e=document.createElement(t);for(const a in p){if(a==="on")for(const ev in p.on)e.addEventListener(ev,p.on[ev]);else if(a==="text")e.textContent=p[a];else e.setAttribute(a,p[a])}k.flat(Infinity).forEach(c=>c!=null&&c!==false&&e.append(c));return e};
-const L={get(k,d){try{const v=localStorage.getItem(k);return v==null?d:JSON.parse(v)}catch(_){return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(_){}}};
+const L={get(k,d){try{const v=localStorage.getItem(k);return v==null?d:JSON.parse(v)}catch(_){return d}},
+  /* returns true/false – never throws (Safari throws QuotaExceededError when localStorage is full) */
+  set(k,v){try{localStorage.setItem(k,JSON.stringify(v));return true}catch(e){L.err=e;return false}},
+  del(k){try{localStorage.removeItem(k)}catch(_){}},
+  keys(p){const o=[];try{for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(k&&k.startsWith(p))o.push(k)}}catch(_){}return o}};
+/* ---------- IndexedDB: big storage for photos + a mirror of the history (localStorage is only ~5MB) ---------- */
+const IDB=(()=>{let dbp=null;
+  const open=()=>dbp||(dbp=new Promise(res=>{try{if(!window.indexedDB)return res(null);const r=indexedDB.open("maya-gym",1);
+    r.onupgradeneeded=()=>{try{r.result.createObjectStore("kv")}catch(_){}};r.onsuccess=()=>res(r.result);r.onerror=()=>res(null);r.onblocked=()=>res(null);setTimeout(()=>res(null),4000)}catch(_){res(null)}}));
+  const run=(mode,fn)=>open().then(db=>{if(!db)return mode==="readonly"?undefined:false;
+    return new Promise(res=>{try{const t=db.transaction("kv",mode),q=fn(t.objectStore("kv"));let out;if(q)q.onsuccess=()=>{out=q.result};
+      t.oncomplete=()=>res(mode==="readonly"?out:true);t.onerror=t.onabort=()=>res(mode==="readonly"?undefined:false)}catch(_){res(mode==="readonly"?undefined:false)}})});
+  return{get:k=>run("readonly",s=>s.get(k)),put:(k,v)=>run("readwrite",s=>s.put(v,k)),del:k=>run("readwrite",s=>s.delete(k))}})();
+/* after-photos: IndexedDB first, localStorage only as a fallback */
+const PH={c:{},
+  async get(t){if(PH.c[t])return PH.c[t];let d=await IDB.get("ph:"+t);if(!d)d=L.get("gym:ph:"+t,null);if(d)PH.c[t]=d;return d||null},
+  async put(t,d){PH.c[t]=d;if(await IDB.put("ph:"+t,d)){L.del("gym:ph:"+t);return true}return L.set("gym:ph:"+t,d)},
+  async del(t){delete PH.c[t];L.del("gym:ph:"+t);await IDB.del("ph:"+t)},
+  /* move old base64 photos out of localStorage (they filled it up and blocked saving workouts) */
+  async migrate(){let n=0;for(const k of L.keys("gym:ph:")){const d=L.get(k,null),t=k.slice(7);if(!d){L.del(k);continue}
+    if(await IDB.put("ph:"+t,d)&&(await IDB.get("ph:"+t))===d){L.del(k);n++}}return n}};
+/* workout history: kept in memory, written to localStorage AND mirrored to IndexedDB, so a finished workout is never lost */
+const H={_h:null,
+  all(){if(!H._h){const h=L.get("gym:history",[]);H._h=Array.isArray(h)?h:[]}return H._h},
+  get:t=>H.all().find(r=>r.t===t),
+  dels(){return L.get("gym:hdel",[])},
+  async save(){const h=H.all();h.sort((a,b)=>b.t-a.t);if(h.length>300)h.length=300;
+    let ls=L.set("gym:history",h);if(!ls){freeLS();ls=L.set("gym:history",h)}
+    const db=await IDB.put("history",{h,x:H.dels(),at:Date.now()});H.lastLS=ls;H.lastDB=db;return ls||db},
+  async add(r){const h=H.all();if(!h.some(x=>x.t===r.t))h.unshift(r);return H.save()},
+  async remove(t){H._h=H.all().filter(r=>r.t!==t);const d=H.dels();if(!d.includes(t))d.push(t);L.set("gym:hdel",d.slice(-1000));await PH.del(t);return H.save()},
+  async clear(){const d=H.dels();H.all().forEach(r=>{if(!d.includes(r.t))d.push(r.t);PH.del(r.t)});L.set("gym:hdel",d.slice(-1000));L.keys("gym:ph:").forEach(L.del);H._h=[];return H.save()},
+  /* union by workout time; the newer copy (u) wins; deleted ids (tombstones) stay deleted. returns true if anything changed */
+  merge(list,dels){let ch=false;const kill=new Set(H.dels());(dels||[]).forEach(t=>{if(!kill.has(t)){kill.add(t)}});
+    if(dels&&dels.length)L.set("gym:hdel",[...kill].slice(-1000));
+    const m=new Map();H.all().forEach(r=>m.set(r.t,r));
+    (Array.isArray(list)?list:[]).forEach(r=>{if(!r||!r.t)return;const o=m.get(r.t);if(!o||(r.u||0)>(o.u||0)){m.set(r.t,r);ch=true}});
+    const out=[...m.values()].filter(r=>!kill.has(r.t)).sort((a,b)=>b.t-a.t);if(out.length!==H.all().length)ch=true;H._h=out;return ch},
+  async boot(){const x=await IDB.get("history");if(x&&Array.isArray(x.h)){if(H.merge(x.h,x.x)){await H.save();return true}}else await H.save();return false}};
+/* free localStorage space that can be rebuilt: stale copies and old session scratch */
+function freeLS(){L.del("gym:backup");const a=L.get("gym:active",null),cur=a?"gym:s:"+a.wid+":"+a.d:"";L.keys("gym:s:").forEach(k=>{if(k!==cur)L.del(k)})}
 
 /* ---------- ALFA mode ---------- */
 const ALFA_KEY="gym:alfa";
@@ -321,14 +411,14 @@ function srow(ic,t,sub,right,fn,cls){return el(fn?"button":"div",Object.assign({
   el("span",{class:"sic",text:ic}),el("span",{class:"stx"},el("b",{text:t}),sub?el("small",{text:sub}):null),right!=null?(typeof right==="string"?el("span",{class:"sval",text:right}):right):null,fn?el("span",{class:"chev",text:"‹"}):null)}
 function sgroup(h,...rows){return el("section",{class:"sgrp"},el("h4",{text:h}),el("div",{class:"slist"},rows))}
 function openSettings(){
-  const g=goals(),n=L.get("gym:name",""),h=L.get("gym:history",[]);
+  const g=goals(),n=L.get("gym:name",""),h=H.all();
   const cb=el("div",{id:"cloudbox"}),note=el("small",{id:"savenote",text:"התרגילים, האימונים והלוז נשמרים כרגע רק במכשיר הזה"});
   const T={min:"דקות",sets:"סטים",ex:"תרגילים"};
   const editName=()=>{const v=prompt("איך לקרוא לך?",n);if(v!=null&&v.trim()){L.set("gym:name",v.trim().slice(0,20));Cloud.push();greet();openSettings()}};
-  const exportData=()=>{const o={v:1,at:new Date().toISOString(),data:DATA,history:L.get("gym:history",[]),goals:L.get("gym:goals",null),name:L.get("gym:name","")};
+  const exportData=()=>{const o={v:1,at:new Date().toISOString(),data:DATA,history:H.all(),goals:L.get("gym:goals",null),name:L.get("gym:name","")};
     const a=el("a",{href:URL.createObjectURL(new Blob([JSON.stringify(o)],{type:"application/json"})),download:(isAlfa()?"roei":"maya")+"-gym-"+new Date().toISOString().slice(0,10)+".json"});a.click();toast("הגיבוי ירד למכשיר ✓")};
   const clearHist=()=>{if(!confirm("למחוק את כל היסטוריית האימונים והתמונות? אי אפשר לבטל."))return;
-    Object.keys(localStorage).filter(k=>k.startsWith("gym:ph:")).forEach(k=>localStorage.removeItem(k));L.set("gym:history",[]);Cloud.push();render();openSettings();toast("ההיסטוריה נמחקה")};
+    H.clear().then(()=>{Cloud.push();render();openSettings();toast("ההיסטוריה נמחקה")})};
   const resetDev=()=>{if(!confirm("לאפס את האפליקציה במכשיר הזה? כל מה שלא נשמר בענן יימחק."))return;
     Object.keys(localStorage).filter(k=>k.startsWith("gym:")).forEach(k=>localStorage.removeItem(k));location.reload()};
   ov(el("div",{class:"sh-top"},el("div",{class:"sh-handle","aria-hidden":"true"}),el("div",{class:"wk"},el("b",{text:"הגדרות"}),alfaSexBtn())),
@@ -341,7 +431,7 @@ function openSettings(){
       sgroup("נתונים",
         srow("📊","היסטוריית אימונים",h.length+" אימונים שמורים",null,()=>{ov();showHistory()}),
         srow("💾","הורדת גיבוי","קובץ עם כל התרגילים, האימונים וההיסטוריה",null,exportData)),
-      sgroup("אודות",srow(isAlfa()?"🏋️":"💗",brandGym(),"גרסה 8 · האפליקציה עובדת גם בלי חיבור לאינטרנט",null)),
+      sgroup("אודות",srow(isAlfa()?"🏋️":"💗",brandGym(),"גרסה 9 · האפליקציה עובדת גם בלי חיבור לאינטרנט",null)),
       el("section",{class:"sgrp danger"},el("h4",{text:"פעולות שאי אפשר לבטל"}),el("div",{class:"slist"},
         srow("🗑️","מחיקת היסטוריית האימונים","כולל תמונות האחרי",null,clearHist,"red"),
         srow("↺","איפוס האפליקציה במכשיר","מוחק את הנתונים מהטלפון הזה בלבד",null,resetDev,"red")))));
@@ -439,10 +529,12 @@ function render(){normEx();
 }
 
 /* ---------- active workout ---------- */
-const keyFor=id=>"gym:s:"+id+":"+today();
-function active(){const a=L.get("gym:active",null);return a&&a.d===today()&&wkById(a.wid)?a:null}
+/* session scratch is keyed by the day the workout STARTED, so a workout that crosses midnight is not lost */
+const keyFor=id=>{const a=L.get("gym:active",null);return "gym:s:"+id+":"+(a&&a.wid===id&&a.d||today())};
+const ACT_MAX=12*36e5;
+function active(){const a=L.get("gym:active",null);return a&&wkById(a.wid)&&(a.d===today()||(a.st&&Date.now()-a.st<ACT_MAX))?a:null}
 function prog(id){const k=wkById(id),st=L.get(keyFor(id),{d:{}});const tot=(k.items||[]).reduce((a,it)=>a+(+it.sets||1),0);return Object.values(st.d||{}).filter(Boolean).length+"/"+tot}
-function updFab(){const a=active(),f=$("#fab");const sh=!!a&&tab!==0;document.body.classList.toggle("hasfab",sh);if(!sh){f.hidden=true;return}f.hidden=false;f.textContent="🔥 "+wkById(a.wid).name+" · "+prog(a.wid)}
+function updFab(){const a=active(),f=$("#fab");const sh=!!a&&tab!==0;document.body.classList.toggle("hasfab",sh);if(window.Timer)Timer.sync(!!a);if(!sh){f.hidden=true;return}f.hidden=false;f.textContent="🔥 "+wkById(a.wid).name+" · "+prog(a.wid)}
 function pickStart(){
   ov(el("div",{class:"wk"},el("b",{text:"איזה אימון מתחילים?"}),closeBtn(()=>ov())),el("div",{style:"height:8px"}),
     DATA.wk.length?DATA.wk.map(k=>el("button",{class:"setb",style:"display:block;width:100%;text-align:start;margin-bottom:8px",text:k.name+" · "+(k.items||[]).length+" תרגילים",on:{click:()=>startWorkout(k.id)}}))
@@ -479,52 +571,106 @@ function noteBox(ex){
     const e=exById(ex.id);if(!e)return;if(v)e.my=v;else delete e.my;ex.my=e.my;commit();st.textContent="נשמר ✓";
     document.querySelectorAll('[data-my="'+ex.id+'"]').forEach(d=>{d.textContent=v?"📝 "+v:"";d.hidden=!v})},600)});
   return el("div",{class:"mnw"},el("div",{class:"xdh",text:"📝 הערות שלי"}),el("div",{class:"mu",style:"margin-bottom:4px",text:"אפשר לערוך מתי שרוצים, גם באמצע אימון. נשמר אוטומטית."}),ta,st)}
+function sessGet(id){const st=L.get(keyFor(id),{})||{};st.d=st.d||{};st.w=st.w||{};st.sw=st.sw||{};st.sr=st.sr||{};return st}
+let saveWarned=0;
+function warnStorage(){if(Date.now()-saveWarned<60000)return;saveWarned=Date.now();
+  setStatus(t("⚠️ האחסון בטלפון מלא – חלק מהשינויים לא נשמרו. כדאי להוריד גיבוי בהגדרות ולמחוק תמונות ישנות.","⚠️ האחסון בטלפון מלא – חלק מהשינויים לא נשמרו. כדאי להוריד גיבוי בהגדרות ולמחוק תמונות ישנות."),false)}
 function openSession(id){
   const k=wkById(id);if(!k)return;
-  const key=keyFor(id);let st=L.get(key,{d:{},w:{}});st.d=st.d||{};st.w=st.w||{};
-  const save=()=>{L.set(key,st);updFab()};
+  const key=keyFor(id),st=sessGet(id);
+  /* every tap/keystroke is saved immediately, so backgrounding / closing the app mid-workout loses nothing */
+  const save=()=>{st.u=Date.now();if(!L.set(key,st)){freeLS();if(!L.set(key,st))warnStorage()}updFab()};
   const items=k.items||[],total=items.reduce((a,it)=>a+(+it.sets||1),0);
   const bar=el("div",{class:"pbar"},el("i")),cnt=el("span",{class:"mu"}),body=el("div");
   const upd=()=>{const d=Object.values(st.d).filter(Boolean).length;cnt.textContent=d+" / "+total+" סטים"+(total&&d>=total?" 🎉 כל הכבוד!":"");bar.firstChild.style.width=(total?Math.min(100,d/total*100):0)+"%"};
   items.forEach((it,i)=>{
-    const ex=exById(it.ex),n=+it.sets||1,row=el("div",{class:"sets"}),open=()=>showExercise(ex,it);
+    const ex=exById(it.ex),n=+it.sets||1,list=el("div",{class:"sets2"}),open=()=>showExercise(ex,it);
     const th=thumb(ex,"th");th.addEventListener("click",open);
     const nm=el("b",{class:"nm",text:(i+1)+". "+(ex?ex.name:"(תרגיל נמחק)")+" ⓘ",on:{click:open}});
     const lw=L.get("gym:lw:"+it.ex,"");
     const [wf,wi]=wIn(st.w[i]||"",it.w||lw||"0");
-    wi.addEventListener("input",()=>{st.w[i]=wi.value;if(wi.value)L.set("gym:lw:"+it.ex,wi.value);save()});
+    const paints=[];
+    wi.addEventListener("input",()=>{st.w[i]=wi.value;if(wi.value)L.set("gym:lw:"+it.ex,wi.value);save();paints.forEach(f=>f())});
     const card=el("div",{class:"item",style:"flex-wrap:wrap"},th,el("div",{class:"n"},nm,el("div",Object.assign({class:"myn","data-my":it.ex,text:ex&&ex.my?"📝 "+ex.my:""},ex&&ex.my?{}:{hidden:""}))),
-      el("div",{class:"wt"},el("span",{class:"wl",text:"🏋️ משקל"}),wf,it.w||lw?el("small",{class:"mu",text:it.w?"יעד: "+it.w+" ק״ג":"קודם: "+lw+" ק״ג"}):null),row);
+      el("div",{class:"wt"},el("span",{class:"wl",text:"🏋️ משקל לכל הסטים"}),wf,it.w||lw?el("small",{class:"mu",text:it.w?"יעד: "+it.w+" ק״ג":"קודם: "+lw+" ק״ג"}):null),list);
     const mark=()=>card.classList.toggle("fin",Array.from({length:n},(_,j)=>st.d[i+"_"+j]).every(Boolean));
     for(let j=0;j<n;j++){
-      const lbl=()=>(st.d[i+"_"+j]?"✓ ":"")+"סט "+(j+1)+(it.reps?" · "+it.reps:"");
-      const b=el("button",{class:"setb"+(st.d[i+"_"+j]?" on":""),text:lbl()});
-      b.onclick=()=>{st.d[i+"_"+j]=!st.d[i+"_"+j];b.classList.toggle("on",!!st.d[i+"_"+j]);b.textContent=lbl();save();mark();upd()};
-      row.append(b);
+      const kk=i+"_"+j;
+      const chk=el("button",{type:"button",class:"sck","aria-label":"סימון סט "+(j+1)+" כבוצע"});
+      const si=el("input",{inputmode:"decimal",class:"wnum swi","aria-label":"משקל בסט "+(j+1),value:st.sw[kk]||""});numOnly(si);
+      const ri=el("input",{inputmode:"numeric",class:"rnum","aria-label":"חזרות בסט "+(j+1),value:st.sr[kk]||""});numOnly(ri);
+      const row=el("div",{class:"srw","data-set":kk},chk,el("span",{class:"sl",text:"סט "+(j+1)}),
+        el("label",{class:"wfield"},si,el("span",{text:"ק״ג"})),el("span",{class:"x",text:"×"}),el("label",{class:"rfield"},ri,el("span",{text:"חזרות"})));
+      const paint=()=>{const on=!!st.d[kk];row.classList.toggle("on",on);chk.textContent=on?"✓":"";chk.setAttribute("aria-pressed",on?"true":"false");
+        si.placeholder=st.w[i]||it.w||lw||"0";ri.placeholder=String(it.reps||"0").trim()};
+      chk.onclick=()=>{st.d[kk]=!st.d[kk];save();paint();mark();upd()};
+      si.addEventListener("input",()=>{if(si.value)st.sw[kk]=si.value;else delete st.sw[kk];save()});
+      ri.addEventListener("input",()=>{if(ri.value)st.sr[kk]=ri.value;else delete st.sr[kk];save()});
+      paints.push(paint);paint();list.append(row);
     }
     mark();body.append(card);
   });
   upd();updFab();
   ov(el("div",{class:"wk"},el("b",{text:"🔥 "+k.name}),el("button",{class:"btn g s",text:"הקטן ↓",on:{click:()=>{ov();updFab()}}})),cnt,bar,
+    el("div",{class:"mu sesshint",text:"לחיצה על העיגול מסמנת סט. אפשר לשנות משקל וחזרות לכל סט בנפרד."}),
     items.length?body:el("div",{class:"mu",text:"האימון ריק"}),
-    el("div",{class:"row",style:"margin-top:12px"},
-      el("button",{class:"btn",text:"סיים אימון",on:{click:()=>{const r=addHistory(k,st);L.set(key,{d:{},w:{}});L.set("gym:active",null);ov();updFab();render();if(r)showFinish(r);else toast(t("סיימת אימון! 💪","האימון הסתיים! 💪"))}}}),
-      el("button",{class:"btn g",text:"אפס סימונים",on:{click:()=>{L.set(key,{d:{},w:{}});openSession(id)}}})));
+    el("div",{class:"row sessend",style:"margin-top:12px"},
+      el("button",{class:"btn",id:"finishBtn",text:"סיים אימון",on:{click:()=>finishFlow(k,st,key)}}),
+      el("button",{class:"btn g",text:"אפס סימונים",on:{click:()=>{if(!confirm("לאפס את כל הסימונים והמשקלים של האימון הזה?"))return;L.set(key,{d:{},w:{}});openSession(id)}}})));
+  const sh=$("#ov .sh");if(sh)sh.classList.add("sess");
 }
-
-/* ---------- history (saved per device) ---------- */
-function addHistory(k,st){
-  let done=0,total=0;
-  const ex=(k.items||[]).map((it,i)=>{const n=+it.sets||1;let d=0;for(let j=0;j<n;j++)if(st.d[i+"_"+j])d++;done+=d;total+=n;const e=exById(it.ex);return{n:e?e.name:"?",d,t:n,w:st.w[i]||""}});
-  if(!done)return null;
-  const a=L.get("gym:active",null),t=Date.now(),dur=a&&a.st?Math.round((t-a.st)/60000):null;
-  const vol=Math.round((k.items||[]).reduce((v,it,i)=>{const w=parseFloat(st.w[i])||0,r=parseInt(it.reps)||0;return v+w*r*ex[i].d},0));
-  const rec={t,name:k.name,done,total,ex,wid:k.id};if(dur!=null)rec.dur=dur;if(vol)rec.vol=vol;
-  const h=L.get("gym:history",[]);h.unshift(rec);L.set("gym:history",h.slice(0,200));Cloud.push();return rec;
+function setsDone(k,st){let done=0,total=0;const miss=[];(k.items||[]).forEach((it,i)=>{const n=+it.sets||1;let d=0;for(let j=0;j<n;j++)if(st.d[i+"_"+j])d++;done+=d;total+=n;
+  if(d<n){const e=exById(it.ex);miss.push((e?e.name:"?")+" · "+d+"/"+n)}});return{done,total,miss}}
+/* "סיים אימון": confirm when not everything is marked, then ALWAYS save */
+function finishFlow(k,st,key){
+  const {done,total,miss}=setsDone(k,st);
+  if(total&&done>=total){doFinish(k,st,key,false);return}
+  const o=$("#ov2"),close=()=>o.replaceChildren();
+  const card=el("div",{class:"pop conf"},
+    el("div",{class:"pic",text:done?"🤔":"✋"}),
+    el("h3",{text:done?"לא כל התרגילים סומנו":"עוד לא סימנת אף סט"}),
+    el("div",{class:"mu",text:"סומנו "+done+" מתוך "+total+" סטים. "+t("סיימת את כל התרגילים?","סיימת את כל התרגילים?")}),
+    miss.length?el("ul",{class:"miss"},miss.slice(0,4).map(m=>el("li",{text:m})),miss.length>4?el("li",{text:"ועוד "+(miss.length-4)+"…"}):null):null,
+    el("button",{class:"btn big",id:"finAll",text:"✓ כן, סמן הכל כבוצע וסיים",on:{click:()=>{close();doFinish(k,st,key,true)}}}),
+    el("button",{class:"btn g big",id:"finAsIs",style:"margin-top:8px",text:"סיים בלי לסמן",on:{click:()=>{close();doFinish(k,st,key,false)}}}),
+    el("button",{class:"lnk",id:"finBack",text:"חזרה לאימון",on:{click:close}}));
+  o.replaceChildren(el("div",{class:"popbg",on:{click:e=>{if(e.target===e.currentTarget)close()}}},card));
 }
-let histM=null,histEx=null;
+let finishing=false;
+async function doFinish(k,st,key,markAll){
+  if(finishing)return;finishing=true;
+  try{
+    if(markAll){(k.items||[]).forEach((it,i)=>{for(let j=0;j<(+it.sets||1);j++)st.d[i+"_"+j]=true});st.u=Date.now();L.set(key,st)}
+    const rec=buildRec(k,st);
+    const ok=await H.add(rec);
+    if(!ok){H._h=H.all().filter(r=>r.t!==rec.t);
+      setStatus(t("⚠️ לא הצלחתי לשמור את האימון – האחסון בטלפון מלא. האימון עדיין פתוח ושום דבר לא נמחק.","⚠️ לא הצלחתי לשמור את האימון – האחסון בטלפון מלא. האימון עדיין פתוח ושום דבר לא נמחק."),false);
+      $("#status").append(el("button",{text:"נסה שוב",on:{click:()=>{setStatus("");doFinish(k,st,key,false)}}}));return}
+    if(!H.lastLS)toast("האימון נשמר ✓");
+    L.del(key);L.del("gym:active");L.set("gym:finpend",rec.t);Cloud.push();
+    if(window.Timer)Timer.reset();
+    ov();ov2();updFab();render();showFinish(rec);
+  }finally{finishing=false}
+}
+/* ---------- history (saved per device + cloud) ---------- */
+function buildRec(k,st,o){o=o||{};let done=0,total=0,vol=0;
+  const ex=(k.items||[]).map((it,i)=>{const n=+it.sets||1,e=exById(it.ex),lw=L.get("gym:lw:"+it.ex,""),s=[];let d=0,mx=0;
+    for(let j=0;j<n;j++){const kk=i+"_"+j,dn=!!(st.d&&st.d[kk]),w=String((st.sw&&st.sw[kk])||(st.w&&st.w[i])||it.w||lw||"").trim(),r=String((st.sr&&st.sr[kk])||it.reps||"").trim();
+      s.push({w,r,d:dn?1:0});if(dn){d++;const wf=parseFloat(w.replace(",","."))||0;vol+=wf*(parseInt(r)||0);if(wf>mx)mx=wf}}
+    done+=d;total+=n;return{n:e?e.name:"?",id:it.ex,d,t:n,w:mx?String(mx):String((st.w&&st.w[i])||""),s}});
+  const a=o.a||L.get("gym:active",null),tt=o.t||Date.now(),dur=a&&a.st?Math.round((tt-a.st)/60000):null;
+  const rec={t:tt,u:Date.now(),name:k.name,done,total,ex,wid:k.id};if(dur!=null&&dur>=0)rec.dur=dur;if(vol)rec.vol=Math.round(vol);if(o.auto)rec.auto=1;return rec}
+/* a workout left open (app closed without "סיים אימון") is saved automatically instead of silently disappearing */
+async function rescueStale(){
+  const a=L.get("gym:active",null);if(!a||active())return;
+  const k=wkById(a.wid),key="gym:s:"+a.wid+":"+a.d,st=L.get(key,null);
+  if(k&&st&&(Object.values(st.d||{}).some(Boolean)||Object.values(st.w||{}).some(Boolean)||Object.keys(st.sw||{}).length)){
+    st.d=st.d||{};const rec=buildRec(k,st,{a,t:st.u||a.st||Date.now(),auto:1});
+    if(!(await H.add(rec)))return;toast("האימון הקודם נשמר אוטומטית בהיסטוריה 💾")}
+  L.del(key);L.del("gym:active");render();updFab()}
+let histM=null,histEx=null,histMore=false;
 function histData(){
-  const h=L.get("gym:history",[]);
+  const h=H.all();
   const asc=h.map((r,i)=>({...r,idx:i})).sort((a,b)=>a.t-b.t);
   const best={},prs={},series={};
   asc.forEach(r=>(r.ex||[]).forEach(x=>{const w=parseFloat(String(x.w).replace(",","."));if(!(w>0)||!x.d)return;
@@ -564,22 +710,45 @@ function histChart(series,best){
     svg,el("div",{class:"row",style:"justify-content:space-between"},el("span",{class:"num",text:"🏆 שיא: "+best[histEx]+" ק״ג"}),
       el("span",{class:"mu",text:pts.length<2?"אימון אחד עד עכשיו":(diff>0?"+"+diff+" ק״ג מההתחלה 🔥":diff<0?diff+" ק״ג מההתחלה":"אותו משקל כמו בהתחלה")})));
 }
+function phSrc(r){return r&&r.ph?PH.get(r.t).then(d=>d||r.phUrl||null):Promise.resolve(r&&r.phUrl||null)}
+function hThumb(r){const b=el("div",{class:"hth",text:"🏋️"});phSrc(r).then(s=>{if(s)b.replaceChildren(el("img",{src:s,alt:"תמונת אחרי"}))});return b}
+const fmtDay=t=>new Date(t).toLocaleDateString("he-IL",{weekday:"long",day:"numeric",month:"numeric"});
+const fmtHM=t=>new Date(t).toLocaleTimeString("he-IL",{hour:"2-digit",minute:"2-digit"});
 function showHistory(){
   const {h,best,prs,series}=histData();
-  const parts=[el("div",{class:"wk"},el("b",{text:"📜 היסטוריית אימונים"}),closeBtn(()=>ov())),el("div",{class:"mu",text:Cloud.user?"נשמרת בענן ☁️":"נשמרת בטלפון הזה בלבד"})];
-  if(!h.length){parts.push(el("div",{class:"empty",text:"עוד אין אימונים שהסתיימו. אחרי \"סיים אימון\" הם יופיעו כאן."}));ov(...parts);return}
-  parts.push(histCal(h),histChart(series,best),el("b",{class:"h2",style:"display:block",text:"🗓️ כל האימונים"}));
-  h.forEach((r,idx)=>{
-    const d=new Date(r.t),pr=prs[r.t]||[];
-    parts.push(el("div",{class:"item",style:"align-items:flex-start"},el("div",{class:"n"},
-      el("b",{text:r.name+(pr.length?" 🏆":"")}),
-      el("div",{class:"mu",text:d.toLocaleDateString("he-IL",{weekday:"long",day:"numeric",month:"numeric"})+" · "+d.toLocaleTimeString("he-IL",{hour:"2-digit",minute:"2-digit"})+" · "+r.done+"/"+r.total+" סטים"}),
-      (r.ex||[]).map(x=>el("div",{class:"mu",text:"• "+x.n+" – "+x.d+"/"+x.t+" סטים"+(x.w?" · "+x.w+" ק״ג":"")+(pr.includes(x.n)?"  🏆 שיא חדש!":"")})),
-      photoBlock(r,()=>showHistory())),
-      el("button",{class:"btn g s",text:"🗑️ מחק",on:{click:()=>{if(confirm("למחוק מההיסטוריה?")){const a=L.get("gym:history",[]);a.splice(idx,1);L.set("gym:history",a);Cloud.push();showHistory()}}}})));
-  });
-  parts.push(el("button",{class:"btn g",style:"margin-top:14px;width:100%",text:"🗑️ מחק את כל ההיסטוריה",on:{click:()=>{if(confirm("למחוק את כל ההיסטוריה?")){L.set("gym:history",[]);Cloud.push();showHistory()}}}}));
+  const parts=[el("div",{class:"wk"},el("b",{text:"📜 היסטוריית אימונים"}),closeBtn(()=>ov()))];
+  if(!h.length){parts.push(el("div",{class:"mu",text:Cloud.user?"נשמרת בענן ☁️":"נשמרת בטלפון הזה"}),el("div",{class:"empty",text:"עוד אין אימונים שהסתיימו. אחרי \"סיים אימון\" הם יופיעו כאן."}));ov(...parts);return}
+  const now=new Date(),mo=h.filter(r=>{const d=new Date(r.t);return d.getMonth()===now.getMonth()&&d.getFullYear()===now.getFullYear()}).length,wc=h.filter(r=>r.t>=weekStart()).length;
+  parts.push(el("div",{class:"hsum"},el("div",{},el("b",{text:String(h.length)}),el("small",{text:"אימונים"})),el("div",{},el("b",{text:String(mo)}),el("small",{text:"החודש"})),el("div",{},el("b",{text:String(wc)}),el("small",{text:"השבוע"}))));
+  parts.push(el("button",{class:"htog",type:"button",on:{click:()=>{histMore=!histMore;showHistory()}}},el("span",{text:"📈 לוח חודשי והתקדמות במשקל"}),el("span",{class:"chev",text:histMore?"▲":"▼"})));
+  if(histMore)parts.push(histCal(h),histChart(series,best));
+  const list=el("div",{class:"hlist"});let lastM="";
+  h.forEach(r=>{const d=new Date(r.t),m=d.toLocaleDateString("he-IL",{month:"long",year:"numeric"}),pr=prs[r.t]||[];
+    if(m!==lastM){lastM=m;list.append(el("div",{class:"hmon",text:m}))}
+    list.append(el("button",{class:"hrow",type:"button","data-t":String(r.t),on:{click:()=>showHistDetail(r.t)}},hThumb(r),
+      el("div",{class:"ht"},el("b",{text:r.name+(pr.length?" 🏆":"")}),el("small",{text:fmtDay(r.t)+" · "+fmtHM(r.t)})),
+      el("span",{class:"chev",text:"‹"})))});
+  parts.push(list,el("div",{class:"mu",style:"text-align:center;margin-top:10px;font-size:13px",text:Cloud.user?"☁️ ההיסטוריה נשמרת בענן":"📱 ההיסטוריה נשמרת בטלפון הזה"}));
   ov(...parts);
+}
+function showHistDetail(t0){
+  const r=H.get(t0);if(!r)return;const{prs}=histData(),pr=prs[r.t]||[];
+  const tile=(v,l)=>el("div",{class:"tile"},el("b",{text:v}),el("small",{text:l}));
+  const exs=(r.ex||[]).map(x=>{const sets=Array.isArray(x.s)&&x.s.length?x.s:null;
+    return el("div",{class:"hex"},el("div",{class:"hh"},el("b",{text:x.n+(pr.includes(x.n)?" 🏆":"")}),el("span",{class:"mu",text:x.d+"/"+x.t+" סטים"})),
+      sets?el("div",{class:"hset"},sets.map((q,j)=>el("span",{class:q.d?"on":"no",text:"סט "+(j+1)+": "+(q.w?q.w+" ק״ג":"—")+" × "+(q.r||"—")}))):
+        el("div",{class:"mu",style:"font-size:13px",text:x.w?"🏋️ "+x.w+" ק״ג":"בלי משקל"}),
+      pr.includes(x.n)?el("div",{class:"prb",text:"🏆 שיא חדש!"}):null)});
+  const note=el("textarea",{class:"mynote",rows:2,placeholder:"איך היה? (נשמר אוטומטית)"});note.value=r.note||"";
+  const nst=el("small",{class:"mu"});let nt;
+  note.addEventListener("input",()=>{nst.textContent="שומר…";clearTimeout(nt);nt=setTimeout(async()=>{const x=H.get(t0);if(!x)return;const v=note.value.trim();if(v)x.note=v;else delete x.note;x.u=Date.now();await H.save();Cloud.push();nst.textContent="נשמר ✓"},600)});
+  ov2(el("div",{class:"wk"},el("b",{text:r.name}),closeBtn(()=>ov2())),
+    el("div",{class:"mu",text:fmtDay(r.t)+" · "+fmtHM(r.t)+(r.auto?" · נשמר אוטומטית":"")}),
+    photoBlock(r,()=>{showHistDetail(t0);if($("#ov").children.length)showHistory()},true),
+    el("div",{class:"tiles"},tile(r.dur!=null?r.dur+" דק׳":"—","⏱️ משך"),tile(r.done+"/"+r.total,"✓ סטים"),tile(r.vol?r.vol.toLocaleString("he-IL"):"—","🏋️ נפח (ק״ג)")),
+    el("div",{class:"xdh",text:"💪 תרגילים"}),exs,
+    el("div",{class:"xdh",text:"📝 הערות"}),note,nst,
+    el("button",{class:"btn g",style:"width:100%;margin-top:14px",text:"🗑️ מחיקת האימון מההיסטוריה",on:{click:async()=>{if(!confirm("למחוק את האימון הזה מההיסטוריה?"))return;await H.remove(t0);Cloud.push();ov2();showHistory();render()}}}));
 }
 
 /* ---------- weekly schedule ---------- */
@@ -635,26 +804,29 @@ function ring(v,n,lbl){const pct=n?Math.min(1,v/n):0,R=34,C=2*Math.PI*R,ns="http
   svg.setAttribute("viewBox","0 0 84 84");svg.setAttribute("class","ring");
   const P=alfaPal();svg.innerHTML='<circle cx="42" cy="42" r="'+R+'" fill="none" stroke="'+P.track+'" stroke-width="9"/><circle cx="42" cy="42" r="'+R+'" fill="none" stroke="'+(pct>=1?P.done:P.ac)+'" stroke-width="9" stroke-linecap="round" stroke-dasharray="'+(C*pct)+' '+C+'" transform="rotate(-90 42 42)"/><text x="42" y="47" text-anchor="middle" font-size="18" font-weight="700" fill="'+P.tx+'">'+v+'/'+n+'</text>';
   return el("div",{class:"rw"},svg,lbl?el("div",{class:"mu",text:lbl}):null)}
-function photoOf(r){return r&&r.ph?L.get("gym:ph:"+r.t,null)||r.phUrl||null:null}
-function photoBlock(r,after){
-  const src=photoOf(r),inp=el("input",{type:"file",accept:"image/*",style:"display:none"});
-  inp.onchange=async()=>{const f=inp.files[0];if(!f)return;try{const d=await compress(f,800);L.set("gym:ph:"+r.t,d);
-    const h=L.get("gym:history",[]),x=h.find(y=>y.t===r.t);if(x){x.ph=1;L.set("gym:history",h)}r.ph=1;
-    if(Cloud.photo)Cloud.photo(r.t,d);Cloud.push();toast("התמונה נשמרה 📸");after&&after()}catch(_){toast("לא הצלחתי לטעון את התמונה")}};
-  return el("div",{class:"phb"},src?el("img",{class:"aft",src,alt:"תמונת אחרי"}):null,inp,
-    el("button",{class:"btn g s",text:src?"🔄 החלף תמונה":"📷 הוסף תמונת אחרי",on:{click:()=>inp.click()}}),
-    src?el("button",{class:"btn g s",text:"🗑️ הסר",on:{click:()=>{L.del?L.del("gym:ph:"+r.t):localStorage.removeItem("gym:ph:"+r.t);const h=L.get("gym:history",[]),x=h.find(y=>y.t===r.t);if(x){delete x.ph;L.set("gym:history",h)}delete r.ph;Cloud.push();after&&after()}}}):null)}
+function photoBlock(r,after,big){
+  const inp=el("input",{type:"file",accept:"image/*",style:"display:none"});
+  const img=el("img",{class:"aft"+(big?" hdimg":""),alt:"תמונת אחרי",hidden:""});
+  const add=el("button",{class:"btn g s",text:"📷 הוסף תמונת אחרי",on:{click:()=>inp.click()}});
+  const rm=el("button",{class:"btn g s",text:"🗑️ הסר",hidden:"",on:{click:async()=>{if(!confirm("להסיר את התמונה?"))return;await PH.del(r.t);const x=H.get(r.t);if(x){delete x.ph;x.u=Date.now();await H.save()}delete r.ph;Cloud.push();after&&after()}}});
+  img.addEventListener("click",()=>{if(img.src){$("#lb img").src=img.src;$("#lb").style.display="flex"}});
+  phSrc(r).then(s=>{if(s){img.src=s;img.hidden=false;add.textContent="🔄 החלף תמונה";rm.hidden=false}});
+  inp.onchange=async()=>{const f=inp.files[0];if(!f)return;try{await savePhoto(r,f);toast("התמונה נשמרה 📸");after&&after()}catch(_){toast("לא הצלחתי לשמור את התמונה")}};
+  return el("div",{class:"phb"},img,inp,add,rm)}
 function sumLine(r){return [r.done+"/"+r.total+" סטים",(r.ex||[]).length+" תרגילים",r.dur!=null?"⏱️ "+r.dur+" דק׳":null,r.vol?"🏋️ "+r.vol.toLocaleString("he-IL")+" ק״ג נפח":null].filter(Boolean).join(" · ")}
-async function savePhoto(r,f){const d=await compress(f,800);L.set("gym:ph:"+r.t,d);
-  const h=L.get("gym:history",[]),x=h.find(y=>y.t===r.t);if(x){x.ph=1;L.set("gym:history",h)}r.ph=1;
+/* photo is saved separately from the workout: if it fails, the workout itself is already safe */
+async function savePhoto(r,f){const d=await compress(f,800);if(!(await PH.put(r.t,d)))throw new Error("photo-store");
+  const x=H.get(r.t);if(x){x.ph=1;x.u=Date.now();await H.save()}r.ph=1;
+  if(L.get("gym:finpend",null)===r.t)L.del("gym:finpend");
   if(Cloud.photo)Cloud.photo(r.t,d);Cloud.push();return d}
 function showFinish(r){
-  const o=$("#ov"),close=()=>{o.replaceChildren();render()};
+  const o=$("#ov"),close=()=>{L.del("gym:finpend");o.replaceChildren();render()};
   const inp=el("input",{type:"file",accept:"image/*",capture:"environment",style:"display:none"});
   const card=el("div",{class:"pop"});
   const ask=()=>card.replaceChildren(
     el("div",{class:"pic",text:"🎉"}),el("h3",{text:"כל הכבוד על האימון!"}),
     el("div",{class:"mu",text:r.name+" · "+sumLine(r)}),
+    el("div",{class:"saved",text:"✓ האימון נשמר בהיסטוריה"}),
     el("p",{class:"must",text:"חובה תמונה של אחרי 📸"}),
     el("button",{class:"btn big",text:"📷 מצלמה",on:{click:()=>inp.click()}}),inp,
     el("button",{class:"lnk",text:"אחר כך",on:{click:close}}));
@@ -662,7 +834,7 @@ function showFinish(r){
     try{const d=await savePhoto(r,f);card.replaceChildren(el("div",{class:"pic ok",text:"✓"}),el("h3",{text:"התמונה נשמרה!"}),
       el("img",{class:"aft",src:d,alt:"תמונת אחרי"}),el("div",{class:"mu",text:"אפשר לראות אותה ב„אימון אחרון” ובהיסטוריה"}),
       el("button",{class:"btn big",text:"סיום",on:{click:close}}));setTimeout(()=>{if(card.isConnected&&card.querySelector(".ok"))close()},4000)}
-    catch(_){ask();toast("לא הצלחתי לשמור את התמונה")}};
+    catch(_){ask();toast("לא הצלחתי לשמור את התמונה – האימון עצמו שמור ✓")}};
   ask();
   const bg=el("div",{class:"popbg",on:{click:e=>{if(e.target===bg)close()}}},card);o.replaceChildren(bg);
 }
@@ -677,7 +849,7 @@ function editGoals(){
     el("button",{class:"btn",style:"width:100%;margin-top:10px",text:"שמור יעדים",on:{click:()=>{setGoals({week:Math.max(1,+wk.value||3),dayOn:on.checked,dayType:ty.value,day:Math.max(1,+dv.value||1)});ov();toast("היעדים נשמרו 🎯")}}}));
 }
 function renderHome(){
-  const out=el("div",{class:"home"}),g=goals(),h=L.get("gym:history",[]),a=active();
+  const out=el("div",{class:"home"}),g=goals(),h=H.all(),a=active();
   // active
   if(a){const k=wkById(a.wid),m=a.st?Math.round((Date.now()-a.st)/60000):null;
     out.append(el("div",{class:"panel act"},el("div",{class:"wk"},el("b",{text:"🔥 אימון בתהליך"}),el("span",{class:"num",text:prog(a.wid)+" סטים"})),
@@ -706,7 +878,7 @@ function bub(ic,lbl,pct,fn){const b=el("button",{class:"bub",type:"button","aria
   if(pct!=null){const ns="http://www.w3.org/2000/svg",sv=document.createElementNS(ns,"svg");sv.setAttribute("viewBox","0 0 60 60");sv.setAttribute("class","bring");
     const C=2*Math.PI*27,P=alfaPal();sv.innerHTML='<circle cx="30" cy="30" r="27" fill="none" stroke="'+P.track+'" stroke-width="4"/><circle cx="30" cy="30" r="27" fill="none" stroke="'+(pct>=1?P.done:P.ac)+'" stroke-width="4" stroke-linecap="round" stroke-dasharray="'+C*pct+' '+C+'" transform="rotate(-90 30 30)"/>';c.append(sv)}
   b.append(c,el("small",{text:lbl}));return b}
-function goalVals(){const g=goals(),h=L.get("gym:history",[]),a=active(),tr=h.filter(r=>new Date(r.t).toDateString()===today());let v=0;
+function goalVals(){const g=goals(),h=H.all(),a=active(),tr=h.filter(r=>new Date(r.t).toDateString()===today());let v=0;
   if(g.dayType==="min")v=tr.reduce((s,r)=>s+(r.dur||0),0)+(a&&a.st?Math.round((Date.now()-a.st)/60000):0);
   else if(g.dayType==="sets")v=tr.reduce((s,r)=>s+r.done,0)+(a?+prog(a.wid).split("/")[0]:0);
   else v=tr.reduce((s,r)=>s+(r.ex||[]).filter(x=>x.d).length,0);
@@ -716,7 +888,7 @@ function showGoals(){const{g,wc,dv}=goalVals();
     el("div",{class:"rings"},ring(wc,g.week,"אימונים השבוע"),g.dayOn?ring(dv,g.day,"יעד יומי · "+({min:"דקות",sets:"סטים",ex:"תרגילים"})[g.dayType]):el("button",{class:"rw add",text:"+ יעד יומי",on:{click:editGoals}})),
     el("div",{class:"mu",style:"text-align:center;margin:6px 0 12px",text:wc>=g.week?t("עמדת ביעד השבועי! 🏆","הגעת ליעד השבועי! 🏆"):"עוד "+(g.week-wc)+" אימונים ליעד השבועי"}),
     el("button",{class:"btn",style:"width:100%",text:"✏️ עריכת יעדים",on:{click:editGoals}}))}
-function showLast(){const r=L.get("gym:history",[])[0];
+function showLast(){const r=H.all()[0];
   ov(el("div",{class:"wk"},el("b",{text:"🕙 האימון האחרון"}),closeBtn(()=>ov())),
     r?el("div",{style:"margin-top:8px"},el("b",{style:"font-size:17px",text:r.name}),el("div",{class:"mu",text:fmtDate(r.t)}),el("div",{class:"num",style:"margin:6px 0",text:sumLine(r)}),
       el("div",{class:"mu",text:(r.ex||[]).map(x=>x.n).join(" · ")}),photoBlock(r,()=>showLast()),
@@ -856,6 +1028,69 @@ function exForm(ex){
   return sheet;
 }
 
+/* ---------- rest timer / stopwatch (floating, only during a workout; timestamp-based so it survives backgrounding) ---------- */
+const Timer=(()=>{
+  const DEF={m:"cd",dur:L.get("gym:rest",90),end:null,left:null,st:null,acc:0,done:0};
+  let S=Object.assign({},DEF,L.get("gym:timer",{})),open=false,iv=null,ac=null,vis=false;
+  const root=el("div",{id:"tmr",hidden:""}),btn=el("button",{id:"tbtn",type:"button","aria-label":"טיימר מנוחה / סטופר"}),panel=el("div",{id:"tpanel",hidden:"",role:"dialog","aria-label":"טיימר"});
+  root.append(panel,btn);document.body.append(root);
+  const save=()=>L.set("gym:timer",S);
+  const fmt=x=>{x=Math.max(0,Math.ceil(x));const m=Math.floor(x/60);return m+":"+String(x%60).padStart(2,"0")};
+  const cdLeft=()=>S.end?(S.end-Date.now())/1000:(S.left!=null?S.left:S.dur);
+  const swEl=()=>((S.acc||0)+(S.st?Date.now()-S.st:0))/1000;
+  const running=()=>S.m==="cd"?!!S.end:!!S.st;
+  const AC=()=>{try{ac=ac||new (window.AudioContext||window.webkitAudioContext)();if(ac.state==="suspended")ac.resume()}catch(_){}return ac};
+  function beep(){const c=AC();if(!c)return;try{[0,.35,.7].forEach(o=>{const os=c.createOscillator(),g=c.createGain(),t0=c.currentTime+o;os.frequency.value=880;os.connect(g);g.connect(c.destination);
+    g.gain.setValueAtTime(.0001,t0);g.gain.exponentialRampToValueAtTime(.35,t0+.02);g.gain.exponentialRampToValueAtTime(.0001,t0+.25);os.start(t0);os.stop(t0+.3)})}catch(_){}}
+  function fire(){S.end=null;S.left=null;S.done=1;save();try{navigator.vibrate&&navigator.vibrate([300,120,300,120,300])}catch(_){}beep();toast("⏰ המנוחה נגמרה – לסט הבא! 💪")}
+  function tick(){if(S.m==="cd"&&S.end&&cdLeft()<=0)fire();paint();if(!running()&&iv){clearInterval(iv);iv=null}}
+  function loop(){if(!iv)iv=setInterval(tick,250);tick()}
+  const ns="http://www.w3.org/2000/svg",R=26,C=2*Math.PI*R;
+  function paint(){
+    const run=running(),cd=S.m==="cd";
+    btn.classList.toggle("run",run);btn.classList.toggle("done",!!S.done);btn.classList.toggle("paused",!run&&(cd?S.left!=null:S.acc>0));
+    let pct=0,lab="";
+    if(S.done){lab="0:00"}else if(cd&&(run||S.left!=null)){const l=cdLeft();lab=fmt(l);pct=S.dur?Math.max(0,Math.min(1,l/S.dur)):0}
+    else if(!cd&&(run||S.acc>0)){const e=swEl();lab=fmt(Math.floor(e));pct=(e%60)/60}
+    /* update in place (never rebuild the button – a rebuilt child under the finger can swallow the tap on iOS) */
+    if(!btn.firstChild){btn.innerHTML='<svg viewBox="0 0 60 60" aria-hidden="true" style="pointer-events:none"><circle cx="30" cy="30" r="'+R+'" fill="none" stroke="#ffffff33" stroke-width="4"/><circle class="tarc" cx="30" cy="30" r="'+R+'" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round" transform="rotate(-90 30 30)"/></svg><span class="tl" style="pointer-events:none"></span>'}
+    btn.querySelector(".tarc").setAttribute("stroke-dasharray",(C*pct)+" "+C);
+    const tl=btn.querySelector(".tl");tl.textContent=lab||"⏱️";tl.classList.toggle("ti",!lab);
+    btn.setAttribute("aria-label",lab?(cd?"טיימר מנוחה: "+lab:"סטופר: "+lab):"טיימר מנוחה / סטופר");
+    if(open){const b=panel.querySelector(".tbig");if(b)b.textContent=cd?fmt(S.done?0:cdLeft()):fmt(Math.floor(swEl()));
+      const g=panel.querySelector("#tgo");if(g)g.textContent=run?"❚❚ עצור":(cd?(S.left!=null&&S.left>0?"▶ המשך":"▶ התחל"):(S.acc>0?"▶ המשך":"▶ התחל"))}
+  }
+  function act(fn){fn();save();build();loop()}
+  function build(){
+    if(!open){panel.hidden=true;return}panel.hidden=false;const cd=S.m==="cd";
+    const seg=el("div",{class:"seg2"},
+      el("button",{class:cd?"on":"",type:"button",text:"⏳ מנוחה",on:{click:()=>act(()=>{S.m="cd"})}}),
+      el("button",{class:cd?"":"on",type:"button",text:"⏱️ סטופר",on:{click:()=>act(()=>{S.m="sw"})}}));
+    const big=el("div",{class:"tbig",dir:"ltr"});
+    const go=el("button",{class:"btn",id:"tgo",type:"button",on:{click:()=>act(()=>{AC();S.done=0;
+      if(cd){if(S.end){S.left=Math.max(0,cdLeft());S.end=null}else{const l=S.left!=null&&S.left>0?S.left:S.dur;S.end=Date.now()+l*1000;S.left=null}}
+      else{if(S.st){S.acc=(S.acc||0)+Date.now()-S.st;S.st=null}else S.st=Date.now()}})}});
+    const rs=el("button",{class:"btn g",type:"button",text:"↺ איפוס",on:{click:()=>act(()=>{S.done=0;if(cd){S.end=null;S.left=null}else{S.st=null;S.acc=0}})}});
+    const kids=[el("div",{class:"wk"},el("b",{text:cd?"טיימר מנוחה":"סטופר"}),el("button",{class:"btn g s",type:"button",text:"✕","aria-label":"סגור",on:{click:()=>{open=false;build()}}})),seg];
+    if(cd){
+      const adj=d=>act(()=>{if(S.end)S.end=Math.max(Date.now()+1000,S.end+d*1000);else if(S.left!=null)S.left=Math.max(5,S.left+d);else{S.dur=Math.max(15,Math.min(900,S.dur+d));L.set("gym:rest",S.dur)}});
+      kids.push(el("div",{class:"tadj"},el("button",{class:"tpm",type:"button","aria-label":"פחות 15 שניות",text:"−15",on:{click:()=>adj(-15)}}),big,el("button",{class:"tpm",type:"button","aria-label":"עוד 15 שניות",text:"+15",on:{click:()=>adj(15)}})),
+        el("div",{class:"tpre"},[60,90,120,180].map(p=>el("button",{class:"chip"+(S.dur===p?" on":""),type:"button",text:p<120?p+" שנ׳":(p/60)+" דק׳",on:{click:()=>act(()=>{AC();S.dur=p;L.set("gym:rest",p);S.done=0;S.left=null;S.end=Date.now()+p*1000})}}))));
+    }else kids.push(big);
+    kids.push(el("div",{class:"tctl"},go,rs));
+    panel.replaceChildren(...kids);paint();
+  }
+  btn.onclick=()=>{if(S.done){S.done=0;save();open=true}else open=!open;build();paint()};
+  document.addEventListener("click",e=>{if(open&&!root.contains(e.target)&&e.target.isConnected){open=false;build()}},true);
+  document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="visible")tick()});
+  if(running())loop();else paint();
+  return{
+    sync(on){if(on!==vis){vis=on;root.hidden=!on;document.body.classList.toggle("hastmr",on);if(!on){open=false;build()}}},
+    reset(){S=Object.assign({},DEF,{dur:L.get("gym:rest",90),m:S.m});open=false;save();build();paint()},
+    state:()=>S,isOpen:()=>open};
+})();
+window.Timer=Timer;
+
 /* ---------- boot ---------- */
 document.querySelectorAll(".tabs button").forEach(b=>b.onclick=()=>{tab=+b.dataset.t;L.set("gym:tab2",tab);openW=null;render()});
 $("#go").onclick=pickStart;$("#gear").onclick=openSettings;
@@ -863,6 +1098,13 @@ $("#fab").onclick=()=>{const a=active();if(a)openSession(a.wid)};
 $("#lb").onclick=()=>{$("#lb").style.display="none"};
 applyAlfaDom();
 render();updFab();
+/* storage safety on every start: move photos to IndexedDB, merge the history mirror, rescue an unfinished workout */
+(async()=>{try{if(navigator.storage&&navigator.storage.persist)navigator.storage.persist().catch(()=>{})}catch(_){}
+  try{await PH.migrate()}catch(_){}
+  try{if(await H.boot())render()}catch(_){}
+  try{await rescueStale()}catch(_){}
+  try{const ft=L.get("gym:finpend",null),r=ft&&H.get(ft);if(r&&!r.ph&&Date.now()-r.t<2*36e5&&!$("#ov").children.length)showFinish(r);else if(ft&&!r)L.del("gym:finpend")}catch(_){}
+  window.__bootDone=true})();
 (async()=>{
   if(typeof claude==="undefined"){localMode=true;canEdit=true;applyLocal();render();updFab();return}
   try{
